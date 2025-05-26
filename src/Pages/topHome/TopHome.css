@@ -1,0 +1,214 @@
+*{
+    padding: 0px;
+    margin: 0px;
+
+}
+.homeMain{
+  width: 100%;
+  height: 100vh;
+  background-color: #FFFCF7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2%;
+}
+.section{
+    width: 40%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.section_image{
+    /* width: 100%; */
+    /* height: 75vh; */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+     aspect-ratio: 664/793;
+}
+.imagesect{
+      gap: 24px;
+    width: 50%;
+    overflow: hidden;
+    padding-top: 10vh;
+}
+.anotherpub{
+font-family: 'Avenir', sans-serif;
+
+font-weight: 700;
+font-size: 20px;
+line-height: 100%;
+letter-spacing: 10%;
+text-transform: uppercase;
+text-decoration: underline;
+color: #1C1C1C;
+
+
+}
+.anotherpub2{
+    display: none;
+}
+.bookingcontainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+.logo-large{
+       font-family: "Lora", serif ;
+    font-weight: 700 ;
+    font-size: 36px ;
+    line-height: 100% ;
+    text-transform: capitalize ;
+    margin: 0;
+
+
+}
+.titlehome {
+    font-family: Lora;
+font-weight: 600;
+font-size: 24px;
+line-height: 100%;
+text-align: center;
+text-transform: capitalize;
+color: #1C1C1C;
+padding-bottom: 16px;
+}
+.bookingicons{
+    width: 60px;
+}
+.bookingttype{
+       display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 85%;
+    border-bottom: 1px solid #8C826A;
+    padding-bottom: 40px;
+    padding-top: 12px;
+    cursor: pointer;
+     margin-top: 16px;
+}
+.changeborder{
+    border-bottom: none;
+}
+.book-text{
+        align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-family: Work Sans;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 100%;
+    font-family: "Work Sans", sans-serif;
+    text-transform: capitalize;
+    color: #3D3D3D;
+}
+#cancelid{
+    gap: 17px;
+    margin-left: -5px;
+}
+.Existlink{
+font-family: 'Avenir', sans-serif;
+font-weight: 700;
+font-size: 20px;
+line-height: 100%;
+letter-spacing: 10%;
+text-transform: uppercase;
+text-decoration: underline;
+color: #FD6F53;
+}
+.confirmbtn{
+     width: 100%;
+    color: white;
+    font-weight: bold;
+    background-color: #3D3D3D;
+    border: none;
+    max-width: 372px;
+    height: 59px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+
+
+}
+.confirmbtn:hover{
+    background-color: #000;
+}
+.modal-body{
+    text-align: left;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 100;
+}
+.mainpop{
+    width: 350px;
+    justify-self: center;
+}
+.modifylink{
+    text-decoration: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 20px;
+    color: #000;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.modifylink:hover{
+    text-decoration: none;
+    color: #000;
+}
+@media only screen and (max-width: 700px) {
+    .homeMain{
+        display: flex;
+        flex-direction: column;
+        gap: 0%;
+    }
+    .section_image {
+      display: none;
+    }
+    .imagesect{
+        display: none;
+    }
+    .bookingcontainer{
+        width: 85%;
+    }
+    .logo-large{
+        font-size: 25px;
+    }
+    .book-text{
+        font-size: 15px;
+        gap: 20px;
+
+    }
+    .booking-type{
+        padding-bottom: 15px;
+        padding-top: 10px;
+    }
+    .changeborder{
+        border-bottom: none;
+    }
+    .anotherpub{
+        display: none;
+    }
+    .anotherpub2{
+        display: flex;
+        text-decoration: underline;
+        font-size: 17px;
+        font-weight: bold;
+        color: #000;
+    }
+  }
+
+/* Select  */

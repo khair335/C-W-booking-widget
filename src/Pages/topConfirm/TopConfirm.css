@@ -1,0 +1,293 @@
+.ConfirmMain{
+    width: 100%;
+    height: 130vh;
+    background-color: #FFFCF7;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 50px;
+    gap: 2%;
+    background-color:#fffcf7;
+  }
+.Data_imag{
+    width: 100%;
+    height: 85vh;
+    box-shadow: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+    background-color:#fffcf7;
+}
+
+.Data_type{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-family: Inter, sans-serif;
+    gap: 7px;
+}
+    
+#Data_type1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 80%;
+    align-items: flex-start;
+}
+.inputmain{
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.inputfeild{
+    width: 80%;
+}
+.Confirmtitle_type{
+    background-color: #F5E5CF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.10);
+    height: 30px;
+    width: auto;
+    font-size: small;
+    align-items: center;
+    display: flex;
+    justify-content:center ;
+    padding: 5px;
+    gap: 8px;
+}
+.logodata{
+    align-self: flex-start;
+    width: 120px;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+/* .choosemain{
+    display:flex;
+} */
+
+.confirmedData{
+    width: 80%;
+    /* background-color: #000; */
+    border-bottom: 1px solid gray;
+    height: 30px;
+}
+.confirmedDatatype{
+    font-size: 18px;
+    color: gray;
+    font-style: italic;
+    font-weight: 500;
+    text-align: start;
+    gap: 70px;
+}
+.namedata{
+    font-style: normal;
+    /* margin-left: 40px; */
+    font-weight: 600;
+}
+.emaildata{
+    border-bottom: none;
+}
+.comt{
+    font-weight: 600;
+}
+.commentsdata{
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.10);
+    background-color: #F5E5CF;
+    border-radius: 5px;
+    width: 80%;
+    font-style: italic;
+    padding: 10px;
+    margin-top: -5px;
+    text-align: start;
+    font-size: 18px;
+}
+.DetailsimgMain{
+    width: 45%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+    background-color:#fffcf7 !important;
+}
+.changeMain{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.changetab{
+    width: 22%;
+    height: 8px;
+    border-radius: 10px;
+    border: solid 1px #C39A7B;
+}
+.fixedit{
+    background-color: #C39A7B;
+}
+.Confirm-main{
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.textfieldMain{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* margin-right: -117px; */
+}
+.eg{
+    font-style: italic;
+    font-size: small;
+    margin-bottom: -7px;
+}
+.selecterdata{
+    width: 80%;
+    border: 1px solid grey;
+    border-radius: 5px;
+    color: gray;
+    font-family: Inter, sans-serif;
+    font-weight: 300 !important;
+    font-size: 18px;
+}
+.logos{
+    width: 85px;
+}
+
+.tabletext{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* gap: 20px !important; */
+    font-size: 20px;
+    /* font-weight: bold; */
+    text-align: start;
+    letter-spacing: 1px;
+    width: 80% ;
+}
+.checktext{
+    margin-left: 25px;
+}
+.check_box{
+    margin-left: 0px;
+    background-color: white;
+}
+
+.ConfirmbtonMain{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    
+}
+.btn1{
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 80% !important;
+}
+.btn2{
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #C39A7B !important;
+}
+.Confirmbuttn{
+    width: 80%;
+    height: 50px;
+    background-color: #000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+.Confirmbuttn:hover{
+    color: white;
+    text-decoration: none;
+}
+.imgdata{
+    display: none;
+}
+.changeMainmob{
+    display: none;
+}
+.feildproblem{
+    width: 100%;
+}
+@media only screen and (max-width: 700px) {
+    .DetailsimgMain{
+     display: none;
+    }
+    .Confirm-main{
+        width: 100%;
+    }
+    .textfieldMain{
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-right: -0px;
+    }
+    .feildproblem{
+        width: 100%;
+    }
+    .imgdata{
+        display: flex;
+        margin-top: 20px;
+    }
+    #Data_type1{
+        gap: 10px;
+        width: 80%;
+    }
+    .Datamain{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .DetailsMainmob{
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .Detailstab{
+        width: 22%;
+        height: 8px;
+        border-radius: 10px;
+        border: solid 1px #C39A7B;
+    }
+    .anotherpub2{
+        display: flex;
+        text-decoration: underline;
+        font-size: 17px;
+        font-weight: bold;
+        color: #000;
+    }
+    .DetailsMain{
+        height: 700px;
+        padding-top: 0px;
+        width: 100%;
+    }
+    .commentsdata{
+        margin-top: 0px;
+        text-align: start;
+        font-size: 18px;
+    }
+    .comt{
+        margin-top: 30px;
+    }
+  } 

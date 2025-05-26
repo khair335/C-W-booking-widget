@@ -1,0 +1,294 @@
+.griffinnMain{
+    width: 100%;
+    height: 100vh;
+    background-color: #FFFCF7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2%;
+
+  }
+.Data_imag{
+    width: 100%;
+    height: 85vh;
+    box-shadow: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+.datetilte{
+    font-size: 40px;
+}
+.Dataa_type{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-family: Inter, sans-serif;
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+    
+#Data_type1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 80%;
+    align-items: flex-start;
+}
+.titlewithicon{
+    background-color: #F5E5CF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.10);
+    height: 30px;
+    width: auto;
+    font-size: small;
+    align-items: center;
+    display: flex;
+    justify-content:center ;
+    padding: 8px;
+    gap: 8px;
+}
+.logodata{
+    align-self: flex-start;
+    width: 120px;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+/* .choosemain{
+    display:flex;
+} */
+.DataimgMain{
+    width: 45%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+}
+.changeMain{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.changetab{
+    width: 22%;
+    height: 8px;
+    border-radius: 10px;
+    border: solid 1px #C39A7B;
+}
+.fixed{
+    background-color: #C39A7B;
+}
+.Datamain{
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.selecteopt{
+    width: 80%;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    color: #333;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    height: 3rem;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
+    background: #fff;
+}
+.selecteopt:focus {
+    border-color: #000;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+.selecteopt:hover:not(:disabled) {
+    border-color: #000;
+}
+.selecteopt:disabled {
+    background: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.text-danger {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    background: #fff;
+    border-radius: 4px;
+    border-left: 3px solid #dc3545;
+    width: 80%;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.logos{
+    width: 85px;
+}
+.tbletext{
+    font-size: 25px;
+    /* font-weight: bold; */
+    text-align: start;
+    letter-spacing: 2px;
+    width: 80%;
+}
+.DatabtnMain3{
+    width: 100% !important;
+    display: flex;
+    flex-direction: row !important;
+    gap: 15px;
+}
+.griffinbuttn3{
+    width: 48%;
+    height: 60px;
+    background-color: #000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+.griffinbuttn3:hover{
+    color: white;
+    text-decoration: none;
+}
+.imgdata{
+    display: none;
+}
+.changeMainmob{
+    display: none;
+}
+@media only screen and (max-width: 700px) {
+    .DataimgMain{
+     display: none;
+    }
+    .Datamain{
+        width: 100%;
+        height: auto;
+    }
+    .imgdata{
+        display: flex;
+        margin-top: 20px;
+    }
+    .datetilte{
+        font-size: 25px;
+    }
+    #Data_type1{
+        gap: 10px;
+        width: 80%;
+    }
+    .Datamain{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .griffinnMain{
+        padding-top: 50px;
+    }
+    .selecteopt{
+        width: 80%;
+        border: 1px solid grey;
+        border-radius: 5px;
+        color: gray;
+        font-family: Inter, sans-serif;
+        font-weight: 300 !important;
+        font-size: 20px;
+        height: 45px;
+    }
+    .griffinMainmob{
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .changetabg{
+        width: 22%;
+        height: 8px;
+        border-radius: 10px;
+        border: solid 1px #C39A7B;
+    }
+    .griffinbuttn3{
+        height: 40px;
+    }
+    .tbletext{
+        font-size: 20px;
+    }
+    .anotherpub2{
+        display: flex;
+        text-decoration: underline;
+        font-size: 17px;
+        font-weight: bold;
+        color: #000;
+    }
+    .SelectMain{
+        height: 100vh;
+        padding-top: 50px;
+    }
+    .Dataa_type{
+        gap: 10px;
+    }
+}
+@media (max-width: 480px) {
+    .time-slot-container {
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+    }
+    .Dataa_type {
+        padding: 0.5rem;
+    }
+}
+
+.loading-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+  margin: 1rem 0;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.time-slot-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 1rem auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.time-slot-container.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}

@@ -1,0 +1,189 @@
+.LostMain{
+    width: 100%;
+    height: 100vh;
+    background-color: #FFFCF7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding-top: 50px; */
+    gap: 2%;
+  }
+.Data_imag{
+    width: 100%;
+    height: 85vh;
+    box-shadow: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+.Nbooking-type{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-family: Inter, sans-serif;
+    gap: 15px;
+}
+.existmail{
+    margin-top: -30px;
+}
+#Nbooking-type1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 80%;
+    align-items: flex-start;
+}
+.logodatta{
+    align-self: flex-start;
+    width: 120px;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+.confirmedData{
+    width: 80%;
+    border-bottom: 1px solid gray;
+    height: 30px;
+}
+
+.DetailsimgMain{
+    width: 45%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+}
+.Modify-main{
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+.btn1{
+    margin-bottom: 10px;
+}
+.logos{
+    width: 85px;
+}
+.DatabtonMain{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+.btn3{
+    text-transform: uppercase;
+    font-weight: bold;
+    /* width: 100%; */
+}
+.btn2{
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #C39A7B !important;
+}
+.modifybtn{
+    width: 100%;
+    height: 50px;
+    background-color: #000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+.modifybtn:hover{
+    color: white;
+    text-decoration: none;
+}
+.imgdata{
+    display: none;
+}
+.changetab1{
+    width: 18%;
+}
+.changeMainmob{
+    display: none;
+}
+.feildproblem{
+    width: 100%;
+}
+.Bookingmainmob{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+.BookingNumtab{
+    width: 48% !important;
+    height: 8px;
+    border-radius: 10px;
+    border: solid 1px #C39A7B;
+    display: flex;
+}
+.selectrdata{
+    height: 55px;
+    width: 80%;
+    background-color: #FFFCF7;
+}
+.reasonmain{
+    background-color: #C39A7B;
+    color: #000;
+    font-weight: bold;
+    width: 80%;
+    font-size: 15px;
+}
+@media only screen and (max-width: 700px) {
+    .DetailsimgMain{
+     display: none;
+    }
+    .Modify-main{
+        width: 100%;
+        gap: 10px;
+    }
+    .imgdata{
+        display: flex;
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+    #Nbooking-type1{
+        gap: 10px;
+        width: 80%;
+        font-size: 5px;
+    }
+    .Datamain{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .BookingNmob{
+        display: flex;
+        flex-direction: row;
+        width: 80%;
+        justify-content: space-between;
+    }
+    .BookingNtab{
+        width: 48%;
+        height: 8px;
+        border-radius: 10px;
+        border: solid 1px #C39A7B;
+    }
+    .DetailsMain{
+        height: 700px;
+        padding-top: 0px;
+        width: 100%;
+    }
+    .existmail{
+        margin-top: -0px;
+    }
+  } 

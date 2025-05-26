@@ -1,0 +1,166 @@
+.CancelledMain{
+    width: 100%;
+    height: 100vh;
+    background-color: #FFFCF7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding-top: 50px; */
+    gap: 2%;
+  }
+.Data_imag{
+    width: 100%;
+    height: 85vh;
+    box-shadow: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+.Cancel-type{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 80%;
+    font-family: Inter, sans-serif;
+    gap: 7px;
+}
+    
+#Data_type1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 80%;
+    align-items: flex-start;
+}
+.logodatta{
+    align-self: flex-start;
+    width: 120px;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+/* .choosemain{
+    display:flex;
+} */
+
+.confirmedData{
+    width: 80%;
+    /* background-color: #000; */
+    border-bottom: 1px solid gray;
+    height: 30px;
+}
+
+.DetailsimgMain{
+    width: 45%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+}
+.Modify-main{
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+.btn1{
+    margin-bottom: 10px;
+}
+.logos{
+    width: 85px;
+}
+.CancelbtnMain{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.btn3{
+    text-transform: uppercase;
+    font-weight: bold;
+    /* width: 100%; */
+}
+.btn2{
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #C39A7B !important;
+}
+.Cancelbtn{
+    width: 100%;
+    height: 50px;
+    background-color: #000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+.Cancelbtn:hover{
+    color: white;
+    text-decoration: none;
+}
+.imgdata{
+    display: none;
+}
+.changetab1{
+    width: 18%;
+}
+.changeMainmob{
+    display: none;
+}
+.feildproblem{
+    width: 100%;
+}
+.Changeta{
+    width: 18% !important;
+    height: 8px;
+    border-radius: 10px;
+    border: solid 1px #C39A7B;
+    display: flex;
+}
+.belowt{
+    font-size: 25px;
+}
+@media only screen and (max-width: 700px) {
+    .DetailsimgMain{
+     display: none;
+    }
+    .Modify-main{
+        width: 100%;
+        gap: 10px;
+    }
+    .imgdata{
+        display: flex;
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+    #Data_type1{
+        gap: 10px;
+        width: 80%;
+        font-size: 5px;
+    }
+    .Datamain{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .DetailsMain{
+        height: 700px;
+        padding-top: 0px;
+        width: 100%;
+    }
+    .belowt{
+        font-size: 15px;
+    }
+  } 

@@ -1,0 +1,234 @@
+.ReDetailsMain{
+    width: 100%;
+    height: 130vh;
+    background-color: #FFFCF7;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 50px;
+    gap: 2%;
+  }
+.Data_imag{
+    width: 100%;
+    height: 85vh;
+    box-shadow: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+.Data_type{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-family: Inter, sans-serif;
+    gap: 7px;
+}
+    
+#Data_type1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 80%;
+    align-items: flex-start;
+}
+.inputmain{
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.inputfeild{
+    width: 80%;
+}
+.Detailtitle_type{
+    background-color: #F5E5CF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.10);
+    height: 30px;
+    width: auto;
+    font-size: small;
+    align-items: center;
+    display: flex;
+    justify-content:center ;
+    padding: 5px;
+    gap: 8px;
+}
+.logodata{
+    align-self: flex-start;
+    width: 120px;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+/* .choosemain{
+    display:flex;
+} */
+.DetailsimgMain{
+    width: 45%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+}
+.changeMain{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.changetab{
+    width: 22%;
+    height: 8px;
+    border-radius: 10px;
+    border: solid 1px #C39A7B;
+}
+.fixedit{
+    background-color: #C39A7B;
+}
+.Dmain{
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.textfieldMain{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* margin-right: -117px; */
+}
+.eg{
+    font-style: italic;
+    font-size: small;
+    margin-bottom: -7px;
+}
+.selecterdata{
+    width: 80%;
+    border: 1px solid grey;
+    border-radius: 5px;
+    color: gray;
+    font-family: Inter, sans-serif;
+    font-weight: 300 !important;
+    font-size: 18px;
+}
+.logos{
+    width: 85px;
+}
+
+.tabletext{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px !important;
+    font-size: 20px;
+    /* font-weight: bold; */
+    text-align: start;
+    letter-spacing: 1px;
+    width: 80% ;
+}
+.checktext{
+    margin-left: 25px;
+}
+.check_box{
+    margin-left: 0px;
+    background-color: white;
+}
+
+.DatabotonMain{
+    width: 80%;
+    display: flex;
+    flex-direction: row !important;
+    gap: 25px;
+}
+.databuttn1{
+    width: 39%;
+    height: 50px;
+    background-color: #000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+.databuttn1:hover{
+    color: white;
+    text-decoration: none;
+}
+.imgdata{
+    display: none;
+}
+.changeMainmob{
+    display: none;
+}
+.feildproblem{
+    width: 100%;
+}
+@media only screen and (max-width: 700px) {
+    .DetailsimgMain{
+     display: none;
+    }
+    .Dmain{
+        width: 100%;
+    }
+    .textfieldMain{
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-right: -0px;
+    }
+    .feildproblem{
+        width: 100%;
+    }
+    .imgdata{
+        display: flex;
+        margin-top: 20px;
+    }
+    #Data_type1{
+        gap: 10px;
+        width: 80%;
+    }
+    .Datamain{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .ReDetailMain{
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .ReDetailstab{
+        width: 18%;
+        height: 8px;
+        border-radius: 10px;
+        border: solid 1px #C39A7B;
+    }
+    .anotherpub2{
+        display: flex;
+        text-decoration: underline;
+        font-size: 17px;
+        font-weight: bold;
+        color: #000;
+    }
+    .DetailsMain{
+        height: 700px;
+        padding-top: 0px;
+        width: 100%;
+    }
+  } 
