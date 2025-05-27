@@ -121,7 +121,7 @@ useEffect(() => {
 
             return (
               <div className="areasection" key={promotion.Id}>
-                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} onClick={() => togglePromotion(promotion)}>
+                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} >
                   <div className="restArea">
                     <img
                       src={areaImage}
@@ -144,9 +144,9 @@ useEffect(() => {
                             Read Info
                             <img src={tabimg} alt="tab_img" />
                           </Link>
-                          <h6 
-                            className="readtext" 
-                            id={`readtext-${promotion.Id}`} 
+                          <h6
+                            className="readtext"
+                            id={`readtext-${promotion.Id}`}
                             style={{ display: "none" }}
                           >
                             {promotion.Description}
@@ -155,6 +155,11 @@ useEffect(() => {
                       )}
                     </p>
                   </div>
+ <button onClick={() => togglePromotion(promotion)} className="selectbtn">
+                    {
+                      isSelected ? "Selected" : "Select"
+                    }
+                  </button>
                 </div>
               </div>
             );

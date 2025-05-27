@@ -1,0 +1,94 @@
+.yearViewContainer {
+  background: #FFF0D5;
+  /* bg-amber-50 */
+  border-radius: 4px;
+  /* rounded-xl */
+  box-shadow: 0px 4px 4px 0px #391A114D, 0px 8px 12px 6px #391A1126;
+  padding: 12px;
+  /* p-6 */
+  width: 285px;
+  /* w-80 */
+
+}
+
+.yearViewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  /* mb-6 */
+  padding: 8px;
+}
+
+.yearViewArrowBtnContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  /* space-x-1 */
+}
+
+.yearViewArrowBtn {
+  padding: 0.25rem;
+  /* p-1 */
+  border-radius: 0.375rem;
+  /* rounded */
+  background: none;
+  border: none;
+  transition: background 0.2s;
+}
+
+.yearViewArrowBtn:hover {
+  background: #fef3c7;
+  /* hover:bg-amber-100 */
+}
+
+.yearViewArrowIcon {
+  width: 8px;
+  height: 8px;
+  color: #5D5D5D;
+}
+
+.yearViewRange {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-transform: capitalize;
+  color: #1C1C1C;
+}
+
+.yearViewGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  /* gap-3 */
+}
+
+.yearCell {
+  flex: 1 1 0%;
+  padding: 6px 16px;
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: 0%;
+  text-align: center;
+  text-transform: capitalize;
+  color: #1C1C1C;
+  border: none;
+  background: none;
+}
+
+.yearCell:hover {
+  background: #BAAE95;
+}
+
+.yearCellSelected {
+  background: #8C826A;
+  color: #fff;
+}

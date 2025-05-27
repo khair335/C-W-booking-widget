@@ -111,7 +111,7 @@ export default function Area() {
 
             return (
               <div className="areasection" key={promotion.Id}>
-                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} onClick={() => togglePromotion(promotion)}>
+                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} >
                   <div className="restArea">
                     <img
                       src={isRestaurant ? Areimg2 : Areimg1}
@@ -120,31 +120,17 @@ export default function Area() {
                     />
                     <p className="Areatextmain">
                       <h3>{promotion.Name}</h3>
-                      {promotion.Description && showDescription && (
-                        <>
-                          <Link
-                            className="readinfo"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              const readText = document.getElementById(`readtext-${promotion.Id}`);
-                              readText.style.display =
-                                readText.style.display === "none" ? "flex" : "none";
-                            }}
-                          >
-                            Read Info
-                            <img src={tabimg} alt="tab_img" />
-                          </Link>
-                          <h6 
-                            className="readtext" 
-                            id={`readtext-${promotion.Id}`} 
-                            style={{ display: "none" }}
-                          >
-                            {promotion.Description}
-                          </h6>
-                        </>
-                      )}
+
                     </p>
                   </div>
+                   <h6 className="readtext" id="readtextt" style={{ display: "none" }}>
+                            {promotion.Description}
+                          </h6>
+                  <button onClick={() => togglePromotion(promotion)} className="selectbtn">
+                    {
+                      isSelected ? "Selected" : "Select"
+                    }
+                  </button>
                 </div>
               </div>
             );

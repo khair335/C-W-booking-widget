@@ -9,6 +9,8 @@ import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
 import logo1 from "../../images/Logo (1).png"
 import whitelogo from "../../images/T&R White.png"
 import styles from "./Top.module.css";
+import DatePicker from '../../components/ui/DatePicker/DatePicker';
+import DropDown from '../../components/ui/DropDown/DropDown';
 
 export default function Griffin() {
   const navigate = useNavigate();
@@ -20,7 +22,10 @@ export default function Griffin() {
   const [adults, setAdults] = useState("");
   const [children, setChildren] = useState("");
   const [guestError, setGuestError] = useState("");
-
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedAdults, setSelectedAdults] = useState(null);
+  const [selectedChildren, setSelectedChildren] = useState(null);
   useEffect(() => {
     const fetchAvailability = async () => {
       const token = localStorage.getItem("token");
@@ -71,7 +76,7 @@ export default function Griffin() {
         <img src={whitelogo} alt="logo" className={styles.logodata} />
         <img src={sectionimg2} alt="section_" className={styles.Data_imag} />
         <div className={styles.changeMain}>
-          <div className={styles.changetab}></div>
+          <div className={`${styles.changetab} ${styles.fixed}`}></div>
           <div className={styles.changetab}></div>
           <div className={styles.changetab}></div>
           <div className={styles.changetab}></div>
@@ -81,14 +86,14 @@ export default function Griffin() {
         </Link>
       </div>
       <div className={styles.Datamain}>
-        <div className={styles.Data_type} >
+        {/* <div className={styles.Data_type} >
           <img src={logo1} alt="logo" />
-        </div>
+        </div> */}
         <div className={styles.Dataa_type}>
           <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Select Date, Time & Guests</h1>
         </div>
 
-        <div className={styles.Dataa_type} id="Data_type1">
+        <div className={styles.Dataa_type} id={styles.Data_type1}>
           <div className={styles.titlewithicon}>
             <img src={dateicon} alt="date_icon" />
             {date ? date : "Select Date"}
@@ -108,90 +113,96 @@ export default function Griffin() {
         </div>
         <div className={styles.Dataa_type}>
           {guestError && <p className="text-danger">{guestError}</p>}
-          <input
-            type="date"
-            className={`${styles.selecteopt} form-control form-control-lg mb-2 `}
-            aria-label="Select Date"
-            value={date}
-            min={new Date().toISOString().split("T")[0]}
-            onFocus={(e) => e.target.showPicker?.()}
-            onChange={(e) => setDate(e.target.value)}
+
+
+
+
+
+          <DatePicker
+            value={date ? new Date(date) : undefined}
+            onChange={(newDate) => {
+              // Format the date in YYYY-MM-DD format while preserving the local date
+              const year = newDate.getFullYear();
+              const month = String(newDate.getMonth() + 1).padStart(2, '0');
+              const day = String(newDate.getDate()).padStart(2, '0');
+              setDate(`${year}-${month}-${day}`);
+            }}
+            placeholder="Select Date"
+            disablePastDates={true}
           />
-          <select
-            className={`${styles.selecteopt} form-select form-select-lg mb-2 `}
-            aria-label="Select Adults Number"
-            value={adults}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              if (value + parseInt(children || 0) <= 10) {
-                setAdults(value);
+
+
+
+
+
+
+          <DropDown
+            options={[...Array(11).keys()].slice(1).map((num) => ({
+              label: num.toString(),
+              value: num.toString(),
+              status: "default"
+            }))}
+            value={selectedAdults}
+            onChange={(value) => {
+              const numValue = parseInt(value);
+              if (numValue + parseInt(children || 0) <= 10) {
+                setSelectedAdults(value);
+                setAdults(numValue);
                 setGuestError("");
               } else {
                 setGuestError("Total guests (adults + children) cannot exceed 10.");
               }
             }}
-          >
-            <option value="">Select Adults Number</option>
-            {[...Array(11).keys()].slice(1).map((num) => (
-              <option key={num} value={num}>
-                {num}
-              </option>
-            ))}
-          </select>
-          <select
-            className={`${styles.selecteopt} form-select form-select-lg mb-2 `}
-            aria-label="Select Children Number"
-            value={children}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              if (parseInt(adults || 0) + value <= 10) {
-                setChildren(value);
+            placeholder="Select Adults Number"
+          />
+          <DropDown
+            options={[...Array(11).keys()].map((num) => ({
+              label: num.toString(),
+              value: num.toString(),
+              status: "default"
+            }))}
+            value={selectedChildren}
+            onChange={(value) => {
+              const numValue = parseInt(value);
+              if (parseInt(adults || 0) + numValue <= 10) {
+                setSelectedChildren(value);
+                setChildren(numValue);
                 setGuestError("");
               } else {
                 setGuestError("Total guests (adults + children) cannot exceed 10.");
               }
             }}
-          >
-            <option value="">Select Children Number</option>
-            {[...Array(11).keys()].map((num) => (
-              <option key={num} value={num}>
-                {num}
-              </option>
-            ))}
-          </select>
-          <select
-            className={`${styles.selecteopt} form-select form-select-lg mb-2 `}
-            aria-label="Select Time"
+            placeholder="Select Children Number"
+          />
+          <DropDown
+            options={timeSlots.map((slot) => {
+              const iso = slot.TimeSlot;
+              const label = new Date(iso).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+              return {
+                label: label,
+                value: iso,
+                status: "default"
+              };
+            })}
             value={selectedTimeISO}
-            onChange={(e) => {
-              const iso = e.target.value;
-              setSelectedTimeISO(iso);
-              const dateObj = new Date(iso);
+            onChange={(value) => {
+              setSelectedTimeISO(value);
+              const dateObj = new Date(value);
               const formatted24Hour = dateObj.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: false,
               });
               setTime(formatted24Hour);
-              const selectedSlot = timeSlots.find((slot) => slot.TimeSlot === iso);
+              const selectedSlot = timeSlots.find((slot) => slot.TimeSlot === value);
               setLeaveTime(selectedSlot?.LeaveTime || "");
             }}
-          >
-            <option value="">Select Time</option>
-            {timeSlots.map((slot, index) => {
-              const iso = slot.TimeSlot;
-              const label = new Date(iso).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-              return (
-                <option key={index} value={iso}>
-                  {label}
-                </option>
-              );
-            })}
-          </select>
-          <p className="tbletext">
+            placeholder="Select Time"
+          />
+          <p className={styles.tbletext}>
             Your table is required to be returned by {leaveTime || "XX:XX PM"}
           </p>
         </div>

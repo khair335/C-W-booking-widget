@@ -3,13 +3,13 @@
     height: 100vh;
     background-color: #FFFCF7;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     gap: 2%;
     padding-top: 50px;
     /* position: absolute; */
   }
-.Data_imag{ 
+.Data_imag{
     width: 100%;
     height: 85vh;
     box-shadow: 20px;
@@ -26,7 +26,7 @@
     text-align: center;
     width: 100%;
     font-family: Inter, sans-serif;
-    gap: 7px;
+    gap: 36px;
 }
 .areasection{
     width: 80%;
@@ -39,22 +39,40 @@
     gap: 30px;
     border-radius: 5px;
 }
+.Areatextmain{
+    /* align-items: flex-start; */
+    text-align: start;
+    margin: 0;
+    padding: 16px 0;
+}
+
+
+.Areatextmain h3 {
+    font-family: "Lora", serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: capitalize;
+    color: #1C1C1C;
+    margin-bottom: 16px;
+
+}
 .area_1and2{
     display: flex;
     align-items: flex-start;
     /* justify-content: center; */
-    width: 95%;
-    gap: 10px;
+    width: 100%;
+    gap: 16px;
     /* align-items: center; */
     text-align: flex-start;
     display: flex;
     flex-direction: column;
-} 
+}
 .restArea{
     display: flex;
     gap: 30px;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin: 0;
     text-align:flex-start;
 }
 .selectbton{
@@ -187,13 +205,29 @@
 .changetabb{
     display: none;
 }
-.readinfo{
-    color: #000;
+
+.readinfo {
+    font-family: "Avenir", sans-serif;
     font-weight: 600;
-    margin-left: -85px;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 5%;
+    text-transform: capitalize;
+    text-decoration: underline;
+
+    color: #3D3D3D;
+    margin-left: -0px !important;
 }
 .readtext{
-    font-style: italic;
+   font-family: Work Sans;
+font-weight: 400;
+font-style: italic;
+font-size: 18px;
+line-height: 140%;
+letter-spacing: 0%;
+text-transform: capitalize;
+color: #1C1C1C;
+text-align: start;
     display: none;
 }
 #hideifo{
@@ -267,7 +301,7 @@
         gap: 15px;
         align-items: center;
         text-align: flex-start;
-    } 
+    }
     #restArea1{
         align-items: center;
         display: flex;
@@ -278,4 +312,4 @@
         font-weight: 600;
         margin-left: -30px;
     }
-  } 
+  }

@@ -19,14 +19,15 @@ export default function PickArea() {
   const [promotions, setPromotions] = useState([]);
   const [selectedPromotion, setSelectedPromotion] = useState(null);
   const { date, time, adults, children, bookingNumber, returnBy } = location.state || {};
+  const [openInfoId, setOpenInfoId] = useState(null);
 
   const isFormValid = date && time && adults && bookingNumber && selectedPromotion;
   const handleNextClick = () => {
     if (!isFormValid) return;
-    navigate("/ReDetail", { state: {date, time, adults, children, returnBy, bookingNumber, selectedPromotion}});
+    navigate("/ReDetail", { state: { date, time, adults, children, returnBy, bookingNumber, selectedPromotion } });
   };
 
-useEffect(() => {
+  useEffect(() => {
     const handleBooking = async () => {
       const token = localStorage.getItem('token');
       const headers = {
@@ -47,16 +48,16 @@ useEffect(() => {
   }, []);
 
   const togglePromotion = (promotion) => {
-  setSelectedPromotion((prev) =>
-    prev?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name }
-  );
-};
+    setSelectedPromotion((prev) =>
+      prev?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name }
+    );
+  };
 
   return (
     <div className="AreaaMain" id="choose">
       <div className="AreaimgMain">
-      <img src={logo} alt="logo" className="logodata" />
-      <img src={sectionimage} alt="section_" className="Data_imag" />
+        <img src={logo} alt="logo" className="logodata" />
+        <img src={sectionimage} alt="section_" className="Data_imag" />
         <div className="changeMain">
           <div className="changetab"></div>
           <div className="changetab fixd"></div>
@@ -100,10 +101,11 @@ useEffect(() => {
           {promotions.map((promotion, index) => {
             const isSelected = selectedPromotion?.Id === promotion.Id;
             const isRestaurant = promotion.Name.toLowerCase().includes("restaurant");
+            const isInfoOpen = openInfoId === promotion.Id;
 
             return (
               <div className="areasection" key={promotion.Id}>
-                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} onClick={() => togglePromotion(promotion)}>
+                <div className={`area_1and2 ${isSelected ? "selected" : ""}`}>
                   <div className="restArea">
                     <img
                       src={isRestaurant ? Areimg2 : Areimg1}
@@ -112,27 +114,43 @@ useEffect(() => {
                     />
                     <p className="Areatextmain">
                       <h3>{promotion.Name}</h3>
+                       {/* <p className='subtext'>
+                      (dog friendly)
+                    </p> */}
                       {promotion.Description && isRestaurant && (
-                        <>
-                          <Link
-                            className="readinfo"
-                            onClick={(e) => {
-                              e.stopPropagation(); // prevent selection toggle
-                              const readText = document.getElementById("readtextt");
-                              readText.style.display =
-                                readText.style.display === "none" ? "flex" : "none";
+                        <Link
+                          className="readinfo"
+                          onClick={(e) => {
+                            e.stopPropagation(); // prevent selection toggle
+                            setOpenInfoId(isInfoOpen ? null : promotion.Id);
+                          }}
+                        >
+                          {isInfoOpen ? "Hide Info" : "Read Info"}
+                          <img
+                            style={{
+                              transform: isInfoOpen ? "rotate(90deg)" : "rotate(270deg)"
                             }}
-                          >
-                            Read Info
-                            <img src={tabimg} alt="tab_img" />
-                          </Link>
-                          <h6 className="readtext" id="readtextt" style={{ display: "none" }}>
-                            {promotion.Description}
-                          </h6>
-                        </>
+                            src={tabimg}
+                            alt="tab_img"
+                          />
+                        </Link>
                       )}
                     </p>
+
+
                   </div>
+                  <h6
+                    className="readtext"
+                    style={{ display: isInfoOpen ? "flex" : "none" }}
+                  >
+                    {promotion.Description}
+                  </h6>
+                  <button
+                    onClick={() => togglePromotion(promotion)}
+                    className="selectbtn"
+                  >
+                    {isSelected ? "Selected" : "Select"}
+                  </button>
                 </div>
               </div>
             );
@@ -140,7 +158,7 @@ useEffect(() => {
         </div>
         <div className="Area_type">
           <p className="tabletext">
-            Your table is required to be returned by {returnBy|| "XX:XX PM"}
+            Your table is required to be returned by {returnBy || "XX:XX PM"}
           </p>
         </div>
         <div className="Area_type DatabtnMain">

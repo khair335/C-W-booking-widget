@@ -1,4 +1,4 @@
-.griffinMain{
+.griffinMain {
     width: 100%;
     height: 100vh;
     background-color: #FFFCF7;
@@ -6,8 +6,9 @@
     align-items: center;
     justify-content: center;
     gap: 2%;
-  }
-.Data_imag{
+}
+
+.Data_imag {
     width: 100%;
     height: 85vh;
     box-shadow: 20px;
@@ -15,21 +16,23 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
     margin-bottom: 15px;
 }
-.datetilte{
+
+.datetilte {
     font-size: 40px;
 }
-.Dataa_type{
+
+.Dataa_type {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100%;
-    gap: 7px;
+    width: 88%;
+    gap: 28px;
     padding: 0;
 }
 
-#Data_type1{
+#Data_type1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -37,7 +40,8 @@
     width: 80%;
     align-items: flex-start;
 }
-.titlewithicon{
+
+.titlewithicon {
     background-color: #F5E5CF;
     box-shadow: 0px 1px 3px 0px #0000004D, 0px 4px 8px 3px #00000026;
     border-radius: 8px;
@@ -46,44 +50,62 @@
     font-size: small;
     align-items: center;
     display: flex;
-    justify-content:center ;
+    justify-content: center;
     padding: 4px 8px;
     gap: 8px;
+    color: #391A11;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
+    text-transform: capitalize;
+
+
 }
-.logodata{
+
+.logodata {
     align-self: flex-start;
     width: 120px;
     position: absolute;
     margin-top: 20px;
     margin-left: 30px;
 }
+
 /* .choosemain{
     display:flex;
 } */
-.DataimgMain{
+.DataimgMain {
     width: 45%;
     align-items: center;
     display: flex;
     flex-direction: column;
     height: 85vh;
 }
-.changeMain{
+
+.changeMain {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 10px;
 }
-.changetab{
-    width: 22%;
-    height: 8px;
+
+.changetab {
+    /* width: 22%; */
+    width: calc(100% / 4 - 24px);
+    height: 12px;
     border-radius: 10px;
-    border: solid 1px #C39A7B;
+    border: solid 2px #E5BA96;
 }
-.fixed{
-    background-color: #C39A7B;
+
+.fixed {
+    background-color: #E5BA96;
 }
-.Datamain{
+
+.Datamain {
     width: 43%;
     display: flex;
     flex-direction: column;
@@ -91,7 +113,8 @@
     justify-content: center;
     gap: 20px;
 }
-.selecteopt{
+
+.selecteopt {
     width: 80%;
     border: 1px solid grey;
     border-radius: 5px;
@@ -101,72 +124,143 @@
     font-size: 20px;
     height: 60px;
 }
-.logos{
+
+.logos {
     width: 85px;
 }
-.tbletext{
+
+.tbletext {
+    font-family: Work Sans;
+    font-weight: 400;
     font-size: 22px;
-    /* font-weight: bold; */
-    text-align: start;
-    letter-spacing: 2px;
-    width: 80%;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: capitalize;
+    color: #1C1C1C;
+    width: 100%;
+    padding-top: 28px;
+    text-align: left;
 }
-.DatabtnMain3{
-    width: 80%;
+
+.DatabtnMain3 {
+    width: 88%;
     display: flex;
     flex-direction: row !important;
-    gap: 15px;
+    gap: 24px;
 }
-.griffinbuttn3{
-    width: 48%;
-    height: 60px;
-    background-color: #000;
+
+.griffinbuttn3 {
+    width: calc(50% - 12px);
+    height: 58px;
+    background-color: #3D3D3D;
     color: white;
     font-weight: bold;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     align-items: center;
     display: flex;
     text-decoration: none;
     justify-content: center;
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    color: #FFFCF7;
+
 }
-.griffinbuttn3:hover{
+
+.griffinbuttn3:hover {
     color: white;
     text-decoration: none;
 }
-.imgdata{
+
+.imgdata {
     display: none;
 }
-.changeMainmob{
+
+.changeMainmob {
     display: none;
 }
+
+.anotherpub2 {
+    display: none;
+    text-decoration: underline;
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #FD6F53;
+
+
+}
+
+.anotherpub {
+    display: flex;
+    text-decoration: underline;
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #1C1C1C;
+    padding-top: 24px;
+
+
+}
+
+.Existlink{
+    display: flex;
+  text-decoration: underline;
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #FD6F53;
+}
+
 @media only screen and (max-width: 700px) {
-    .DataimgMain{
-     display: none;
+    .DataimgMain {
+        display: none;
     }
-    .Datamain{
+
+    .Datamain {
         width: 100%;
         height: auto;
     }
-    .imgdata{
+
+    .imgdata {
         display: flex;
         margin-top: 20px;
     }
-    .datetilte{
+
+    .datetilte {
         font-size: 25px;
     }
-    #Data_type1{
+
+    #Data_type1 {
         gap: 10px;
         width: 80%;
     }
-    .Datamain{
+
+    .Datamain {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 10px;
     }
-    .selecteopt{
+
+    .selecteopt {
         width: 80%;
         border: 1px solid grey;
         border-radius: 5px;
@@ -176,37 +270,44 @@
         font-size: 20px;
         height: 45px;
     }
-    .griffinMainmob{
+
+    .griffinMainmob {
         width: 80%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         margin-bottom: 10px;
     }
-    .changetabg{
+
+    .changetabg {
         width: 22%;
         height: 8px;
         border-radius: 10px;
         border: solid 1px #C39A7B;
     }
-    .griffinbuttn3{
+
+    .griffinbuttn3 {
         height: 40px;
     }
-    .tbletext{
+
+    .tbletext {
         font-size: 20px;
     }
-    .anotherpub2{
+
+    .anotherpub2 {
         display: flex;
         text-decoration: underline;
         font-size: 17px;
         font-weight: bold;
         color: #000;
     }
-    .SelectMain{
+
+    .SelectMain {
         height: 100vh;
         padding-top: 50px;
     }
-    .Dataa_type{
+
+    .Dataa_type {
         gap: 10px;
     }
-  }
+}

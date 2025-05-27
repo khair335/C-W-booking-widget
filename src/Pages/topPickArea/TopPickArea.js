@@ -103,7 +103,7 @@ export default function TopPickArea() {
             const isRestaurant = promotion.Name.toLowerCase().includes("restaurant");
             return (
               <div className="areasection" key={promotion.Id}>
-                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} onClick={() => togglePromotion(promotion)}>
+                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} >
                   <div className="restArea">
                     <img
                       src={isRestaurant ? Areimg2 : Areimg1}
@@ -126,13 +126,19 @@ export default function TopPickArea() {
                             Read Info
                             <img src={tabimg} alt="tab_img" />
                           </Link>
-                          <h6 className="readtext" id="readtextt" style={{ display: "none" }}>
-                            {promotion.Description}
-                          </h6>
+
                         </>
                       )}
                     </p>
                   </div>
+                   <h6 className="readtext" id="readtextt" style={{ display: "none" }}>
+                            {promotion.Description}
+                          </h6>
+                   <button onClick={() => togglePromotion(promotion)} className="selectbtn">
+                    {
+                      isSelected ? "Selected" : "Select"
+                    }
+                  </button>
                 </div>
               </div>
             );
