@@ -27,7 +27,7 @@
     font-family: Inter, sans-serif;
     gap: 7px;
 }
-    
+
 #Data_type1{
     display: flex;
     flex-direction: row;
@@ -96,11 +96,12 @@
     margin-bottom: 10px;
 }
 .changetab{
-    width: 22%;
-    height: 8px;
+      width: calc(100% / 4 - 24px);
+    height: 12px;
     border-radius: 10px;
-    border: solid 1px #C39A7B;
+    border: solid 2px #E5BA96;
 }
+
 .fixedit{
     background-color: #C39A7B;
 }
@@ -146,7 +147,7 @@
     /* font-weight: bold; */
     text-align: start;
     letter-spacing: 1px;
-    width: 80% ;
+    width: 88% ;
 }
 .checktext{
     margin-left: 25px;
@@ -176,7 +177,7 @@
     justify-content: center;
     border-radius: 5px;
 }
-.griffinbuttn3{
+.DetailsMain .griffinbuttn3{
     width: 39% !important;
 }
 .detailbutton:hover{
@@ -191,7 +192,7 @@
 }
 .feildproblem{
     width: 80%;
-    
+
 }
 @media only screen and (max-width: 700px) {
     .DetailsimgMain{
@@ -256,4 +257,4 @@
         padding-top: 0px;
         width: 100%;
     }
-  } 
+  }

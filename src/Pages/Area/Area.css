@@ -17,7 +17,7 @@
     box-shadow: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
-    margin-bottom: 15px;
+    margin-bottom: 24px;
 }
 
 .AreaaMain .logo-large {
@@ -201,11 +201,16 @@
 }
 
 .tabletext {
+   font-family: Work Sans;
+    font-weight: 400;
     font-size: 22px;
-    /* font-weight: bold; */
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: capitalize;
+    color: #1C1C1C;
     text-align: start;
-    letter-spacing: 2px;
-    width: 80%;
+    padding-top: 26px;
+    width: 88%;
 }
 
 .DatabtnMain {

@@ -29,7 +29,7 @@
     gap: 36px;
 }
 .areasection{
-    width: 80%;
+    width: 88%;
     border: 1px solid gray;
     height:auto;
     display: flex;
@@ -137,11 +137,12 @@
     margin-bottom: 10px;
 }
 .changetab{
-    width: 22%;
-    height: 8px;
+      width: calc(100% / 4 - 24px);
+    height: 12px;
     border-radius: 10px;
-    border: solid 1px #C39A7B;
+    border: solid 2px #E5BA96;
 }
+
 .fixd{
     background-color: #C39A7B;
 }
@@ -167,11 +168,16 @@
     width: 85px;
 }
 .tabletext{
+   font-family: Work Sans;
+    font-weight: 400;
     font-size: 22px;
-    /* font-weight: bold; */
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: capitalize;
+    color: #1C1C1C;
     text-align: start;
-    letter-spacing: 2px;
-    width: 80%;
+    padding-top: 26px;
+    width: 88%;
 }
 .DatabtnMain{
     width: 80%;

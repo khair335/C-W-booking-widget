@@ -16,7 +16,7 @@
     box-shadow: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
-    margin-bottom: 15px;
+    margin-bottom: 24px;
 }
 
 .AreaaMain .logo-large {
@@ -165,11 +165,11 @@
     margin-bottom: 10px;
 }
 
-.changetab {
-    width: 22%;
-    height: 8px;
+.changetab{
+      width: calc(100% / 4 - 24px);
+    height: 12px;
     border-radius: 10px;
-    border: solid 1px #C39A7B;
+    border: solid 2px #E5BA96;
 }
 
 .fixd {
