@@ -6,10 +6,20 @@ export const loginAndStoreToken = async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('token_expiry');
 
-    const response = await loginRequest('/api/Jwt/v2/Authenticate', {
+    // Log the environment and credentials being used (remove in production)
+    console.log('Login attempt:', {
+      environment: process.env.NODE_ENV,
+      baseUrl: process.env.REACT_APP_API_BASE_URL,
+      username: process.env.REACT_APP_API_USERNAME ? '***' : 'using default',
+      hasPassword: !!process.env.REACT_APP_API_PASSWORD
+    });
+
+    const credentials = {
       username: process.env.REACT_APP_API_USERNAME || "cat.wickets+api@resdiary.com",
       password: process.env.REACT_APP_API_PASSWORD || "yZ/&J[!tGKIt[9Ke+[g/sfQ#3h|l8K"
-    });
+    };
+
+    const response = await loginRequest('/api/Jwt/v2/Authenticate', credentials);
 
     if (!response?.Token) {
       console.error('Invalid login response:', response);
@@ -27,11 +37,19 @@ export const loginAndStoreToken = async () => {
 
     return Token;
   } catch (error) {
+    // Enhanced error logging
     console.error('Login failed:', {
       message: error.message,
       response: error.response?.data,
       status: error.response?.status,
-      statusText: error.response?.statusText
+      statusText: error.response?.statusText,
+      headers: error.response?.headers,
+      config: {
+        url: error.config?.url,
+        method: error.config?.method,
+        baseURL: error.config?.baseURL,
+        headers: error.config?.headers
+      }
     });
 
     // Clear any existing invalid tokens
@@ -39,16 +57,23 @@ export const loginAndStoreToken = async () => {
     localStorage.removeItem('token_expiry');
 
     // Handle specific error cases
-    if (error.response?.status === 400) {
-      throw new Error('Invalid credentials. Please check your API username and password.');
-    } else if (error.response?.status === 401) {
-      throw new Error('Authentication failed. Please try again.');
-    } else if (error.response?.status === 403) {
-      throw new Error('Access denied. Please check your API permissions.');
-    } else if (error.response?.status === 0) {
-      throw new Error('Network error. Please check your internet connection.');
-    } else {
-      throw new Error(error.response?.data?.message || 'Authentication failed. Please try again.');
+    if (!error.response) {
+      throw new Error('Network error. Please check your internet connection and try again.');
+    }
+
+    switch (error.response.status) {
+      case 400:
+        throw new Error('Invalid credentials. Please check your API username and password.');
+      case 401:
+        throw new Error('Authentication failed. Please try again.');
+      case 403:
+        throw new Error('Access denied. Please check your API permissions.');
+      case 404:
+        throw new Error('API endpoint not found. Please check the API configuration.');
+      case 500:
+        throw new Error('Server error. Please try again later.');
+      default:
+        throw new Error(error.response?.data?.message || 'Authentication failed. Please try again.');
     }
   }
 };

@@ -5,51 +5,73 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 // Create axios instance with default config
 const axiosInstance = axios.create({
-  // In development, use relative URLs to leverage the proxy
-  // In production, use the full base URL
-  baseURL: isDevelopment ? '' : (process.env.REACT_APP_API_BASE_URL || 'https://api.rdbranch.com'),
+  // Always use the full base URL in production
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'https://api.rdbranch.com',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    // Add CORS headers for all environments
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept'
   }
 });
 
-// Add request interceptor to handle auth token and CORS
+// Add request interceptor to handle auth token
 axiosInstance.interceptors.request.use(
   (config) => {
+    // Add token if available
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Add CORS headers for preflight requests in production
-    if (!isDevelopment && config.method === 'post') {
-      config.headers['Access-Control-Allow-Origin'] = '*';
-      config.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS';
-      config.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
+    // Ensure headers are properly set for CORS
+    config.headers['Access-Control-Allow-Origin'] = '*';
+    config.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS';
+    config.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Accept';
+
+    // Log request details in development
+    if (isDevelopment) {
+      console.log('Making request:', {
+        url: config.url,
+        method: config.method,
+        headers: config.headers,
+        data: config.data
+      });
     }
 
     return config;
   },
   (error) => {
+    console.error('Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
 
 // Add response interceptor to handle errors
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Log successful response in development
+    if (isDevelopment) {
+      console.log('Response received:', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+        data: response.data
+      });
+    }
+    return response;
+  },
   async (error) => {
     // Log the full error for debugging
     console.error('API Error:', {
+      url: error.config?.url,
+      method: error.config?.method,
       status: error.response?.status,
       statusText: error.response?.statusText,
       data: error.response?.data,
-      config: {
-        url: error.config?.url,
-        method: error.config?.method,
-        headers: error.config?.headers
-      }
+      headers: error.config?.headers
     });
 
     if (error.response?.status === 401) {
