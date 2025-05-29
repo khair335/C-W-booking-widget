@@ -10,23 +10,25 @@ const axiosInstance = axios.create({
   baseURL: isDevelopment ? '' : (process.env.REACT_APP_API_BASE_URL || 'https://api.rdbranch.com'),
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    // Add CORS headers for development
-    ...(isDevelopment && {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-    })
+    'Accept': 'application/json'
   }
 });
 
-// Add request interceptor to handle auth token
+// Add request interceptor to handle auth token and CORS
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Add CORS headers for preflight requests in production
+    if (!isDevelopment && config.method === 'post') {
+      config.headers['Access-Control-Allow-Origin'] = '*';
+      config.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS';
+      config.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
+    }
+
     return config;
   },
   (error) => {
@@ -38,6 +40,18 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    // Log the full error for debugging
+    console.error('API Error:', {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      config: {
+        url: error.config?.url,
+        method: error.config?.method,
+        headers: error.config?.headers
+      }
+    });
+
     if (error.response?.status === 401) {
       // Handle token refresh here if needed
       localStorage.removeItem('token');
