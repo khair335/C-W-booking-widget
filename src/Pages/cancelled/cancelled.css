@@ -27,7 +27,7 @@
     font-family: Inter, sans-serif;
     gap: 7px;
 }
-    
+
 #Data_type1{
     display: flex;
     flex-direction: row;
@@ -130,12 +130,32 @@
 .belowt{
     font-size: 25px;
 }
-@media only screen and (max-width: 700px) {
+.logo_large {
+    font-family: "Lora", serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    text-transform: capitalize;
+    margin: 0;
+    padding-bottom: 6px;
+}
+
+.subtext {
+    font-family: Lora;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    text-transform: capitalize;
+    color: #1C1C1C;
+}
+@media only screen and (max-width: 1024px) {
     .DetailsimgMain{
      display: none;
     }
     .Modify-main{
-        width: 100%;
+        width: calc(100% - 32px) !important;
         gap: 10px;
     }
     .imgdata{
@@ -163,4 +183,16 @@
     .belowt{
         font-size: 15px;
     }
-  } 
+     .logo_large {
+
+        font-size: 24px;
+        padding-bottom: 6px;
+
+    }
+
+    .subtext {
+        font-size: 20px;
+    }
+
+
+  }

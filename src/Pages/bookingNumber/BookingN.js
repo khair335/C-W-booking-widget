@@ -3,20 +3,36 @@ import { postRequest } from "../../config/AxiosRoutes/index"
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import TextField from "@mui/material/TextField";
-import "./BookingN.css";
+import styles from "./BookingN.module.css";
 import { Link, useNavigate } from "react-router-dom";
-
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import CustomInput from '../../components/ui/CustomInput/CustomInput';
+import DropDown from '../../components/ui/DropDown/DropDown';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import Indicator from '../../components/Indicator/Indicator';
+import CircularProgress from '@mui/material/CircularProgress';
 export default function BookingNumber() {
-  const [bookingNumber, setBookingNumber] = useState("");
+ const [bookingNumber, setBookingNumber] = useState("");
   const [reasonId, setReasonId] = useState(1);
+  const [reason, setReason] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  
+
   const handleCancelBooking = async () => {
-    if (!bookingNumber || !reasonId) {
-      alert("Please fill all fields before submitting.");
+    setError(''); // Clear any previous errors
+
+    // Validation
+    if (!bookingNumber.trim()) {
+      setError('Please enter a booking number');
+      return;
+    }
+    if (!reason) {
+      setError('Please select a cancellation reason');
       return;
     }
 
+    setIsLoading(true);
     const token = localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -35,85 +51,130 @@ export default function BookingNumber() {
         data
       );
       console.log("Cancel booking response:", response.data);
-      navigate("/Cancelled");
+      navigate("/TopCancelled");
     } catch (error) {
       console.error("Cancel booking error:", error);
-      alert("Failed to cancel the booking. Please try again.");
+      setError(error.response?.data?.message || 'Failed to cancel the booking. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="BookednMain" id="choose">
-      <div className="DetailsimgMain">
-        <img src={logo} alt="logo" className="logodatta" />
-        <img src={sectionimage} alt="section_image" className="Data_imag" />
-        <div className="Bookingmainmob">
-          <div className="BookingNumtab fixedit"></div>
-          <div className="BookingNumtab"></div>
-        </div>
-      </div>
-      <div className="Modify-main">
-        <div className="Nbooking-type imgdata">
+      <div className={styles.ReSentMain} id="choose">
+
+          <PubImageHeader
+        pubLogo={logo}
+        sectionImg={sectionimage}
+        step={1}
+        stepLength={2}
+      />
+
+      <div className={styles.Modify_main}>
+
+
+      <div className={styles.Modify_main_container} >
+        <div className={`${styles.Nbooking_type} ${styles.imgdata}`}>
           <img src={logo} alt="logo" />
         </div>
-        <div className="Nbooking-type">
-          <h1 className="logo-large datetilte">Cancel A Booking</h1>
+        <div className={styles.Nbooking_type}>
+          <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Cancel A Booking</h1>
         </div>
-        <div className="Nbooking-type belowt" id="Nbooking-type1">
-          <h4>
-            Please Enter Your Booking Number, As Provided In Your Confirmation
-            Email.
+        <div className={`${styles.Nbooking_type} ${styles.belowt}`} id="Nbooking-type1">
+          <h4 className={styles.subtext}>
+          We've Re-sent Your Confirmation Code. Please Check Your Email.
           </h4>
         </div>
-        <div className="textfieldMain">
-        <TextField
-          required
-          id="outlined-required"
-          label="Booking Number"
-          className="inputfeild feildproblem"
-          value={bookingNumber}
-          onChange={(e) => setBookingNumber(e.target.value)}
-        />
-        <p className="eg">E.G. XXXX-XXXX-XXXX</p>
-      </div>
+        {error && (
+          <div className={styles.errorMessage}>
+            {error}
+          </div>
+        )}
+        <div className={styles.textfieldMain}>
 
-      <select
-        className="form-select form-select-lg mb-2 selectrdata"
-        value={reasonId}
-        onChange={(e) => setReasonId(e.target.value)}
-      >
-        <option value="">The Reason For Cancellation</option>
-        <option value="1">Illness</option>
-        <option value="2">Change Of Plans</option>
-        <option value="3">Booked The Wrong Date/Time</option>
-        <option value="4">Found Another Venue</option>
-        <option value="5">Personal Reason</option>
-        <option value="6">Prefer Not To Answer</option>
-      </select>
-        <div className="Nbooking-type DatabtonMain">
-        <button onClick={handleCancelBooking} className="modifybtn btn3">
-          Cancel A Booking
-        </button>
-        {/* <Link to="/Lost" className="modifybtn btn2">
-          resend confirmation
-        </Link> */}
-      </div>
-        {/* <div className="Nbooking-type" id="Nbooking-type1">
-          <h5>
-            Lost Your Booking Details? Press The Button To Resend The
-            Confirmation Email.
-          </h5>
-        </div> */}
-        <div className="BookingNmob">
-          <div className="BookingNtab fixedit"></div>
-          <div className="BookingNtab "></div>
+                <CustomInput
+            required
+            label="Booking Number"
+            value={bookingNumber}
+            onChange={(e) => {
+              setBookingNumber(e.target.value);
+              setError(''); // Clear error when user types
+            }}
+            style={{ flex: '0 0 180px' }}
+            helperText='E.G. XXXX-XXXX-XXXX'
+            error={!!error && !bookingNumber.trim()}
+            disabled={isLoading}
+          />
         </div>
-        <div className="Nbooking-type existemail">
-          <Link to="/" className="Existlink">
+
+        <DropDown
+        label="The Reason For Cancellation"
+          options={
+            [{
+              label: 'Illness',
+              value: 'Illness'
+            },
+              {
+                label: 'Change Of Plans',
+                value: 'Change Of Plans'
+              },
+              {
+                label: 'Booked The Wrong Date/Time',
+                value: 'Booked The Wrong Date/Time'
+              },
+              {
+                label: 'Found Another Venue',
+                value: 'Found Another Venue'
+              },
+              {
+                label: 'Personal Reason',
+                value: 'Personal Reason'
+              },
+              {
+                label: 'Prefer Not To Answer',
+                value: 'Prefer Not To Answer'
+              }
+            ]}
+          onChange={(value) => {
+            setReason(value);
+            setError(''); // Clear error when user selects
+          }}
+          value={reason}
+          placeholder="Select Reason"
+          isLoading={isLoading}
+          noDataMessage="No options available"
+          error={!!error && !reason}
+          disabled={isLoading}
+        />
+
+        <div className={`${styles.Nbooking_type} ${styles.DatabtonMain}`}>
+
+            <CustomButton
+            label={isLoading ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CircularProgress size={20} color="inherit" />
+                Cancelling...
+              </div>
+            ) : "Cancel A Booking"}
+           onClick={handleCancelBooking}
+            disabled={isLoading}
+            />
+
+
+        </div>
+        <div className={styles.chose_m_link}>
+         <Indicator
+            step={1}
+            stepLength={2}
+          />
+        </div>
+        <div className={`${styles.Nbooking_type} ${styles.existmail}`}>
+          <Link to="/" className="exist__link">
             Exit Cancellation
           </Link>
         </div>
-      </div>
+        </div>
+        </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getRequest } from "../../config/AxiosRoutes/index"
-import logo from "../../images/Griffin Black.png";
+import logo from "../../images/T&R White.png";
 import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
@@ -12,13 +12,21 @@ import tabimg from "../../images/Menu Icon Mobile (1).png";
 import whitelogo from "../../images/T&R White.png"
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./TopPickArea.css";
-
+import styles from "./TopPickArea.module.css";
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import InfoChip from '../../components/InfoChip/InfoChip';
+import AreaSelectionCard from '../../components/AreaSelectionCard/AreaSelectionCard';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import Indicator from '../../components/Indicator/Indicator';
+import oldPubArea from "../../images/TheGriffinInn_OldPubArea.png";
+import restaurantArea from "../../images/Tap & Run_RestaurantArea.png";
+import OutdoorTerraceRooms from "../../images/Tap & Run_OutdoorTerraceRooms.png";
 export default function TopPickArea() {
   const navigate = useNavigate();
   const location = useLocation();
     const [promotions, setPromotions] = useState([]);
-    const [selectedPromotion, setSelectedPromotion] = useState(null);
+  const [selectedPromotion, setSelectedPromotion] = useState(null);
+   const [isLoading, setIsLoading] = useState(true);
   const { date, time, adults, children, bookingNumber, returnBy } = location.state || {};
 
   const isFormValid = date && time && adults && bookingNumber && selectedPromotion;
@@ -28,7 +36,8 @@ export default function TopPickArea() {
       };
 
     useEffect(() => {
-        const handleBooking = async () => {
+      const handleBooking = async () => {
+        setIsLoading(true);
           const token = localStorage.getItem('token');
           const headers = {
             Authorization: `Bearer ${token}`,
@@ -42,6 +51,8 @@ export default function TopPickArea() {
             console.log('promotion Data:', response.data);
           } catch (error) {
             console.error('Promotion Failed:', error);
+          } finally {
+            setIsLoading(false);
           }
         };
         handleBooking();
@@ -54,129 +65,93 @@ export default function TopPickArea() {
     };
 
   return (
-    <div className="AreaaMain" id="choose">
-      <div className="AreaimgMain">
-      <img src={whitelogo} alt="logo" className="logodata" />
-      <img src={sectionimg2} alt="section_" className="Data_imag" />
-        <div className="changeMain">
-          <div className="changetab"></div>
-          <div className="changetab fixd"></div>
-          <div className="changetab"></div>
-          <div className="changetab"></div>
-        </div>
-        <Link to="/Select" className="anotherpub">
-          CHOOSE ANOTHER PUB
-        </Link>
-      </div>
-      <div className="Ara-main" id="Area--main">
-        <div className="Area_type imgdata">
+    <div className={styles.AreaaMain} id="choose">
+
+      <PubImageHeader
+        pubLogo={logo}
+        sectionImg={sectionimg2}
+        pubLinkLabel="CHOOSE ANOTHER PUB"
+        step={3}
+        pubLink="/Select"
+      />
+
+      <div className={styles.Ara_main} id="Area--main">
+        <div className={`${styles.Data_type} ${styles.imgdata}`}>
           <img src={logo} alt="logo" />
         </div>
-        <div className="Area_type">
-          <h1 className="logo-large datetilte">Pick Your Area</h1>
+        <div className={styles.Area_type} id="Area_type1">
+          <h1 className={styles.logo_large} id="datetilte">Pick Your Area</h1>
         </div>
-        <div className="Area_type" id="Area_type1">
-          <div className="Areatitle_type">
-            <img src={dateicon} alt="date_icon" />
-            {date ? date : "Select Date"}
-          </div>
-          <div className="Areatitle_type">
-            <img src={timeicon} alt="time_icon" />
-            {time ? time : "Select Time"}
-          </div>
-          <div className="Areatitle_type">
-            <img src={membericon} alt="member_icon" />
-            {adults || 0}
-          </div>
-          <div className="Areatitle_type">
-            <img src={reacticon} alt="react_icon" />
-            {children || 0}
-          </div>
-          <div className="Areatitle_type">
-            <img src={resturanticon} alt="react_icon" />
-            {selectedPromotion?.Name || "Select Area"}
-          </div>
-        </div>
-        <div className="Area_type">
-          {promotions.map((promotion, index) => {
-            const isSelected = selectedPromotion?.Id === promotion.Id;
-            const isRestaurant = promotion.Name.toLowerCase().includes("restaurant");
-            return (
-              <div className="areasection" key={promotion.Id}>
-                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} >
-                  <div className="restArea">
-                    <img
-                      src={isRestaurant ? Areimg2 : Areimg1}
-                      alt={promotion.Name}
-                      className="Newbrimg"
-                    />
-                    <p className="Areatextmain">
-                      <h3>{promotion.Name}</h3>
-                      {promotion.Description && isRestaurant && (
-                        <>
-                          <Link
-                            className="readinfo"
-                            onClick={(e) => {
-                              e.stopPropagation(); // prevent selection toggle
-                              const readText = document.getElementById("readtextt");
-                              readText.style.display =
-                                readText.style.display === "none" ? "flex" : "none";
-                            }}
-                          >
-                            Read Info
-                            <img src={tabimg} alt="tab_img" />
-                          </Link>
+        <div className={styles.info_chip_container} id="Area_type1">
 
-                        </>
-                      )}
-                    </p>
-                  </div>
-                   <h6 className="readtext" id="readtextt" style={{ display: "none" }}>
-                            {promotion.Description}
-                          </h6>
-                   <button onClick={() => togglePromotion(promotion)} className="selectbtn">
-                    {
-                      isSelected ? "Selected" : "Select"
-                    }
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+          <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
+          <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
+          <InfoChip icon={reacticon} label={children || 0} alt="react_icon" />
+          <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
-        <div className="Area_type">
-          <p className="tabletext">
-            Your table is required to be returned by {returnBy|| "XX:XX PM"}
+        <div className={styles.promotions_container}>
+          {isLoading ? (
+            <div className={styles.loader_container}>
+              <div className={styles.loader}></div>
+              <p>Loading areas...</p>
+            </div>
+          ) : (
+            promotions.map((promotion) => {
+              let restaurantImage;
+              if (promotion.Name.includes("Restaurant Area")) {
+                restaurantImage = restaurantArea;
+              } else if (promotion.Name.includes("(Outdoor Terrace Rooms)")) {
+                restaurantImage = OutdoorTerraceRooms;
+              } else {
+                restaurantImage = oldPubArea;
+              }
+              return (
+                <AreaSelectionCard
+                  key={promotion.Id}
+                  promotion={promotion}
+                  isSelected={selectedPromotion?.Id === promotion.Id}
+                  onSelect={togglePromotion}
+                  restaurantImage={restaurantImage}
+                  tabImage={tabimg}
+                  showInfoToggle={true}
+                />
+              );
+            })
+          )}
+        </div>
+        <div className={styles.Area_type}>
+          <p className={styles.tabletext}>
+            Your table is required to be returned by {returnBy || "XX:XX PM"}
           </p>
         </div>
-        <div className="Area_type DatabtnMain">
-          <Link to="/TopEdit" className="data-button">
-            BACK
-          </Link>
-          <button
-            className="griffinbuttn3"
+        <div className='d-flex justify-content-center align-items-center gap-3' id={`${styles.DatabtnMain}`}>
+
+
+          <CustomButton
+            label="BACK"
+            to="/topandrun"
+            bgColor="#3D3D3D"
+            color="#FFFCF7"
+          />
+
+
+          <CustomButton
+            label="NEXT"
             onClick={handleNextClick}
             disabled={!isFormValid}
-            style={{
-              backgroundColor: !isFormValid ? "#ccc" : "#000",
-              color: !isFormValid ? "#666" : "#fff",
-              cursor: !isFormValid ? "not-allowed" : "pointer",
-            }}
-          >
-            NEXT
-          </button>
+            bgColor={!isFormValid ? "#ccc" : "#000"}
+            color={!isFormValid ? "#666" : "#fff"}
+          />
         </div>
-        <div className="changeMainn">
-          <div className="changeselect"></div>
-          <div className="changeselect fixd"></div>
-          <div className="changeselect"></div>
-          <div className="changeselect"></div>
+        <div className={styles.changeMainn}>
+          <Indicator step={3} />
         </div>
-        <div className="Area_type ">
-          <Link to="/Select" className="anotherpub2">
+        <div className={styles.Area_type}>
+          <Link to="/Select" className="chose__another__link">
             CHOOSE ANOTHER PUB
           </Link>
-          <Link to="/" className="Existlink">
+          <Link to="/" className="exist__link">
             Exit And Cancel Booking
           </Link>
         </div>

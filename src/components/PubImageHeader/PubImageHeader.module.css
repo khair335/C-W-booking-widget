@@ -1,0 +1,39 @@
+.pubImgMain {
+  width: 45%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+}
+
+.publogo {
+  align-self: flex-start;
+  width: 120px;
+  position: absolute;
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+.pubImg {
+  width: 100%;
+  height: 85vh;
+  box-shadow: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  margin-bottom: 24px;
+}
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1024px) {
+  .pubImgMain {
+    display: none;
+  }
+
+
+}

@@ -35,6 +35,7 @@
     gap: 20px;
     width: 80%;
     align-items: flex-start;
+     margin-bottom: 26px;
 }
 .inputmain{
     gap: 20px;
@@ -46,16 +47,27 @@
     width: 80%;
 }
 .Confirmtitle_type{
-    background-color: #F5E5CF;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.10);
-    height: 30px;
+      background-color: #F5E5CF;
+    box-shadow: 0px 1px 3px 0px #0000004D, 0px 4px 8px 3px #00000026;
+    border-radius: 8px;
+    height: 32px;
     width: auto;
     font-size: small;
     align-items: center;
-    display: flex;
-    justify-content:center ;
-    padding: 5px;
+    display: flex
+;
+    justify-content: center;
+    padding: 4px 8px;
     gap: 8px;
+    color: #391A11;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
+    text-transform: capitalize;
 }
 .logodata{
     align-self: flex-start;
@@ -69,23 +81,34 @@
 } */
 
 .confirmedData{
-    width: 80%;
+  width: 80%;
     /* background-color: #000; */
     border-bottom: 1px solid gray;
-    height: 30px;
+    height: 66px;
+    padding: 20px 0;
 }
 .confirmedDatatype{
-    font-size: 18px;
-    color: gray;
+    font-family: Work Sans;
+    font-weight: 400;
     font-style: italic;
-    font-weight: 500;
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    text-transform: capitalize;
+    color: #1C1C1C;
     text-align: start;
     gap: 70px;
+     margin: 0;
 }
 .namedata{
-    font-style: normal;
-    /* margin-left: 40px; */
-    font-weight: 600;
+ font-family: Work Sans;
+font-weight: 400;
+font-size: 22px;
+line-height: 100%;
+letter-spacing: 0%;
+text-transform: capitalize;
+   color: #1C1C1C;
+    margin: 0;
 }
 .emaildata{
     border-bottom: none;
@@ -137,16 +160,23 @@
     gap: 10px;
 }
 .textfieldMain{
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     /* margin-right: -117px; */
 }
 .eg{
-    font-style: italic;
-    font-size: small;
-    margin-bottom: -7px;
+  margin: 0 4px;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: capitalize;
+  color: #3D3D3D;
 }
 .selecterdata{
     width: 80%;

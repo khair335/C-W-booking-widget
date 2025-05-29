@@ -1,4 +1,4 @@
-.CancelMain{
+.CancelMain {
     width: 100%;
     height: 100vh;
     background-color: #FFFCF7;
@@ -7,8 +7,9 @@
     justify-content: center;
     /* padding-top: 50px; */
     gap: 2%;
-  }
-.Data_imag{
+}
+
+.Data_imag {
     width: 100%;
     height: 85vh;
     box-shadow: 20px;
@@ -17,7 +18,7 @@
     margin-bottom: 15px;
 }
 
-.Cancel-type{
+.Cancel-type {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,8 +28,8 @@
     font-family: Inter, sans-serif;
     gap: 7px;
 }
-    
-#Data_type1{
+
+#Data_type1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -36,32 +37,35 @@
     width: 80%;
     align-items: flex-start;
 }
-.logodatta{
+
+.logodatta {
     align-self: flex-start;
     width: 120px;
     position: absolute;
     margin-top: 20px;
     margin-left: 30px;
 }
+
 /* .choosemain{
     display:flex;
 } */
 
-.confirmedData{
+.confirmedData {
     width: 80%;
     /* background-color: #000; */
     border-bottom: 1px solid gray;
     height: 30px;
 }
 
-.DetailsimgMain{
+.DetailsimgMain {
     width: 45%;
     align-items: center;
     display: flex;
     flex-direction: column;
     height: 85vh;
 }
-.Modify-main{
+
+.Modify_main {
     width: 43%;
     display: flex;
     flex-direction: column;
@@ -69,29 +73,35 @@
     justify-content: center;
     gap: 25px;
 }
-.btn1{
+
+.btn1 {
     margin-bottom: 10px;
 }
-.logos{
+
+.logos {
     width: 85px;
 }
-.CancelbtnMain{
+
+.CancelbtnMain {
     width: 80%;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-.btn3{
+
+.btn3 {
     text-transform: uppercase;
     font-weight: bold;
     /* width: 100%; */
 }
-.btn2{
+
+.btn2 {
     text-transform: uppercase;
     font-weight: bold;
     background-color: #C39A7B !important;
 }
-.Cancelbtn{
+
+.Cancelbtn {
     width: 100%;
     height: 50px;
     background-color: #000;
@@ -104,63 +114,110 @@
     text-decoration: none;
     justify-content: center;
 }
-.Cancelbtn:hover{
+
+.Cancelbtn:hover {
     color: white;
     text-decoration: none;
 }
-.imgdata{
+
+.imgdata {
     display: none;
 }
-.changetab1{
+
+.changetab1 {
     width: 18%;
 }
-.changeMainmob{
+
+.changeMainmob {
     display: none;
 }
-.feildproblem{
+
+.feildproblem {
     width: 100%;
 }
-.Changeta{
+
+.Changeta {
     width: 18% !important;
     height: 8px;
     border-radius: 10px;
     border: solid 1px #C39A7B;
     display: flex;
 }
-.belowt{
+
+.belowt {
     font-size: 25px;
 }
-@media only screen and (max-width: 700px) {
-    .DetailsimgMain{
-     display: none;
+
+.logo_large {
+    font-family: "Lora", serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    text-transform: capitalize;
+    margin: 0;
+    padding-bottom: 6px;
+}
+
+.subtext {
+    font-family: Lora;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    text-transform: capitalize;
+    color: #1C1C1C;
+}
+
+@media only screen and (max-width: 1200px) {
+
+    .DetailsimgMain {
+        display: none;
     }
-    .Modify-main{
-        width: 100%;
+
+    .Modify_main {
+        width: calc(100% - 32px);
         gap: 10px;
     }
-    .imgdata{
+
+    .imgdata {
         display: flex;
         margin-top: 0px;
         margin-bottom: 10px;
     }
-    #Data_type1{
+
+    #Data_type1 {
         gap: 10px;
         width: 80%;
         font-size: 5px;
     }
-    .Datamain{
+
+    .Datamain {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 10px;
     }
-    .DetailsMain{
+
+    .DetailsMain {
         height: 700px;
         padding-top: 0px;
         width: 100%;
     }
-    .belowt{
+
+    .belowt {
         font-size: 15px;
     }
-  } 
+
+    .logo_large {
+
+        font-size: 24px;
+        padding-bottom: 6px;
+
+    }
+
+    .subtext {
+        font-size: 20px;
+    }
+}

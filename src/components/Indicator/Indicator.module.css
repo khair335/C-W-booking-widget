@@ -1,0 +1,29 @@
+.indicatorMain {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.indicatorTab {
+
+    height: 12px;
+    border-radius: 10px;
+    border: solid 2px #E5BA96;
+    transition: all 0.3s ease;
+}
+
+.active {
+  background-color: #E5BA96;
+}
+
+.fill{
+  background-color: #E5BA96;
+    border: solid 2px #E5BA96;
+    opacity: 0.5;
+}
+
+.indicatorTab:hover {
+  opacity: 0.8;
+}

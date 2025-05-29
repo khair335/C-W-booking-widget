@@ -11,6 +11,10 @@ import whitelogo from "../../images/T&R White.png"
 import styles from "./Top.module.css";
 import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import DropDown from '../../components/ui/DropDown/DropDown';
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import Indicator from '../../components/Indicator/Indicator';
+import InfoChip from '../../components/InfoChip/InfoChip';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
 
 export default function Griffin() {
   const navigate = useNavigate();
@@ -72,52 +76,33 @@ export default function Griffin() {
 
   return (
     <div className={styles.griffinMain} id="choose">
-      <div className={styles.DataimgMain}>
-        <img src={whitelogo} alt="logo" className={styles.logodata} />
-        <img src={sectionimg2} alt="section_" className={styles.Data_imag} />
-        <div className={styles.changeMain}>
-          <div className={`${styles.changetab} ${styles.fixed}`}></div>
-          <div className={styles.changetab}></div>
-          <div className={styles.changetab}></div>
-          <div className={styles.changetab}></div>
-        </div>
-        <Link to="/Select" className={styles.anotherpub}>
-          CHOOSE ANOTHER PUB
-        </Link>
-      </div>
+
+
+      <PubImageHeader
+        pubLogo={whitelogo}
+        sectionImg={sectionimg2}
+        pubLinkLabel="CHOOSE ANOTHER PUB"
+        step={1}
+        pubLink="/Select"
+      />
       <div className={styles.Datamain}>
-        {/* <div className={styles.Data_type} >
-          <img src={logo1} alt="logo" />
-        </div> */}
+
+        <img className={`${styles.brandLogo}`} src={logo1} alt="logo" />
+
         <div className={styles.Dataa_type}>
           <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Select Date, Time & Guests</h1>
         </div>
 
         <div className={styles.Dataa_type} id={styles.Data_type1}>
-          <div className={styles.titlewithicon}>
-            <img src={dateicon} alt="date_icon" />
-            {date ? date : "Select Date"}
-          </div>
-          <div className={styles.titlewithicon}>
-            <img src={timeicon} alt="time_icon" />
-            {time ? time : "Select Time"}
-          </div>
-          <div className={styles.titlewithicon}>
-            <img src={membericon} alt="member_icon" />
-            {adults || 0}
-          </div>
-          <div className={styles.titlewithicon}>
-            <img src={reacticon} alt="react_icon" />
-            {children || 0}
-          </div>
+
+          <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
+          <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
+          <InfoChip icon={reacticon} label={children || 0} alt="react_icon" />
+
         </div>
         <div className={styles.Dataa_type}>
           {guestError && <p className="text-danger">{guestError}</p>}
-
-
-
-
-
           <DatePicker
             value={date ? new Date(date) : undefined}
             onChange={(newDate) => {
@@ -130,10 +115,6 @@ export default function Griffin() {
             placeholder="Select Date"
             disablePastDates={true}
           />
-
-
-
-
 
 
           <DropDown
@@ -207,27 +188,25 @@ export default function Griffin() {
           </p>
         </div>
         <div className={`${styles.Dataa_type} ${styles.DatabtnMain3}`}>
-          <Link to="/Select" className={styles.griffinbuttn3}>
-            BACK
-          </Link>
-          <button
-            className={styles.griffinbuttn3}
+
+          <CustomButton
+            label="BACK"
+            to="/Select"
+            bgColor="#3D3D3D"
+            color="#FFFCF7"
+          />
+
+
+          <CustomButton
+            label="NEXT"
             onClick={handleNextClick}
             disabled={!isFormValid}
-            style={{
-              backgroundColor: !isFormValid ? "#ccc" : "#000",
-              color: !isFormValid ? "#666" : "#fff",
-              cursor: !isFormValid ? "not-allowed" : "pointer",
-            }}
-          >
-            NEXT
-          </button>
+            bgColor={!isFormValid ? "#ccc" : "#000"}
+            color={!isFormValid ? "#666" : "#fff"}
+          />
         </div>
         <div className={`${styles.griffinMainmob} `}>
-          <div className={`${styles.changetabg} ${styles.fixed}`}></div>
-          <div className={`${styles.changetabg}`}></div>
-          <div className={`${styles.changetabg}`}></div>
-          <div className={`${styles.changetabg}`}></div>
+          <Indicator step={1} />
         </div>
         <div className={styles.Dataa_type}>
           <Link to="" className={styles.anotherpub2}>

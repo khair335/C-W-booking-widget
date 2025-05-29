@@ -1,0 +1,114 @@
+.inputContainer {
+  width: 100%;
+  /* margin-bottom: 1rem; */
+}
+
+.input {
+  width: 100%;
+    height: 50px !important;
+}
+
+/* Base input styles */
+.input :global(.MuiOutlinedInput-root) {
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+    height: 50px;
+}
+
+.input :global(.MuiOutlinedInput-notchedOutline) {
+  border: 1px solid #8C826A;
+  border-radius: 4px;
+}
+
+/* Hover state */
+.input :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+  border: 1px solid #8C826A;
+  border-width: 2px;
+}
+
+/* Focus state */
+.input :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border: 1px solid #8C826A;
+  border-width: 2px;
+}
+
+/* Error state */
+.input :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
+  border: 1px solid #FF4D2A;
+}
+
+.input :global(.Mui-error:hover .MuiOutlinedInput-notchedOutline) {
+  border: 1px solid #FF4D2A;
+  border-width: 2px;
+}
+
+.input :global(.Mui-error.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border: 1px solid #FF4D2A;
+  border-width: 2px;
+}
+
+/* Disabled state */
+.input :global(.Mui-disabled .MuiOutlinedInput-notchedOutline) {
+  border: 1px solid #B0B0B0;
+  background-color: #F5F5F5;
+}
+
+.input :global(.Mui-disabled) {
+  color: #B0B0B0;
+}
+
+/* Input padding and height */
+.input :global(.MuiOutlinedInput-input) {
+  padding: 12px 16px;
+  font-family: Work Sans;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: capitalize;
+}
+
+/* Also update the MUI helper text styles to ensure consistency */
+.input :global(.MuiFormHelperText-root) {
+  margin: 0 4px;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: capitalize;
+  color: #3D3D3D;
+}
+
+/* Error text color */
+.input :global(.Mui-error) {
+  color: #FF4D2A;
+}
+
+/* Label styles */
+.input :global(.MuiInputLabel-root) {
+  color: #1C1C1C;
+  font-family: Lora;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 130%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: capitalize;
+}
+
+.input :global(.MuiInputLabel-root.Mui-focused) {
+  color: #8C826A;
+}
+
+.input :global(.MuiInputLabel-root.Mui-error) {
+  color: #FF4D2A;
+}
+
+/* Disabled label color */
+.input :global(.Mui-disabled .MuiInputLabel-root) {
+  color: #B0B0B0;
+}

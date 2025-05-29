@@ -1,56 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import TextField from "@mui/material/TextField";
-import "./Lost.css";
+import styles from "./Lost.module.css";
 import { Link } from "react-router-dom";
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import CustomInput from '../../components/ui/CustomInput/CustomInput';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import Indicator from '../../components/Indicator/Indicator';
 export default function Lost() {
+  const [email, setEmail] = useState('');
   return (
-    <div className="LostMain" id="choose">
-      <div className="DetailsimgMain">
-        <img src={logo} alt="logo" className="logodatta" />
-        <img src={sectionimage} alt="section_image" className="Data_imag" />
-        <div className="Bookingmainmob">
-          <div className="BookingNumtab fixedit"></div>
-          <div className="BookingNumtab"></div>
-        </div>
-      </div>
-      <div className="Modify-main">
-        <div className="Nbooking-type imgdata">
+    <div className={styles.LostMain} id="choose">
+
+
+      <PubImageHeader
+        pubLogo={logo}
+        sectionImg={sectionimage}
+        step={1}
+        stepLength={2}
+      />
+
+      <div className={styles.Modify_main}>
+        <div className={`${styles.Nbooking_type} ${styles.imgdata}`} >
           <img src={logo} alt="logo" />
         </div>
-        <div className="Nbooking-type">
-          <h1 className="logo-large datetilte">Lost Your Booking Details?</h1>
+        <div className={styles.Nbooking_type}>
+          <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Lost Your Booking Details?</h1>
         </div>
-        <div className="Nbooking-type belowt" id="Nbooking-type1">
-          <h4>
-          Enter Your Email And We’ll Resend Your Confirmation.
+        <div className={`${styles.Nbooking_type} ${styles.belowt}`} id="Nbooking-type1">
+          <h4 className={styles.subtext}>
+            Enter Your Email And We’ll Resend Your Confirmation.
           </h4>
         </div>
-        <div className="textfieldMain">
-          <TextField
+        <div className={styles.textfieldMain}>
+
+
+          <CustomInput
             required
-            id="outlined-required"
             label="Email Address"
-            defaultValue="Enter A Valid Email"
-            className="inputfeild feildproblem"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ flex: '0 0 180px' }}
+            helperText='E.G. name@gmail.com'
           />
-          <p className="eg">E.G. name@gmail.com</p>
         </div>
-        <div className="Nbooking-type DatabtonMain">
-          <Link to="/Resent" className="modifybtn btn3">
-          resend confirmation
-          </Link>
-          <Link to="/BookingNumber" className="modifybtn btn2">
-            Back
-          </Link>
+        <div className={`${styles.DatabtonMain} ${styles.Nbooking_type}`}>
+
+
+          <CustomButton
+            label="resend confirmation"
+            to="/Resent"
+
+          />
+          <CustomButton
+            label="Back"
+            to="/BookingNumber"
+            bgColor="#C39A7B"
+            color="#FFFCF7"
+          />
         </div>
-        <div className="BookingNmob">
-          <div className="BookingNtab fixedit"></div>
-          <div className="BookingNtab "></div>
+        <div className={styles.chose_m_link}>
+          <Indicator
+            step={1}
+            stepLength={2}
+          />
         </div>
-        <div className="Nbooking-type existmail">
-          <Link to="/" className="Existlink">
+        <div className={`${styles.existmail} ${styles.Nbooking_type}`}>
+          <Link to="/" className="exist__link">
             Exit Cancellation
           </Link>
         </div>

@@ -10,8 +10,13 @@ import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import reacticon from "../../images/Chips Icons Mobile (2).png";
 import TimeSlotSelector from "../../components/TimeSlotSelector/TimeSlotSelector";
-import "./Griffin.css";
-
+import styles from "./Griffin.module.css";
+import DatePicker from '../../components/ui/DatePicker/DatePicker';
+import DropDown from '../../components/ui/DropDown/DropDown';
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import Indicator from '../../components/Indicator/Indicator';
+import InfoChip from '../../components/InfoChip/InfoChip';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
 export default function Griffin() {
   const navigate = useNavigate();
   const [date, setDate] = useState("");
@@ -25,6 +30,8 @@ export default function Griffin() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [selectedAdults, setSelectedAdults] = useState(null);
+  const [selectedChildren, setSelectedChildren] = useState(null);
   const MAX_RETRIES = 2;
 
   useEffect(() => {
@@ -49,7 +56,7 @@ export default function Griffin() {
 
       setIsLoading(true);
       setError(null);
-      
+
       try {
         // Ensure we have a valid token
         if (!isTokenValid()) {
@@ -75,7 +82,7 @@ export default function Griffin() {
           headers,
           payload
         );
-        
+
         if (response.data?.TimeSlots) {
           setTimeSlots(response.data.TimeSlots);
           setRetryCount(0); // Reset retry count on successful request
@@ -129,144 +136,152 @@ export default function Griffin() {
   };
 
   return (
-    <div className="griffinnMain" id="choose">
-      <div className="DataimgMain">
-        <img src={logo} alt="logo" className="logodata" />
-        <img src={sectionimage} alt="section_" className="Data_imag" />
-        <div className="changeMain">
-          <div className="changetab fixed"></div>
-          <div className="changetab"></div>
-          <div className="changetab"></div>
-          <div className="changetab"></div>
-        </div>
-        <Link to="/Select" className="anotherpub">
-          CHOOSE ANOTHER PUB
-        </Link>
-      </div>
-      <div className="Datamain">
-        <div className="Data_type imgdata">
+    <div className={styles.griffinnMain} id="choose">
+
+
+      <PubImageHeader
+        pubLogo={logo}
+        sectionImg={sectionimage}
+        pubLinkLabel="CHOOSE ANOTHER PUB"
+        step={1}
+        pubLink="/Select"
+      />
+      <div className={styles.Datamain}>
+        <div className={`${styles.Data_type} ${styles.imgdata}`}>
           <img src={logo} alt="logo" />
         </div>
-        <div className="Dataa_type">
-          <h1 className="logo-large datetilte">Select Date, Time & Guests</h1>
+
+          <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Select Date, Time & Guests</h1>
+
+        <div className={styles.info_chip_container} >
+
+
+          <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
+          <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
+          <InfoChip icon={reacticon} label={children || 0} alt="react_icon" />
+
         </div>
-        <div className="Dataa_type" id="Data_type1">
-          <div className="titlewithicon">
-            <img src={dateicon} alt="date_icon" />
-            {date ? date : "Select Date"}
-          </div>
-          <div className="titlewithicon">
-            <img src={timeicon} alt="time_icon" />
-            {time ? time : "Select Time"}
-          </div>
-          <div className="titlewithicon">
-            <img src={membericon} alt="member_icon" />
-            {adults || 0}{" "}
-          </div>
-          <div className="titlewithicon">
-            <img src={reacticon} alt="react_icon" />
-            {children || 0}{" "}
-          </div>
-        </div>
-        <div className="Dataa_type">
+        <div className={styles.input_container}>
           {error && <p className="text-danger">{error}</p>}
           {guestError && <p className="text-danger">{guestError}</p>}
-          <input
-            type="date"
-            className="form-control form-control-lg mb-2 selecteopt"
-            aria-label="Select Date"
-            value={date}
-            min={new Date().toISOString().split("T")[0]}
-            onFocus={(e) => e.target.showPicker?.()}
-            onChange={(e) => setDate(e.target.value)}
+
+
+          <DatePicker
+            value={date ? new Date(date) : undefined}
+            onChange={(newDate) => {
+              // Format the date in YYYY-MM-DD format while preserving the local date
+              const year = newDate.getFullYear();
+              const month = String(newDate.getMonth() + 1).padStart(2, '0');
+              const day = String(newDate.getDate()).padStart(2, '0');
+              setDate(`${year}-${month}-${day}`);
+            }}
+            placeholder="Select Date"
+            disablePastDates={true}
           />
-          <select
-            className="form-select form-select-lg mb-2 selecteopt"
-            aria-label="Select Adults Number"
-            value={adults}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              if (value + parseInt(children || 0) <= 10) {
-                setAdults(value);
+
+
+          <DropDown
+            options={[...Array(11).keys()].slice(1).map((num) => ({
+              label: num.toString(),
+              value: num.toString(),
+              status: "default"
+            }))}
+            value={selectedAdults}
+            onChange={(value) => {
+              const numValue = parseInt(value);
+              if (numValue + parseInt(children || 0) <= 10) {
+                setSelectedAdults(value);
+                setAdults(numValue);
                 setGuestError("");
               } else {
                 setGuestError("Total guests (adults + children) cannot exceed 10.");
               }
             }}
-          >
-            <option value="">Select Adults Number</option>
-            {[...Array(11).keys()].slice(1).map((num) => (
-              <option key={num} value={num}>
-                {num}
-              </option>
-            ))}
-          </select>
-          <select
-            className="form-select form-select-lg mb-2 selecteopt"
-            aria-label="Select Children Number"
-            value={children}
-            onChange={(e) => {
-              const value = parseInt(e.target.value);
-              if (parseInt(adults || 0) + value <= 10) {
-                setChildren(value);
+            placeholder="Select Adults Number"
+          />
+
+
+          <DropDown
+            options={[...Array(11).keys()].map((num) => ({
+              label: num.toString(),
+              value: num.toString(),
+              status: "default"
+            }))}
+            value={selectedChildren}
+            onChange={(value) => {
+              const numValue = parseInt(value);
+              if (parseInt(adults || 0) + numValue <= 10) {
+                setSelectedChildren(value);
+                setChildren(numValue);
                 setGuestError("");
               } else {
                 setGuestError("Total guests (adults + children) cannot exceed 10.");
               }
             }}
-          >
-            <option value="">Select Children Number</option>
-            {[...Array(11).keys()].map((num) => (
-              <option key={num} value={num}>
-                {num}
-              </option>
-            ))}
-          </select>
-          
-          <div className="time-slot-container">
-            {isLoading ? (
-              <div className="loading-message">Loading available times...</div>
-            ) : (
-              <TimeSlotSelector
-                timeSlots={timeSlots}
-                selectedTimeISO={selectedTimeISO}
-                onTimeSelect={handleTimeSelect}
-                disabled={!date || !adults || isLoading}
-              />
-            )}
-          </div>
-          <p className="tbletext">
+            placeholder="Select Children Number"
+          />
+
+           <DropDown
+            options={timeSlots.map((slot) => {
+              const iso = slot.TimeSlot;
+              const label = new Date(iso).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+              return {
+                label: label,
+                value: iso,
+                status: "default"
+              };
+            })}
+            value={selectedTimeISO}
+            onChange={(value) => {
+              setSelectedTimeISO(value);
+              const dateObj = new Date(value);
+              const formatted24Hour = dateObj.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              });
+              setTime(formatted24Hour);
+              const selectedSlot = timeSlots.find((slot) => slot.TimeSlot === value);
+              setLeaveTime(selectedSlot?.LeaveTime || "");
+            }}
+            placeholder="Select Time"
+          />
+          <p className={styles.tbletext}>
             Your table is required to be returned by {leaveTime || "XX:XX PM"}
           </p>
         </div>
-        <div className="Dataa_type DatabtnMain3">
-          <Link to="/Select" className="griffinbuttn3">
-            BACK
-          </Link>
-          <button
-            className="griffinbuttn3"
+        <div className={`${styles.Dataa_type} ${styles.DatabtnMain3}`}>
+
+          <CustomButton
+            label="BACK"
+            to="/Select"
+            bgColor="#3D3D3D"
+            color="#FFFCF7"
+          />
+
+
+          <CustomButton
+            label="NEXT"
             onClick={handleNextClick}
             disabled={!isFormValid}
-            style={{
-              backgroundColor: !isFormValid ? "#ccc" : "#000",
-              color: !isFormValid ? "#666" : "#fff",
-              cursor: !isFormValid ? "not-allowed" : "pointer",
-            }}
-          >
-            NEXT
-          </button>
+            bgColor={!isFormValid ? "#ccc" : "#000"}
+            color={!isFormValid ? "#666" : "#fff"}
+          />
         </div>
-        <div className="griffinMainmob">
-          <div className="changetabg fixed"></div>
-          <div className="changetabg"></div>
-          <div className="changetabg"></div>
-          <div className="changetabg"></div>
+        <div className={styles.chose_m_link}>
+          <Indicator step={1} />
         </div>
-        <div className="Dataa_type ">
-          <Link to="" className="anotherpub2">
+        <div className={styles.Dataa_type}>
+          <div className={styles.chose_m_link}>
+            <Link to="" className="chose__another__link">
             CHOOSE ANOTHER PUB
           </Link>
-          <Link to="/" className="Existlink">
+          </div>
+          <Link to="/" className="exist__link">
             Exit And Cancel Booking
           </Link>
         </div>

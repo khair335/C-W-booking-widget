@@ -1,0 +1,185 @@
+.areasection {
+  width: 88%;
+  border: 1px solid #8C826A;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  border-radius: 4px;
+}
+
+.area_1and2 {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 16px;
+  text-align: flex-start;
+  flex-direction: column;
+  padding: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.area_1and2.selected {
+  background-color: #F5E5CF;
+  transition: background-color 0.3s ease;
+}
+
+.restArea {
+  display: flex;
+  gap: 30px;
+  text-align: flex-start;
+}
+
+.Newbrimg {
+  max-width: 140px;
+  width: 100%;
+  height: 106px;
+  border-radius: 4px;
+}
+
+.Areatextmain {
+  text-align: start;
+  margin: 0;
+  padding: 16px 0;
+}
+
+.Areatextmain h3 {
+  font-family: "Lora", serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-transform: capitalize;
+  color: #1C1C1C;
+  margin-bottom: 16px;
+}
+
+.readinfo {
+  font-family: "Avenir", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 100%;
+  letter-spacing: 5%;
+  text-transform: capitalize;
+  text-decoration: underline;
+  color: #3D3D3D;
+  margin-left: -0px !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.readinfo:hover {
+  color: #C39A7B;
+}
+
+.readinfo img {
+  transition: transform 0.3s ease;
+}
+
+.readinfo.open img {
+  transform: rotate(90deg);
+}
+
+.readtext {
+  font-family: Work Sans;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  text-transform: capitalize;
+  color: #1C1C1C;
+  text-align: start;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  margin: 0;
+  padding: 0 20px;
+  display: none;
+}
+
+.readtext.open {
+  max-height: 500px; /* Adjust this value based on your content */
+  opacity: 1;
+  margin: 10px 0;
+  padding: 10px 20px;
+  display: block;
+}
+
+.selectbtn {
+  width: 100%;
+  height: 61px;
+  border: none;
+  border-radius: 4px;
+  background: #C39A7B;
+  font-family: "Avenir", sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 100%;
+  letter-spacing: 10%;
+  text-transform: uppercase;
+  color: #FFFCF7;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.selectbtn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selectbtn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .area_1and2 {
+    width: 100%;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .restArea {
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .readinfo {
+    color: #000;
+    font-weight: 600;
+    font-size: 22px;
+    margin-left: -30px;
+  }
+
+  .Newbrimg{
+    max-width: 106px;
+    height: 80px;
+  }
+
+  .Areatextmain h3{
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .selectbtn{
+    height: 51px;
+    font-size: 16px;
+  }
+  .readtext.open{
+    padding: 0;
+    margin: 0;
+  }
+
+   .areasection{
+        width: 100%;
+    }
+}

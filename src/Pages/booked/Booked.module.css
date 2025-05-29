@@ -1,0 +1,209 @@
+.BookeddMain{
+    width: 100%;
+    height: 100vh;
+    background-color: #FFFCF7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding-top: 50px; */
+    gap: 2%;
+  }
+.Data_imag{
+    width: 100%;
+    height: 85vh;
+    box-shadow: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+.Data_type{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-family: Inter, sans-serif;
+    gap: 7px;
+}
+
+#Data_type1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 80%;
+    align-items: flex-start;
+}
+.logodata{
+    align-self: flex-start;
+    width: 120px;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+/* .choosemain{
+    display:flex;
+} */
+
+.confirmedData{
+    width: 80%;
+    /* background-color: #000; */
+    border-bottom: 1px solid gray;
+    height: 30px;
+}
+
+.DetailsimgMain{
+    width: 45%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+}
+
+.Confirm_main{
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.logos{
+    width: 85px;
+}
+.BookedbtonMain{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.btn1{
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.btn2{
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #C39A7B !important;
+}
+.Bookedbuttn{
+    width: 80%;
+    height: 50px;
+    background-color: #000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+.Bookedbuttn:hover{
+    color: white;
+    text-decoration: none;
+}
+.imgdata{
+    display: none;
+}
+.changeMainmob{
+    display: none;
+}
+.feildproblem{
+    width: 100%;
+}
+
+.logo_large {
+    font-family: "Lora", serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    text-transform: capitalize;
+    margin: 0;
+    padding-bottom: 6px;
+}
+.subtext {
+    font-family: Lora;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    text-transform: capitalize;
+    color: #1C1C1C;
+}
+
+.booked_info {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+.booked_info a,
+.booked_info h5 {
+    font-family: Work Sans;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    text-transform: capitalize;
+    color: #1C1C1C;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+@media only screen and (max-width: 1024px) {
+    .DetailsimgMain{
+     display: none;
+    }
+    .Confirm_main{
+        width: 100%;
+    }
+    .imgdata{
+        display: flex;
+        margin-top: 20px;
+    }
+    #Data_type1{
+        gap: 10px;
+        width: 80%;
+    }
+    .Datamain{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .Detailstab{
+        width: 22%;
+        height: 8px;
+        border-radius: 10px;
+        border: solid 1px #C39A7B;
+    }
+    .DetailsMain{
+        height: 700px;
+        padding-top: 0px;
+        width: 100%;
+    }
+
+       .logo_large {
+
+        font-size: 24px;
+        padding-bottom: 6px;
+
+    }
+
+     .subtext {
+        font-size: 20px;
+    }
+
+        .booked_info a,
+    .booked_info h5 {
+        font-size: 16px;
+    }
+  }

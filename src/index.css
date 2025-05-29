@@ -1,2 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.cdnfonts.com/css/avenir');
+
+
+
+/* global css */
+
+
+.chose__another__link {
+    display: flex;
+    text-decoration: underline;
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #1C1C1C;
+    padding-top: 24px;
+}
+
+.exist__link {
+    display: flex;
+    text-decoration: underline;
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #FD6F53;
+}
+
+
+@media (max-width: 700px) {
+    .exist__link {
+        font-size: 16px;
+    }
+    .chose__another__link {
+        font-size: 16px;
+        padding-top: 0px;
+    }
+}
+/* global css */
+
+
+
+

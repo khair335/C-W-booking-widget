@@ -6,8 +6,13 @@ import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import resturanticon from "../../images/table_restaurant.png";
-import "./Confirmed.css";
+import styles from "./Confirmed.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import InfoChip from '../../components/InfoChip/InfoChip';
+import Indicator from '../../components/Indicator/Indicator';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
 
 export default function Confirmed() {
   const location = useLocation();
@@ -69,106 +74,106 @@ export default function Confirmed() {
   };
 
   return (
-    <div className="ConfirmMain" id="choose">
-      <div className="DetailsimgMain">
-        <img src={logo} alt="logo" className="logodata" />
-        <img src={sectionimage} alt="section_image" className="Data_imag" />
-        <div className="changeMain">
-          <div className="changetab"></div>
-          <div className="changetab"></div>
-          <div className="changetab "></div>
-          <div className="changetab fixedit"></div>
+   <div className={styles.ConfirmMain} id="choose">
+
+      <PubImageHeader
+
+        sectionImg={sectionimage}
+        pubLinkLabel="CHOOSE ANOTHER PUB"
+        step={4}
+        stepLength={4}
+        pubLink="/Select"
+      />
+      <div className={styles.ConfirmMainContainer}>
+        <div className={styles.Data_type}>
+          <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Confirm Your Details Below</h1>
+          <h6 className={styles.subtext}>You Are About To Place A Booking At:</h6>
         </div>
-        <Link to="/Select" className="anotherpub">
-          CHOOSE ANOTHER PUB
-        </Link>
-      </div>
-      <div className="Confirm-main">
-        <div className="Data_type">
-          <h1 className="logo-large datetilte">Confirm Your Details Below</h1>
-          <h6>You Are About To Place A Booking At:</h6>
+        <img className={styles.confirmLogo} src={logo} alt="logo" />
+        <h5 className={styles.bookingInfo}>Your Booking Info</h5>
+        <div className={styles.Data_type} id="Data_type1">
+
+
+          <InfoChip icon={dateicon} label={submissionData.VisitDate || "Select Date"} alt="date_icon" />
+          <InfoChip icon={timeicon} label={submissionData.VisitTime || "Select Time"} alt="time_icon" />
+          <InfoChip icon={membericon} label={submissionData.PartySize || "Select Party Size"} alt="member_icon" />
+          <InfoChip icon={resturanticon} label={submissionData?.PromotionName || "Select Area"} alt="react_icon" />
         </div>
-        <div className="Data_type" id="Data_type1">
-          <div className="Confirmtitle_type">
-            <img src={dateicon} alt="date_icon" />
-            {submissionData.VisitDate || "Select Date"}
-          </div>
-          <div className="Confirmtitle_type">
-            <img src={timeicon} alt="time_icon" /> {submissionData.VisitTime || "Select Time"}
-          </div>
-          <div className="Confirmtitle_type">
-            <img src={membericon} alt="member_icon" />{submissionData.PartySize || "Select Party Size"}
-          </div>
-          <div className="Confirmtitle_type">
-            <img src={resturanticon} alt="react_icon" />
-            {submissionData?.PromotionName || "Select Area"}
-          </div>
-        </div>
-        <img src={logo} alt="logo" />
-        <h5>Your Booking Info</h5>
-        <div className="Data_type inputmain">
-          <div className="confirmedData">
-            <p className="confirmedDatatype">
+
+
+        <div className={`${styles.Data_type} ${styles.inputmain}`}>
+          <div className={styles.confirmedData}>
+            <p className={styles.confirmedDatatype}>
               First Name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-              <span className="namedata">{submissionData.Customer.FirstName}</span>
+              <span className={styles.namedata}>{submissionData.Customer.FirstName}</span>
             </p>
           </div>
-          <div className="confirmedData">
-            <p className="confirmedDatatype">
+          <div className={styles.confirmedData}>
+            <p className={styles.confirmedDatatype}>
               Last Name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-              <span className="namedata">{submissionData.Customer.Surname}</span>
+              <span className={styles.namedata}>{submissionData.Customer.Surname}</span>
             </p>
           </div>
-          <div className="confirmedData">
-            <p className="confirmedDatatype">
+          <div className={styles.confirmedData}>
+            <p className={styles.confirmedDatatype}>
               Mobile Number: &nbsp; &nbsp; &nbsp;
-              <span className="namedata">{submissionData.Customer.Mobile}</span>
+              <span className={styles.namedata}>{submissionData.Customer.Mobile}</span>
             </p>
           </div>
-          <div className="confirmedData emaildata">
-            <p className="confirmedDatatype ">
+          <div className={`${styles.confirmedData} ${styles.emaildata}`}>
+            <p className={styles.confirmedDatatype}>
               Email Address: &nbsp; &nbsp; &nbsp; &nbsp;
-              <span className="namedata">{submissionData.Customer.Email}</span>
+              <span className={styles.namedata}>{submissionData.Customer.Email}</span>
             </p>
           </div>
-          <h4 className="comt">Comment</h4>
-          <div className="commentsdata">
-            {submissionData.SpecialRequests || "No Comment"}
+          <section className={styles.commentSection}>
+            <h4 className={styles.comt}>Comment</h4>
+            <div className={styles.commentsdata}>
+              {submissionData.SpecialRequests || "No Comment"}
+            </div>
+          </section>
+
+          <div className={styles.tableReturnInfo}>
+            Your table is required to be returned by 8:45 PM
           </div>
         </div>
-        <div className="Data_type inputmain">
-          <div className="tabletext">
-            <p className="checktext">
-              I would like to receive news and offers from Tap & Run by email
-            </p>
-            <input
-              className="form-check-input check_box"
-              type="checkbox"
-              checked
-              value=""
-              id="flexCheckDefault"
-            />
+
+        <div className={styles.confirmCheckbox}>
+          <CustomCheckbox
+            checked={submissionData.Customer.ReceiveEmailMarketing}
+            id="flexCheckDefault"
+            label="I have read and accept the Privacy Policy"
+            labelStyle={styles.confirmCheckboxLabel}
+          />
+        </div>
+        <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
+
+
+          <CustomButton
+            label="Book a table"
+            onClick={handleBooking}
+
+          />
+            <CustomButton
+            label="BACK"
+            to="/Details"
+            color="#FFFFFF"
+            bgColor="#C39A7B"
+          />
+
+
+
+        </div>
+        <div className={styles.changeTopMainn}>
+          <Indicator step={4} stepLength={4} />
+        </div>
+        <div className={styles.Area_type_footer}>
+          <div className={styles.chose_m_link}>
+            <Link to="/Select" className='chose__another__link'>
+              CHOOSE ANOTHER PUB
+            </Link>
           </div>
-        </div>
-        <div className="Data_type ConfirmbtonMain">
-          <button className="Confirmbuttn btn1" onClick={handleBooking}>
-            Book A Table
-          </button>
-          <Link to="/Details" className="Confirmbuttn btn2">
-            Back
-          </Link>
-        </div>
-        <div className="DetailsMainmob">
-          <div className="Detailstab "></div>
-          <div className="Detailstab"></div>
-          <div className="Detailstab "></div>
-          <div className="Detailstab fixedit"></div>
-        </div>
-        <div className="Data_type ">
-          <Link to="/Select" className="anotherpub2">
-            CHOOSE ANOTHER PUB
-          </Link>
-          <Link to="/" className="Existlink">
+          <Link to="/TopHome" className='exist__link'>
             Exit And Cancel Booking
           </Link>
         </div>

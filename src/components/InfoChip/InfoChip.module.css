@@ -1,0 +1,22 @@
+.titlewithicon {
+  background-color: #F5E5CF;
+  box-shadow: 0px 1px 3px 0px #0000004D, 0px 4px 8px 3px #00000026;
+  border-radius: 8px;
+  height: 32px;
+  width: auto;
+  font-size: small;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 4px 8px;
+  gap: 8px;
+  color: #391A11;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: capitalize;
+}

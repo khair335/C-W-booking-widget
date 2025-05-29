@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
@@ -9,7 +9,42 @@ import tabimg from "../../images/Menu Icon Mobile (1).png";
 import logo from "../../images/T&R Black.png";
 import alertimg from "../../images/alert-circle.png";
 import { FiInfo } from "react-icons/fi";
+import { Modal } from 'bootstrap';
+
 function Home() {
+  useEffect(() => {
+    const removeBackdrop = () => {
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+
+    return () => {
+      removeBackdrop();
+    };
+  }, []);
+
+  const handleModalClose = () => {
+    const modal = document.getElementById('exampleModalToggle');
+    if (modal) {
+      const bsModal = Modal.getInstance(modal);
+      if (bsModal) {
+        bsModal.hide();
+      }
+    }
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+      backdrop.remove();
+    }
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  };
+
   return (
     <>
       <div className="homeMain" id="homepage">
@@ -83,6 +118,7 @@ function Home() {
                   <button
                     type="button"
                     className="btn-close"
+                    onClick={handleModalClose}
                     data-bs-dismiss="modal"
                     aria-label="Close"
                   ></button>
@@ -94,8 +130,8 @@ function Home() {
                   Cat & Wickets pubs are
                   cashless — card or contactless payments only.</p>
                 </div>
-                <div className="modal-footer">
-                  <Link to="/Select" className="btn btn-primary confirmbtn w-100">
+                <div className="modal-footer ">
+                  <Link to="/Select" className="btn btn-primary confirmbtn w-100" onClick={handleModalClose}>
                     CONFIRM
                   </Link>
                 </div>

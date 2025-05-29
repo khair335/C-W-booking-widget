@@ -13,23 +13,31 @@ import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
 import whitelogo from "../../images/T&R White.png"
 import logo1 from "../../images/Logo (1).png"
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import "./TopArea.css";
-
+import styles from "./TopArea.module.css";
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import InfoChip from '../../components/InfoChip/InfoChip';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import AreaSelectionCard from '../../components/AreaSelectionCard/AreaSelectionCard';
+import Indicator from '../../components/Indicator/Indicator';
+import oldPubArea from "../../images/TheGriffinInn_OldPubArea.png";
+import restaurantArea from "../../images/Tap & Run_RestaurantArea.png";
+import OutdoorTerraceRooms from "../../images/Tap & Run_OutdoorTerraceRooms.png";
 export default function Area() {
   const navigate = useNavigate();
   const location = useLocation();
   const [promotions, setPromotions] = useState([]);
   const [selectedPromotion, setSelectedPromotion] = useState(null);
   const { date, time, adults, children, returnBy } = location.state || {};
-
+  const [isLoading, setIsLoading] = useState(true);
   const isFormValid = date && time && adults && selectedPromotion;
   const handleNextClick = () => {
     if (!isFormValid) return;
-    navigate("/topDetails", { state: {date, time, adults, children, returnBy, selectedPromotion}});
+    navigate("/topDetails", { state: { date, time, adults, children, returnBy, selectedPromotion } });
   };
 
   useEffect(() => {
     const handleBooking = async () => {
+      setIsLoading(true);
       const token = localStorage.getItem('token');
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -43,6 +51,8 @@ export default function Area() {
         console.log('promotion Data:', response.data);
       } catch (error) {
         console.error('Promotion Failed:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     handleBooking();
@@ -60,115 +70,93 @@ export default function Area() {
   };
 
   return (
-    <div className="AreaaMain" id="choose">
-      <div className="AreaimgMain">
-      <img src={whitelogo} alt="logo" className="logodata" />
-      <img src={sectionimg2} alt="section_" className="Data_imag" />
-        <div className="changeMain">
-          <div className="changetab"></div>
-          <div className="changetab fixd"></div>
-          <div className="changetab"></div>
-          <div className="changetab"></div>
-        </div>
-        <Link to="/Select" className="anotherpub">
-          CHOOSE ANOTHER PUB
-        </Link>
-      </div>
-      <div className="Ara-main" id="Area--main">
-        <div className="Area_type imgdata">
+    <div className={styles.TopAreaMain} id="choose">
+
+      <PubImageHeader
+        pubLogo={whitelogo}
+        sectionImg={sectionimg2}
+        pubLinkLabel="CHOOSE ANOTHER PUB"
+        step={2}
+        pubLink="/Select"
+      />
+      <div className={styles.Ara_main} id="Area--main">
+        <div className={`${styles.Area_type} ${styles.imgdata}`}>
           <img src={logo1} alt="logo" />
         </div>
-        <div className="Area_type">
-          <h1 className="logo-large datetilte">Pick Your Area</h1>
+        <div className={styles.Area_type}>
+          <h1 className={`${styles.logo_large} `}>Pick Your Area</h1>
         </div>
-        <div className="Area_type" id="Area_type1">
-          <div className="Areatitle_type">
-            <img src={dateicon} alt="date_icon" />
-            {date ? date : "Select Date"}
-          </div>
-          <div className="Areatitle_type">
-            <img src={timeicon} alt="time_icon" />
-            {time ? time : "Select Time"}
-          </div>
-          <div className="Areatitle_type">
-            <img src={membericon} alt="member_icon" />
-            {adults || 0}
-          </div>
-          <div className="Areatitle_type">
-            <img src={reacticon} alt="react_icon" />
-            {children || 0}
-          </div>
-          <div className="Areatitle_type">
-            <img src={resturanticon} alt="react_icon" />
-            {selectedPromotion?.Name || "Select Area"}
-          </div>
-        </div>
-        <div className="Area_type">
-          {promotions.map((promotion, index) => {
-            const isSelected = selectedPromotion?.Id === promotion.Id;
-            const isRestaurant = promotion.Name.toLowerCase().includes("restaurant");
-            const showDescription = shouldShowDescription(promotion);
+        <div className={`${styles.infochipmain} ${styles.Area_type1}`} >
+          <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
+          <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
+          <InfoChip icon={reacticon} label={children || 0} alt="react_icon" />
 
-            return (
-              <div className="areasection" key={promotion.Id}>
-                <div className={`area_1and2 ${isSelected ? "selected" : ""}`} >
-                  <div className="restArea">
-                    <img
-                      src={isRestaurant ? Areimg2 : Areimg1}
-                      alt={promotion.Name}
-                      className="Newbrimg"
-                    />
-                    <p className="Areatextmain">
-                      <h3>{promotion.Name}</h3>
-
-                    </p>
-                  </div>
-                   <h6 className="readtext" id="readtextt" style={{ display: "none" }}>
-                            {promotion.Description}
-                          </h6>
-                  <button onClick={() => togglePromotion(promotion)} className="selectbtn">
-                    {
-                      isSelected ? "Selected" : "Select"
-                    }
-                  </button>
-                </div>
-              </div>
-            );
-          })}
         </div>
-        <div className="Area_type">
-          <p className="tabletext">
+        <div className={styles.promotions_container}>
+          {isLoading ? (
+            <div className={styles.loader_container}>
+              <div className={styles.loader}></div>
+              <p>Loading areas...</p>
+            </div>
+          ) : (
+            promotions.map((promotion) => {
+              let restaurantImage;
+              if (promotion.Name.includes("Restaurant Area")) {
+                restaurantImage = restaurantArea;
+              } else if (promotion.Name.includes("(Outdoor Terrace Rooms)")) {
+                restaurantImage = OutdoorTerraceRooms;
+              } else {
+                restaurantImage = oldPubArea;
+              }
+              return (
+                <AreaSelectionCard
+                  key={promotion.Id}
+                  promotion={promotion}
+                  isSelected={selectedPromotion?.Id === promotion.Id}
+                  onSelect={togglePromotion}
+                  restaurantImage={restaurantImage}
+                  tabImage={tabimg}
+                  showInfoToggle={true}
+                />
+              );
+            })
+          )}
+        </div>
+        <div className={styles.Area_type}>
+          <p className={styles.tabletext}>
             Your table is required to be returned by {returnBy || "XX:XX PM"}
           </p>
         </div>
-        <div className="Area_type DatabtnMain">
-          <Link to="/topandrun" className="Area-button" state={{ image: sectionimg2 }}>
-            BACK
-          </Link>
-          <button
-            className="Area-button"
+        <div className={`${styles.Area_type} ${styles.DatabtnMain}`}>
+
+
+          <CustomButton
+            label="BACK"
+            to="/topandrun"
+            bgColor="#3D3D3D"
+            color="#FFFCF7"
+          />
+
+
+          <CustomButton
+            label="NEXT"
             onClick={handleNextClick}
             disabled={!isFormValid}
-            style={{
-              backgroundColor: !isFormValid ? "#ccc" : "#000",
-              color: !isFormValid ? "#666" : "#fff",
-              cursor: !isFormValid ? "not-allowed" : "pointer",
-            }}
-          >
-            NEXT
-          </button>
+            bgColor={!isFormValid ? "#ccc" : "#000"}
+            color={!isFormValid ? "#666" : "#fff"}
+          />
         </div>
-        <div className="changeTopMainn">
-          <div className="changeToptabb"></div>
-          <div className="changeToptabb fixd"></div>
-          <div className="changeToptabb"></div>
-          <div className="changeToptabb"></div>
+        <div className={styles.changeTopMainn}>
+          <Indicator step={2} />
         </div>
-        <div className="Area_type ">
-          <Link to="/Select" className="anotherpub2">
-            CHOOSE ANOTHER PUB
-          </Link>
-          <Link to="/TopHome" className="Existlink">
+        <div className={styles.Area_type_footer}>
+          <div className={styles.chose_m_link}>
+            <Link to="/Select" className='chose__another__link'>
+              CHOOSE ANOTHER PUB
+            </Link>
+          </div>
+          <Link to="/TopHome" className='exist__link'>
             Exit And Cancel Booking
           </Link>
         </div>
