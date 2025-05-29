@@ -5,11 +5,12 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 // Create axios instance with default config
 const axiosInstance = axios.create({
-  // In development, use the API directly
+  // In development, use the proxy (which will be handled by the React dev server)
   // In production, use the Vercel serverless function
   baseURL: isDevelopment
-    ? (process.env.REACT_APP_API_BASE_URL || 'https://api.rdbranch.com')
-    : '',  // Empty baseURL in production to use relative paths
+    ? '' // Empty baseURL in development to use the proxy
+    : '', // Empty baseURL in production to use relative paths for Vercel functions
+
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -20,7 +21,7 @@ const axiosInstance = axios.create({
   }
 });
 
-// Add request interceptor to handle auth token
+// Add request interceptor to handle auth token and URL transformation
 axiosInstance.interceptors.request.use(
   (config) => {
     // Add token if available
@@ -29,26 +30,29 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Modify URLs for production
+    // Transform URLs based on environment
     if (!isDevelopment) {
-      // Handle authentication endpoint
-      if (config.url === '/api/Jwt/v2/Authenticate') {
+      // In production (Vercel), use the serverless function endpoints
+      if (config.url.includes('/api/Jwt/v2/Authenticate')) {
         config.url = '/api/auth';
-      }
-      // Handle availability search endpoint
-      else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilitySearch')) {
+      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilitySearch')) {
         config.url = '/api/availability';
-      }
-      // Handle promotion endpoint
-      else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Promotion')) {
-        // Extract the query parameters from the URL
+      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Promotion')) {
         const url = new URL(config.url, 'http://dummy');
         const promotionIds = url.searchParams.getAll('promotionIds');
-
-        // Create new URL with the proxy endpoint
         config.url = `/api/promotion${promotionIds.length > 0 ? `?promotionIds=${promotionIds.join('&promotionIds=')}` : ''}`;
+      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken')) {
+        config.url = '/api/booking';
       }
-      // Note: Removed the booking endpoint transformation to keep using the original URL
+    } else {
+      // In development, use the direct API endpoints
+      // The proxy in package.json will handle the base URL
+      // Only transform if the URL doesn't already contain the full path
+      if (!config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/')) {
+        // Extract the endpoint part after /api/
+        const endpoint = config.url.split('/api/').pop();
+        config.url = `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/${endpoint}`;
+      }
     }
 
     // Ensure headers are properly set for CORS
@@ -61,8 +65,10 @@ axiosInstance.interceptors.request.use(
       console.log('Making request:', {
         url: config.url,
         method: config.method,
-        headers: config.headers,
-        data: config.data
+        headers: {
+          ...config.headers,
+          Authorization: config.headers.Authorization ? 'Bearer [REDACTED]' : undefined
+        }
       });
     }
 
