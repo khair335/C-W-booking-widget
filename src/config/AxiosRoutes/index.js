@@ -5,8 +5,11 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 // Create axios instance with default config
 const axiosInstance = axios.create({
-  // Always use the full base URL in production
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'https://api.rdbranch.com',
+  // In development, use the API directly
+  // In production, use the Vercel serverless function
+  baseURL: isDevelopment
+    ? (process.env.REACT_APP_API_BASE_URL || 'https://api.rdbranch.com')
+    : '',  // Empty baseURL in production to use relative paths
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -24,6 +27,11 @@ axiosInstance.interceptors.request.use(
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    // Modify the URL for authentication in production
+    if (!isDevelopment && config.url === '/api/Jwt/v2/Authenticate') {
+      config.url = '/api/auth';
     }
 
     // Ensure headers are properly set for CORS
