@@ -39,6 +39,15 @@ axiosInstance.interceptors.request.use(
       else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilitySearch')) {
         config.url = '/api/availability';
       }
+      // Handle promotion endpoint
+      else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Promotion')) {
+        // Extract the query parameters from the URL
+        const url = new URL(config.url, 'http://dummy');
+        const promotionIds = url.searchParams.getAll('promotionIds');
+
+        // Create new URL with the proxy endpoint
+        config.url = `/api/promotion${promotionIds.length > 0 ? `?promotionIds=${promotionIds.join('&promotionIds=')}` : ''}`;
+      }
     }
 
     // Ensure headers are properly set for CORS
