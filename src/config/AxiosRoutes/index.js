@@ -29,9 +29,16 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // Modify the URL for authentication in production
-    if (!isDevelopment && config.url === '/api/Jwt/v2/Authenticate') {
-      config.url = '/api/auth';
+    // Modify URLs for production
+    if (!isDevelopment) {
+      // Handle authentication endpoint
+      if (config.url === '/api/Jwt/v2/Authenticate') {
+        config.url = '/api/auth';
+      }
+      // Handle availability search endpoint
+      else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilitySearch')) {
+        config.url = '/api/availability';
+      }
     }
 
     // Ensure headers are properly set for CORS
