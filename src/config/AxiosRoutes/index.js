@@ -1,11 +1,22 @@
 import axios from "axios";
 
+// Determine if we're in development mode
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 // Create axios instance with default config
 const axiosInstance = axios.create({
-  withCredentials: true, // This is important for CORS
+  // In development, use relative URLs to leverage the proxy
+  // In production, use the full base URL
+  baseURL: isDevelopment ? '' : (process.env.REACT_APP_API_BASE_URL || 'https://api.rdbranch.com'),
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    // Add CORS headers for development
+    ...(isDevelopment && {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    })
   }
 });
 
