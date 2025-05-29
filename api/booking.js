@@ -1,4 +1,5 @@
 const axios = require('axios');
+const querystring = require('querystring');
 
 module.exports = async (req, res) => {
   // Set CORS headers
@@ -42,39 +43,43 @@ module.exports = async (req, res) => {
       return res.status(400).json({ message: 'Request body is required' });
     }
 
-    // Validate required fields in the request body
-    const requiredFields = ['stripeToken', 'bookingDetails'];
-    const missingFields = requiredFields.filter(field => !req.body[field]);
+    // Determine content type and prepare request data
+    const contentType = req.headers['content-type'] || 'application/json';
+    let requestData;
+    let requestHeaders;
 
-    if (missingFields.length > 0) {
-      console.error('Missing required fields:', missingFields);
-      return res.status(400).json({
-        message: 'Missing required fields',
-        missingFields: missingFields
-      });
+    if (contentType.includes('application/x-www-form-urlencoded')) {
+      // If the body is already a string (urlencoded), use it directly
+      requestData = typeof req.body === 'string' ? req.body : querystring.stringify(req.body);
+      requestHeaders = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': authHeader
+      };
+    } else {
+      // For JSON or other content types
+      requestData = req.body;
+      requestHeaders = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authHeader
+      };
     }
 
     // Log the request we're about to make
     console.log('Making booking request to API:', {
       url: 'https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer [REDACTED]'
+        ...requestHeaders,
+        Authorization: 'Bearer [REDACTED]'
       },
-      body: req.body
+      body: requestData
     });
 
     const response = await axios.post(
       'https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
-      req.body,
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': authHeader
-        }
-      }
+      requestData,
+      { headers: requestHeaders }
     );
 
     // Log successful response

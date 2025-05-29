@@ -48,10 +48,7 @@ axiosInstance.interceptors.request.use(
         // Create new URL with the proxy endpoint
         config.url = `/api/promotion${promotionIds.length > 0 ? `?promotionIds=${promotionIds.join('&promotionIds=')}` : ''}`;
       }
-      // Handle booking with Stripe token endpoint
-      else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken')) {
-        config.url = '/api/booking';
-      }
+      // Note: Removed the booking endpoint transformation to keep using the original URL
     }
 
     // Ensure headers are properly set for CORS
