@@ -1,23 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { putRequest } from "../../config/AxiosRoutes/index"
-import logo from "../../images/Griffin Black.png";
+import logo from "../../images/T&R Black.png";
 import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import resturanticon from "../../images/table_restaurant.png";
 import whitelogo from "../../images/T&R White.png"
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
-import "./TopConfirmed.css";
+import styles from "./TopConfirmed.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import InfoChip from '../../components/InfoChip/InfoChip';
+import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import Indicator from '../../components/Indicator/Indicator';
 
 export default function TopConfirmed() {
   const location = useLocation();
   const navigate = useNavigate();
-  const submissionData = location.state;
+  const dispatch = useDispatch();
 
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const { date, time, adults, children, selectedPromotion, customerDetails, specialRequests, successBookingData
+  } = bookingState;
+
+  // Get submission data from location state
+  const submissionData = location.state || {};
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const handleBooking = async () => {
+    setIsSubmitting(true);
     const token = localStorage.getItem('token');
-
     const headers = {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -38,27 +54,27 @@ export default function TopConfirmed() {
       }
       return str.join('&');
     };
-    const {
-      VisitDate,
-      VisitTime,
-      PartySize,
-      SpecialRequests,
-      IsLeaveTimeConfirmed,
-      BookingNumber,
-    } = submissionData || {};
 
-    const filteredData = {
-      VisitDate,
-      VisitTime,
-      PartySize,
-      SpecialRequests,
-      IsLeaveTimeConfirmed
+    // Create the booking data object
+    const bookingData = {
+      VisitDate: date,
+      VisitTime: time,
+      PartySize: parseInt(adults) + parseInt(children || 0),
+      PromotionId: selectedPromotion?.Id,
+      PromotionName: selectedPromotion?.Name,
+      Customer: {
+        ...customerDetails,
+        Birthday: customerDetails.Birthday // Ensure Birthday is included
+      },
+      SpecialRequests: specialRequests,
+      ChannelCode: 'ONLINE',
+      IsLeaveTimeConfirmed: true
     };
 
     try {
-      const encodedData = toUrlEncoded(filteredData);
+      const encodedData = toUrlEncoded(bookingData);
       const response = await putRequest(
-        `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/${BookingNumber}`,
+        `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/BYVAAZZC`,
         headers,
         encodedData
       );
@@ -66,110 +82,134 @@ export default function TopConfirmed() {
       navigate('/TopUpdate');
     } catch (error) {
       console.error('Booking Failed:', error);
+      setError('Failed to submit booking. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not provided";
+    try {
+      const [year, month, day] = dateString.split('-');
+      return new Date(year, month - 1, day).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    } catch (error) {
+      return dateString;
     }
   };
 
   return (
-    <div className="ConfirmMain" id="choose">
-      <div className="DetailsimgMain">
-        <img src={whitelogo} alt="logo" className="logodata" />
-        <img src={sectionimg2} alt="section_image" className="Data_imag" />
-        <div className="changeMain">
-          <div className="changetab"></div>
-          <div className="changetab"></div>
-          <div className="changetab "></div>
-          <div className="changetab fixedit"></div>
+    <div className={styles.ConfirmMain} id="choose">
+
+      <PubImageHeader
+        // pubLogo={logo}
+        sectionImg={sectionimg2}
+        pubLinkLabel="CHOOSE ANOTHER PUB"
+        step={5}
+        stepLength={5}
+        pubLink="/Select"
+      />
+      <div className={styles.ConfirmMainContainer}>
+        <div className={styles.Data_type}>
+          <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Confirm Your Details Below</h1>
+          <h6 className="confirm-text">You Are About To Place A Booking At:</h6>
         </div>
-        <Link to="/Select" className="anotherpub">
-          CHOOSE ANOTHER PUB
-        </Link>
-      </div>
-      <div className="Confirm-main">
-        <div className="Data_type">
-          <h1 className="logo-large datetilte">Confirm Your Details Below</h1>
-          <h6>You Are About To Place A Booking At:</h6>
+        <img className={styles.confirmLogo} src={logo} alt="logo" />
+        <h5 className={styles.bookingInfo}>Your Booking Info</h5>
+        <div className={styles.Data_type} id="Data_type1">
+
+
+          <InfoChip icon={dateicon} label={date || "Select Date"} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
+          <InfoChip icon={membericon} label={(adults + children) || "Select Party Size"} alt="member_icon" />
+          <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
-        <div className="Data_type" id="Data_type1">
-          <div className="Confirmtitle_type">
-            <img src={dateicon} alt="date_icon" />
-            {submissionData.VisitDate || "Select Date"}
+
+        {error && (
+          <div style={{ color: 'red', marginBottom: '1rem', fontWeight: 'bold' }}>
+            {error}
           </div>
-          <div className="Confirmtitle_type">
-            <img src={timeicon} alt="time_icon" /> {submissionData.VisitTime || "Select Time"}
-          </div>
-          <div className="Confirmtitle_type">
-            <img src={membericon} alt="member_icon" />{submissionData.PartySize || "Select Party Size"}
-          </div>
-          <div className="Confirmtitle_type">
-            <img src={resturanticon} alt="react_icon" />
-            {submissionData?.PromotionName || "Select Area"}
-          </div>
-        </div>
-        <img src={logo} alt="logo" />
-        <h5>Your Booking Info</h5>
-        <div className="Data_type inputmain">
-          <div className="confirmedData">
-            <p className="confirmedDatatype">
+        )}
+
+        <div className={`${styles.Data_type} ${styles.inputmain}`}>
+          <div className={styles.confirmedData}>
+            <p className={styles.confirmedDatatype}>
               First Name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-              <span className="namedata">{submissionData.Customer.FirstName}</span>
+              <span className={styles.namedata}>{customerDetails.FirstName}</span>
             </p>
           </div>
-          <div className="confirmedData">
-            <p className="confirmedDatatype">
+          <div className={styles.confirmedData}>
+            <p className={styles.confirmedDatatype}>
               Last Name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-              <span className="namedata">{submissionData.Customer.Surname}</span>
+              <span className={styles.namedata}>{customerDetails.Surname}</span>
             </p>
           </div>
-          <div className="confirmedData">
-            <p className="confirmedDatatype">
+          <div className={styles.confirmedData}>
+            <p className={styles.confirmedDatatype}>
               Mobile Number: &nbsp; &nbsp; &nbsp;
-              <span className="namedata">{submissionData.Customer.Mobile}</span>
+              <span className={styles.namedata}>{customerDetails.Mobile}</span>
             </p>
           </div>
-          <div className="confirmedData emaildata">
-            <p className="confirmedDatatype ">
+          <div className={`${styles.confirmedData} ${styles.emaildata}`}>
+            <p className={styles.confirmedDatatype}>
               Email Address: &nbsp; &nbsp; &nbsp; &nbsp;
-              <span className="namedata">{submissionData.Customer.Email}</span>
+              <span className={styles.namedata}>{customerDetails.Email}</span>
             </p>
           </div>
-          <h4 className="comt">Comment</h4>
-          <div className="commentsdata">
-            {submissionData.SpecialRequests || "No Comment"}
+          <section className={styles.commentSection}>
+            <h4 className={styles.comt}>Comment</h4>
+            <div className={styles.commentsdata}>
+              {specialRequests || "No Comment"}
+            </div>
+          </section>
+
+          <div className={styles.tableReturnInfo}>
+            Your table is required to be returned by 8:45 PM
           </div>
         </div>
-        <div className="Data_type inputmain">
-          <div className="tabletext">
-            <p className="checktext">
-              I would like to receive news and offers from Tap & Run by email
-            </p>
-            <input
-              className="form-check-input check_box"
-              type="checkbox"
-              checked
-              value=""
-              id="flexCheckDefault"
-            />
+
+        <div className={styles.confirmCheckbox}>
+          <CustomCheckbox
+            checked={customerDetails.ReceiveEmailMarketing}
+            id="flexCheckDefault"
+            label="I have read and accept the Privacy Policy"
+            labelStyle={styles.confirmCheckboxLabel}
+            disabled
+          />
+        </div>
+        <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
+
+
+          <CustomButton
+            label={isSubmitting ? "Booking..." : "Book a table"}
+            onClick={handleBooking}
+            disabled={isSubmitting}
+          />
+          <CustomButton
+            label="Back"
+            to="/TopReDetail"
+            color="#FFFFFF"
+            bgColor="#C39A7B"
+          />
+
+
+
+        </div>
+        <div className={styles.changeTopMainn}>
+          <Indicator step={5} stepLength={5} />
+        </div>
+        <div className={styles.Area_type_footer}>
+          <div className={styles.chose_m_link}>
+            <Link to="/Select" className='chose__another__link'>
+              CHOOSE ANOTHER PUB
+            </Link>
           </div>
-        </div>
-        <div className="Data_type ConfirmedbtnMain">
-          <button className="Confirmbuttn btn1" onClick={handleBooking}>
-            Book A Table
-          </button>
-          <Link to="/TopDetails" className="Confirmedbtn btn2">
-            Back
-          </Link>
-        </div>
-        <div className="DetailsMainmob">
-          <div className="Detailstab "></div>
-          <div className="Detailstab"></div>
-          <div className="Detailstab "></div>
-          <div className="Detailstab fixedit"></div>
-        </div>
-        <div className="Data_type ">
-          <Link to="/Select" className="anotherpub2">
-            CHOOSE ANOTHER PUB
-          </Link>
-          <Link to="/" className="Existlink">
+          <Link to="/TopHome" className='exist__link'>
             Exit And Cancel Booking
           </Link>
         </div>

@@ -28,65 +28,41 @@ import { updateSelectedPromotion, updateCurrentStep } from '../../store/bookingS
 export default function TopArea() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { availablePromotionIds, pubType } = useSelector((state) => state.booking);
+  const location = useLocation();
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  const { date, time, adults, children, returnBy, selectedPromotion } = bookingState;
+  const { date, time, adults, children, returnBy, selectedPromotion, availablePromotionIds } = bookingState;
+  console.log('bookingState',bookingState);
 
   // Local state
   const [promotions, setPromotions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [retryCount, setRetryCount] = useState(0);
 
   const isFormValid = date && time && adults && selectedPromotion;
 
-  // Reset selected promotion when component mounts
-  useEffect(() => {
-    dispatch(updateSelectedPromotion(null));
-  }, []);
+  const handleNextClick = () => {
+    if (!isFormValid) return;
+    dispatch(updateCurrentStep(3));
+    navigate("/topDetails");
+  };
 
   useEffect(() => {
-    let isMounted = true;
-    let retryTimeout;
-
     const fetchPromotions = async () => {
-      // Always set loading state when starting fetch
-      if (isMounted) {
-        setIsLoading(true);
-        setError(null);
-      }
-
-      // Validate required data
       if (!availablePromotionIds?.length) {
-        console.log("No promotion IDs available, waiting for Redux update...");
-
-        // If we haven't retried too many times, wait and try again
-        if (retryCount < 3) {
-          if (isMounted) {
-            setIsLoading(false);
-            retryTimeout = setTimeout(() => {
-              setRetryCount(prev => prev + 1);
-            }, 1000); // Wait 1 second before retrying
-          }
-          return;
-        }
-
-        // If we've retried too many times, show error instead of redirecting
-        if (isMounted) {
-          setError("Unable to load areas. Please try again.");
-          setIsLoading(false);
-        }
+        console.log("No promotion IDs available:", availablePromotionIds);
+        setIsLoading(false);
         return;
       }
 
-      const token = localStorage.getItem("token");
+      setIsLoading(true);
+      setError(null);
+
+      const token = localStorage.getItem('token');
       if (!token) {
-        if (isMounted) {
-          setError("Authentication token not found");
-          setIsLoading(false);
-        }
+        setError("Authentication token not found");
+        setIsLoading(false);
         return;
       }
 
@@ -101,67 +77,33 @@ export default function TopArea() {
           .join('&');
 
         const url = `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Promotion?${queryString}`;
-        console.log("Making API call to:", url);
+        console.log("Making Griffin Area API call to:", url);
 
         const response = await getRequest(url, headers);
-        console.log("Promotions response:", response.data);
+        console.log("Griffin Area promotions response:", response.data);
 
-        if (isMounted) {
-          if (response.data && Array.isArray(response.data)) {
-            setPromotions(response.data);
-            setRetryCount(0); // Reset retry count on success
-          } else {
-            setError("Invalid response format from server");
-          }
+        if (response.data && Array.isArray(response.data)) {
+          setPromotions(response.data);
+        } else {
+          setError("Invalid response format from server");
         }
       } catch (error) {
-        console.error("Failed to fetch promotions:", error);
-        if (isMounted) {
-          setError(error.message || "Failed to fetch promotions");
-        }
+        console.error("Failed to fetch Griffin Area promotions:", error);
+        setError(error.message || "Failed to fetch promotions");
       } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       }
     };
 
-    // Always fetch promotions when component mounts or promotion IDs change
     fetchPromotions();
-
-    // Cleanup function
-    return () => {
-      isMounted = false;
-      if (retryTimeout) {
-        clearTimeout(retryTimeout);
-      }
-    };
-  }, [availablePromotionIds, navigate, dispatch, retryCount]);
-
-  const handleNextClick = () => {
-    if (!isFormValid) return;
-    dispatch(updateCurrentStep(3));
-    navigate("/topDetails");
-  };
+  }, [availablePromotionIds]);
 
   const togglePromotion = (promotion) => {
-    if (!promotion) {
-      dispatch(updateSelectedPromotion(null));
-      return;
-    }
-
     dispatch(updateSelectedPromotion(
-      selectedPromotion?.Id === promotion.Id ? null : {
-        Id: promotion.Id,
-        Name: promotion.Name
-      }
+      selectedPromotion?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name }
     ));
   };
 
-  // Helper function to determine if we should show description
-  const shouldShowDescription = (promotion) => {
-    return promotion.Name.toLowerCase().includes("outdoor terrace");
-  };
 
   return (
     <div className={styles.TopAreaMain} id="choose">

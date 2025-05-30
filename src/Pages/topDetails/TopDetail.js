@@ -41,9 +41,10 @@ export default function Details() {
   const [globalError, setGlobalError] = useState('');
   const [formData, setFormData] = useState({
     SpecialRequests: specialRequests || '',
-    DateOfBirth: '',
+
     Customer: {
       FirstName: '',
+      Birthday: '',
       Surname: '',
       MobileCountryCode: '+44',
       Mobile: '',
@@ -154,7 +155,7 @@ export default function Details() {
     if (!formData.Customer.Surname.trim()) newErrors.Surname = 'Last name is required';
     if (!formData.Customer.Mobile.trim()) newErrors.Mobile = 'Mobile number is required';
     if (!formData.Customer.Email.trim()) newErrors.Email = 'Email address is required';
-    if (!formData.DateOfBirth) newErrors.DateOfBirth = 'Date of birth is required';
+    if (!formData.Customer.Birthday) newErrors.Birthday = 'Date of birth is required';
     if (!date) newErrors.VisitDate = 'Visit date is required';
     if (!time) newErrors.VisitTime = 'Visit time is required';
     if (!adults || !children) newErrors.PartySize = 'At least one guest is required';
@@ -260,11 +261,25 @@ export default function Details() {
             helperText="E.G. Name@gmail.com"
           />
           <div className={styles.textfieldMain}>
-            <DatePicker
-              value={formData.DateOfBirth ? new Date(formData.DateOfBirth) : undefined}
-              onChange={handleDateChange}
+           <DatePicker
+              value={formData.Customer.Birthday ? new Date(formData.Customer.Birthday) : undefined}
+              onChange={(newDate) => {
+                const year = newDate.getFullYear();
+                const month = String(newDate.getMonth() + 1).padStart(2, '0');
+                const day = String(newDate.getDate()).padStart(2, '0');
+                const formattedDate = `${year}-${month}-${day}`;
+
+                setFormData(prev => ({
+                  ...prev,
+                  Customer: {
+                    ...prev.Customer,
+                    Birthday: formattedDate
+                  }
+                }));
+
+                dispatch(updateCustomerDetails({ Birthday: formattedDate }));
+              }}
               placeholder="Date of Birth"
-              maxDate={new Date()}
             />
             <p className="eg">Date of Birth</p>
           </div>

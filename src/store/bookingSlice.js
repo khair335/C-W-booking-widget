@@ -18,6 +18,7 @@ const initialState = {
     MobileCountryCode: '+44',
     Mobile: '',
     Email: '',
+    Birthday: '',
     ReceiveEmailMarketing: false,
     ReceiveSmsMarketing: false,
     ReceiveRestaurantEmailMarketing: false,

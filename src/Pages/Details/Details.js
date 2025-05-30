@@ -62,16 +62,18 @@ export default function Details() {
     IsLeaveTimeConfirmed: true,
     Customer: {
       FirstName: '',
+      DateOfBirth: '',
       Surname: '',
       MobileCountryCode: '+44',
+
       Mobile: '',
       Email: '',
+      Birthday: '',
       ReceiveEmailMarketing: false,
       ReceiveSmsMarketing: false,
       ReceiveRestaurantEmailMarketing: false,
       ReceiveRestaurantSmsMarketing: false,
     },
-    DateOfBirth: '',
   });
 
   // Sync form data with Redux state
@@ -120,12 +122,6 @@ export default function Details() {
     }));
   };
 
-  const handleDateChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      DateOfBirth: e.target.value
-    }));
-  };
 
   const handleSpecialRequestChange = (e) => {
     const value = e.target.value;
@@ -144,7 +140,7 @@ export default function Details() {
     if (!formData.Customer.Surname.trim()) newErrors.Surname = 'Last name is required';
     if (!formData.Customer.Mobile.trim()) newErrors.Mobile = 'Mobile number is required';
     if (!formData.Customer.Email.trim()) newErrors.Email = 'Email address is required';
-    if (!formData.DateOfBirth) newErrors.DateOfBirth = 'Date of birth is required';
+    if (!formData.Customer.Birthday) newErrors.Birthday = 'Date of birth is required';
     if (!date) newErrors.VisitDate = 'Visit date is required';
     if (!time) newErrors.VisitTime = 'Visit time is required';
     if (!adults) newErrors.PartySize = 'At least one guest is required';
@@ -254,18 +250,26 @@ export default function Details() {
 
           <div className={styles.textfieldMain}>
             <DatePicker
-              value={formData.DateOfBirth ? new Date(formData.DateOfBirth) : undefined}
+              value={formData.Customer.Birthday ? new Date(formData.Customer.Birthday) : undefined}
               onChange={(newDate) => {
                 const year = newDate.getFullYear();
                 const month = String(newDate.getMonth() + 1).padStart(2, '0');
                 const day = String(newDate.getDate()).padStart(2, '0');
+                const formattedDate = `${year}-${month}-${day}`;
+
                 setFormData(prev => ({
                   ...prev,
-                  DateOfBirth: `${year}-${month}-${day}`
+                  Customer: {
+                    ...prev.Customer,
+                    Birthday: formattedDate
+                  }
                 }));
+
+                dispatch(updateCustomerDetails({ Birthday: formattedDate }));
               }}
               placeholder="Date of Birth"
             />
+            <p className="eg">Date of Birth</p>
           </div>
 
           <div className={styles.textfieldMain}>

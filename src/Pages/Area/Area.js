@@ -102,20 +102,7 @@ export default function Area() {
     ));
   };
 
-  // Helper function to determine if we should show description
-  const shouldShowDescription = (promotion) => {
-    const name = promotion.Name.toLowerCase();
-    return name.includes("stables") || name.includes("new bar") || name.includes("old pub");
-  };
 
-  // Helper function to get the appropriate image for each area
-  const getAreaImage = (promotion) => {
-    const name = promotion.Name.toLowerCase();
-    if (name.includes("stables")) return stablesRestaurantArea;
-    if (name.includes("new bar")) return newBarArea;
-    if (name.includes("old pub")) return oldPubArea;
-    return oldPubArea; // default image
-  };
 
   return (
     <div className={styles.AreaaMain} id="choose">
