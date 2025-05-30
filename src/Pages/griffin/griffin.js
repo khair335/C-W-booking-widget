@@ -144,9 +144,9 @@ export default function Griffin() {
           const filteredPromotionIds = promotions
             .filter(promo => {
               const isRelevantPromotion =
-                promo.Name === "Stables Restaurant Area" ||
-                promo.Name === "New Bar Area" ||
-                promo.Name === "The Old Pub Area (dog friendly)";
+                promo.Name == "Stables Restaurant Area" ||
+                promo.Name == "New Bar Area " ||
+                promo.Name == "The Old Pub Area (dog friendly)";
 
               console.log(`Checking promotion: ${promo.Name} (${promo.Id}) - ${isRelevantPromotion ? 'included' : 'excluded'}`);
               return isRelevantPromotion;

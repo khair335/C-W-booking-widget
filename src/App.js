@@ -30,16 +30,16 @@ function AppContent() {
     );
   }
 
-  if (!isAuthenticated && isAuthenticating) {
-    return (
-      <div style={{
-        padding: '20px',
-        textAlign: 'center'
-      }}>
-        <p>Authenticating...</p>
-      </div>
-    );
-  }
+  // if (!isAuthenticated && isAuthenticating) {
+  //   return (
+  //     <div style={{
+  //       padding: '20px',
+  //       textAlign: 'center'
+  //     }}>
+  //       <p>Authenticating...</p>
+  //     </div>
+  //   );
+  // }
 
   return <Router />;
 }

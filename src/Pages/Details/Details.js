@@ -18,6 +18,7 @@ import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
 import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests } from '../../store/bookingSlice';
+import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 
 export default function Details() {
   const navigate = useNavigate();
@@ -128,6 +129,7 @@ export default function Details() {
 
   const handleSpecialRequestChange = (e) => {
     const value = e.target.value;
+    console.log('value',value);
     setFormData(prev => ({
       ...prev,
       SpecialRequests: value
@@ -251,13 +253,32 @@ export default function Details() {
           </div>
 
           <div className={styles.textfieldMain}>
-            <TextField
+
+             {/* <TextField
               label="Special Requests"
               multiline
               rows={4}
               value={formData.SpecialRequests}
               onChange={handleSpecialRequestChange}
               className={styles.inputfeild}
+            /> */}
+             {/* <CustomInput
+              required
+              label="Special Requests"
+              value={formData.SpecialRequests}
+              onChange={handleSpecialRequestChange}
+              className={`${styles.inputfeild} ${styles.feildproblem} ${styles.comments}`}
+              helperText="2000 of 2000 characters remaining"
+            /> */}
+            <CustomTextarea
+              required
+              label="Special Requests"
+              value={formData.SpecialRequests}
+              onChange={handleSpecialRequestChange}
+              helperText="2000 of 2000 characters remaining"
+              minRows={4}
+              maxRows={4}
+              placeholder="Enter your special requests here..."
             />
           </div>
 

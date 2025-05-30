@@ -1,0 +1,14 @@
+.textareaContainer {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.textarea {
+  width: 100%;
+}
+
+.textarea textarea {
+  resize: vertical;
+  min-height: 100px;
+  max-height: 120px !important;
+}

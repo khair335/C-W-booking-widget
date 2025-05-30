@@ -23,7 +23,8 @@ export default function Confirm() {
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  const { date, time, adults, children, selectedPromotion, customerDetails } = bookingState;
+  console.log('bookingState',bookingState);
+  const { date, time, adults, children, selectedPromotion, customerDetails, specialRequests } = bookingState;
 
   // Local state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -145,7 +146,7 @@ export default function Confirm() {
           <section className={styles.commentSection}>
             <h4 className={styles.comt}>Comment</h4>
             <div className={styles.commentsdata}>
-              {customerDetails.SpecialRequests || "No Comment"}
+              {specialRequests || "No Comment"}
             </div>
           </section>
 
