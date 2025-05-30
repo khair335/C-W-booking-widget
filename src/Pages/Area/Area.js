@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { getRequest } from "../../config/AxiosRoutes/index"
 import { buildPromotionUrl } from "../../config/api"
+import { updateSelectedPromotion, updateCurrentStep } from '../../store/bookingSlice';
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import dateicon from "../../images/Chips Icons Mobile.png";
@@ -23,45 +25,80 @@ import CustomButton from '../../components/ui/CustomButton/CustomButton';
 
 export default function Area() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const { date, time, adults, children, returnBy, selectedPromotion, availablePromotionIds } = bookingState;
+
+  // Local state
   const [promotions, setPromotions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedPromotion, setSelectedPromotion] = useState(null);
-  const { date, time, adults, children, returnBy } = location.state || {};
+  const [error, setError] = useState(null);
 
   const isFormValid = date && time && adults && selectedPromotion;
+
   const handleNextClick = () => {
     if (!isFormValid) return;
-    navigate("/details", { state: { date, time, adults, children, returnBy, selectedPromotion } });
+    dispatch(updateCurrentStep(3));
+    navigate("/Details");
   };
 
   useEffect(() => {
-    const handleBooking = async () => {
+    const fetchPromotions = async () => {
+      if (!availablePromotionIds?.length) {
+        console.log("No promotion IDs available:", availablePromotionIds);
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
+      setError(null);
+
       const token = localStorage.getItem('token');
+      if (!token) {
+        setError("Authentication token not found");
+        setIsLoading(false);
+        return;
+      }
+
       const headers = {
         Authorization: `Bearer ${token}`,
       };
+
       try {
-        const response = await getRequest(
-          buildPromotionUrl('griffin'),
-          headers,
-        );
-        setPromotions(response.data);
-        console.log('promotion Data:', response.data);
+        // Create query string with multiple promotionIds parameters
+        const queryString = availablePromotionIds
+          .map(id => `promotionIds=${id}`)
+          .join('&');
+
+        const url = `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Promotion?${queryString}`;
+        console.log("Making Griffin Area API call to:", url);
+
+        const response = await getRequest(url, headers);
+        console.log("Griffin Area promotions response:", response.data);
+
+        if (response.data && Array.isArray(response.data)) {
+          setPromotions(response.data);
+        } else {
+          setError("Invalid response format from server");
+        }
       } catch (error) {
-        console.error('Promotion Failed:', error);
+        console.error("Failed to fetch Griffin Area promotions:", error);
+        setError(error.message || "Failed to fetch promotions");
       } finally {
         setIsLoading(false);
       }
     };
-    handleBooking();
-  }, []);
+
+    fetchPromotions();
+  }, [availablePromotionIds]);
 
   const togglePromotion = (promotion) => {
-    setSelectedPromotion((prev) =>
-      prev?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name }
-    );
+    dispatch(updateSelectedPromotion(
+      selectedPromotion?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name }
+    ));
   };
 
   // Helper function to determine if we should show description
@@ -96,10 +133,7 @@ export default function Area() {
           <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Pick Your Area</h1>
         </div>
 
-
-
-        <div className={styles.info_chip_container} >
-
+        <div className={styles.info_chip_container}>
           <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
           <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
           <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
@@ -114,15 +148,15 @@ export default function Area() {
               <p>Loading areas...</p>
             </div>
           ) : (
-              promotions.map((promotion) => {
-                  let restaurantImage;
-                  if (promotion.Name.includes("The Old Pub Area (dog friendly)")) {
-                    restaurantImage = oldPubArea;
-                  } else if (promotion.Name.includes("(Restaurant Area)")) {
-                    restaurantImage = newBarArea ;
-                  } else {
-                    restaurantImage = stablesRestaurantArea;
-                  }
+            promotions.map((promotion) => {
+              let restaurantImage;
+              if (promotion.Name.includes("The Old Pub Area (dog friendly)")) {
+                restaurantImage = oldPubArea;
+              } else if (promotion.Name.includes("(Restaurant Area)")) {
+                restaurantImage = newBarArea;
+              } else {
+                restaurantImage = stablesRestaurantArea;
+              }
               return (
                 <AreaSelectionCard
                   key={promotion.Id}
@@ -137,22 +171,20 @@ export default function Area() {
             })
           )}
         </div>
+
         <div className={styles.Area_type}>
           <p className={styles.tabletext}>
             Your table is required to be returned by {returnBy || "XX:XX PM"}
           </p>
         </div>
+
         <div className={`${styles.Area_type} ${styles.DatabtnMain}`}>
-
-
           <CustomButton
             label="BACK"
             to="/Griffin"
             bgColor="#3D3D3D"
             color="#FFFCF7"
           />
-
-
           <CustomButton
             label="NEXT"
             onClick={handleNextClick}

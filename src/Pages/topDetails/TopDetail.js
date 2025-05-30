@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from "react-router-dom";
 import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
@@ -17,17 +18,29 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests } from '../../store/bookingSlice';
 
 export default function Details() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { date, time, adults, children, selectedPromotion } = location.state || {};
+  const dispatch = useDispatch();
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const {
+    date,
+    time,
+    adults,
+    children,
+    selectedPromotion,
+    customerDetails,
+    specialRequests
+  } = bookingState;
+
+  // Local state
   const [globalError, setGlobalError] = useState('');
   const [formData, setFormData] = useState({
-    SpecialRequests: '',
-    PromotionId: 0,
-    PromotionName: '',
-    IsLeaveTimeConfirmed: true,
+    SpecialRequests: specialRequests || '',
+    DateOfBirth: '',
     Customer: {
       FirstName: '',
       Surname: '',
@@ -38,45 +51,99 @@ export default function Details() {
       ReceiveSmsMarketing: false,
       ReceiveRestaurantEmailMarketing: false,
       ReceiveRestaurantSmsMarketing: false,
-    },
-    DateOfBirth: '',
+    }
   });
+
+  // Sync form data with Redux state
+  useEffect(() => {
+    if (customerDetails) {
+      setFormData(prev => ({
+        ...prev,
+        Customer: {
+          ...prev.Customer,
+          ...customerDetails
+        }
+      }));
+    }
+  }, [customerDetails]);
+
+  // Format date for display
+  const displayDate = React.useMemo(() => {
+    if (!date) return "Select Date";
+    try {
+      const [year, month, day] = date.split('-').map(Number);
+      const dateObj = new Date(year, month - 1, day);
+      return dateObj.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return "Select Date";
+    }
+  }, [date]);
+
   const handleChange = (field, value) => {
-    setFormData((prev) => ({
+    const updatedCustomer = {
+      ...formData.Customer,
+      [field]: value
+    };
+    setFormData(prev => ({
       ...prev,
-      Customer: {
-        ...prev.Customer,
-        [field]: value,
-      },
+      Customer: updatedCustomer
     }));
+    dispatch(updateCustomerDetails({ [field]: value }));
   };
 
   const handleMarketingChange = (e) => {
     const isChecked = e.target.checked;
-    setFormData((prev) => ({
+    const updatedCustomer = {
+      ...formData.Customer,
+      ReceiveEmailMarketing: isChecked,
+      ReceiveSmsMarketing: isChecked,
+      ReceiveRestaurantEmailMarketing: isChecked,
+      ReceiveRestaurantSmsMarketing: isChecked,
+    };
+    setFormData(prev => ({
       ...prev,
-      Customer: {
-        ...prev.Customer,
-        ReceiveEmailMarketing: isChecked,
-        ReceiveSmsMarketing: isChecked,
-        ReceiveRestaurantEmailMarketing: isChecked,
-        ReceiveRestaurantSmsMarketing: isChecked,
-      },
+      Customer: updatedCustomer
+    }));
+    dispatch(updateCustomerDetails({
+      ReceiveEmailMarketing: isChecked,
+      ReceiveSmsMarketing: isChecked,
+      ReceiveRestaurantEmailMarketing: isChecked,
+      ReceiveRestaurantSmsMarketing: isChecked,
     }));
   };
 
-  const handleDateChange = (e) => {
-    setFormData((prev) => ({
+  const handleDateChange = (newDate) => {
+    if (!newDate) {
+      setFormData(prev => ({
+        ...prev,
+        DateOfBirth: ''
+      }));
+      return;
+    }
+
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, '0');
+    const day = String(newDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    setFormData(prev => ({
       ...prev,
-      DateOfBirth: e.target.value,
+      DateOfBirth: formattedDate
     }));
   };
 
   const handleSpecialRequestChange = (e) => {
-    setFormData((prev) => ({
+    const value = e.target.value;
+    setFormData(prev => ({
       ...prev,
-      SpecialRequests: e.target.value,
+      SpecialRequests: value
     }));
+    dispatch(updateSpecialRequests(value));
   };
 
   const handleNextClick = () => {
@@ -97,17 +164,8 @@ export default function Details() {
     }
 
     setGlobalError('');
-    const submissionData = {
-      ...formData,
-      VisitDate: date,
-      VisitTime: time,
-      PartySize: adults + children,
-      PromotionId: selectedPromotion?.Id,
-      PromotionName: selectedPromotion?.Name,
-      ChannelCode: 'ONLINE',
-    };
-    console.log('Submission Data:', submissionData);
-    navigate("/topConfirm", { state: submissionData });
+    dispatch(updateCurrentStep(4));
+    navigate("/topConfirm");
   };
 
   return (
@@ -129,7 +187,7 @@ export default function Details() {
         </div>
         <div className={styles.Data_type} id={styles.Data_type1}>
 
-          <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
+          <InfoChip icon={dateicon} label={displayDate} alt="date_icon" />
           <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
           <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
           <InfoChip icon={reacticon} label={children || 0} alt="react_icon" />
@@ -187,15 +245,7 @@ export default function Details() {
           <div className={styles.textfieldMain}>
             <DatePicker
               value={formData.DateOfBirth ? new Date(formData.DateOfBirth) : undefined}
-              onChange={(newDate) => {
-                const year = newDate.getFullYear();
-                const month = String(newDate.getMonth() + 1).padStart(2, '0');
-                const day = String(newDate.getDate()).padStart(2, '0');
-                setFormData(prev => ({
-                  ...prev,
-                  DateOfBirth: `${year}-${month}-${day}`
-                }));
-              }}
+              onChange={handleDateChange}
               placeholder="Date of Birth"
               maxDate={new Date()}
             />

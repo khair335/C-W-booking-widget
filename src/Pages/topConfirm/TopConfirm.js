@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from 'react-redux';
 import { postRequest } from "../../config/AxiosRoutes/index"
 import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
@@ -8,7 +9,7 @@ import logo1 from "../../images/Logo (1).png";
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
 import whitelogo from "../../images/T&R White.png"
 import styles from "./TopConfirm.module.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
@@ -16,9 +17,36 @@ import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 
 export default function Confirm() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const submissionData = location.state;
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const {
+    date,
+    time,
+    adults,
+    children,
+    selectedPromotion,
+    customerDetails,
+    specialRequests
+  } = bookingState;
+
+  // Format date for display
+  const displayDate = React.useMemo(() => {
+    if (!date) return "Select Date";
+    try {
+      const [year, month, day] = date.split('-').map(Number);
+      const dateObj = new Date(year, month - 1, day);
+      return dateObj.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return "Select Date";
+    }
+  }, [date]);
 
   const handleBooking = async () => {
     const token = localStorage.getItem('token');
@@ -26,6 +54,18 @@ export default function Confirm() {
     const headers = {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    const submissionData = {
+      VisitDate: date,
+      VisitTime: time,
+      PartySize: parseInt(adults) + parseInt(children),
+      PromotionId: selectedPromotion?.Id,
+      PromotionName: selectedPromotion?.Name,
+      SpecialRequests: specialRequests,
+      Customer: customerDetails,
+      ChannelCode: 'ONLINE',
+      IsLeaveTimeConfirmed: true
     };
 
     const toUrlEncoded = (obj, prefix) => {
@@ -60,9 +100,7 @@ export default function Confirm() {
 
   return (
     <div className={styles.ConfirmMain} id="choose">
-
       <PubImageHeader
-
         sectionImg={sectionimg2}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={4}
@@ -77,81 +115,75 @@ export default function Confirm() {
         <img className={styles.confirmLogo} src={logo1} alt="logo" />
         <h5 className={styles.bookingInfo}>Your Booking Info</h5>
         <div className={styles.Data_type} id="Data_type1">
-
-
-          <InfoChip icon={dateicon} label={submissionData.VisitDate || "Select Date"} alt="date_icon" />
-          <InfoChip icon={timeicon} label={submissionData.VisitTime || "Select Time"} alt="time_icon" />
-          <InfoChip icon={membericon} label={submissionData.PartySize || "Select Party Size"} alt="member_icon" />
-          <InfoChip icon={resturanticon} label={submissionData?.PromotionName || "Select Area"} alt="react_icon" />
+          <InfoChip icon={dateicon} label={displayDate} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
+          <InfoChip icon={membericon} label={`${parseInt(adults) + parseInt(children)}` || "Select Party Size"} alt="member_icon" />
+          <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
-
 
         <div className={`${styles.Data_type} ${styles.inputmain}`}>
           <div className={styles.confirmedData}>
             <p className={styles.confirmedDatatype}>
               First Name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-              <span className={styles.namedata}>{submissionData.Customer.FirstName}</span>
+              <span className={styles.namedata}>{customerDetails.FirstName}</span>
             </p>
           </div>
           <div className={styles.confirmedData}>
             <p className={styles.confirmedDatatype}>
               Last Name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-              <span className={styles.namedata}>{submissionData.Customer.Surname}</span>
+              <span className={styles.namedata}>{customerDetails.Surname}</span>
             </p>
           </div>
           <div className={styles.confirmedData}>
             <p className={styles.confirmedDatatype}>
               Mobile Number: &nbsp; &nbsp; &nbsp;
-              <span className={styles.namedata}>{submissionData.Customer.Mobile}</span>
+              <span className={styles.namedata}>{customerDetails.Mobile}</span>
             </p>
           </div>
           <div className={`${styles.confirmedData} ${styles.emaildata}`}>
             <p className={styles.confirmedDatatype}>
               Email Address: &nbsp; &nbsp; &nbsp; &nbsp;
-              <span className={styles.namedata}>{submissionData.Customer.Email}</span>
+              <span className={styles.namedata}>{customerDetails.Email}</span>
             </p>
           </div>
           <section className={styles.commentSection}>
             <h4 className={styles.comt}>Comment</h4>
             <div className={styles.commentsdata}>
-              {submissionData.SpecialRequests || "No Comment"}
+              {specialRequests || "No Comment"}
             </div>
           </section>
 
           <div className={styles.tableReturnInfo}>
-            Your table is required to be returned by 8:45 PM
+            Your table is required to be returned by {bookingState.returnBy || "XX:XX PM"}
           </div>
         </div>
 
         <div className={styles.confirmCheckbox}>
           <CustomCheckbox
-            checked={submissionData.Customer.ReceiveEmailMarketing}
+            checked={customerDetails.ReceiveEmailMarketing}
             id="flexCheckDefault"
-            label="I have read and accept the Privacy Policy"
+            label="I have read and accept the Privacy Policy"
             labelStyle={styles.confirmCheckboxLabel}
           />
         </div>
+
         <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
-
-
           <CustomButton
             label="Book a table"
             onClick={handleBooking}
-
           />
-            <CustomButton
+          <CustomButton
             label="BACK"
             to="/TopDetails"
             color="#FFFFFF"
             bgColor="#C39A7B"
           />
-
-
-
         </div>
+
         <div className={styles.changeTopMainn}>
           <Indicator step={4} stepLength={4} />
         </div>
+
         <div className={styles.Area_type_footer}>
           <div className={styles.chose_m_link}>
             <Link to="/Select" className='chose__another__link'>

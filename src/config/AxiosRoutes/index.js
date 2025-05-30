@@ -26,8 +26,15 @@ axiosInstance.interceptors.request.use(
   (config) => {
     // Add token if available
     const token = localStorage.getItem('token');
-    if (token) {
+    if (!token) {
+      console.error('No token available in request interceptor');
+      // Don't throw here, let the individual requests handle the error
+    } else {
       config.headers.Authorization = `Bearer ${token}`;
+      // Log in development
+      if (isDevelopment) {
+        console.log('Request interceptor added token:', token ? 'Yes' : 'No');
+      }
     }
 
     // Transform URLs based on environment
@@ -44,16 +51,8 @@ axiosInstance.interceptors.request.use(
       } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken')) {
         config.url = '/api/booking';
       }
-    } else {
-      // In development, use the direct API endpoints
-      // The proxy in package.json will handle the base URL
-      // Only transform if the URL doesn't already contain the full path
-      if (!config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/')) {
-        // Extract the endpoint part after /api/
-        const endpoint = config.url.split('/api/').pop();
-        config.url = `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/${endpoint}`;
-      }
     }
+    // In development, we don't need to transform URLs because the proxy in package.json handles it
 
     // Ensure headers are properly set for CORS
     config.headers['Access-Control-Allow-Origin'] = '*';
@@ -102,13 +101,17 @@ axiosInstance.interceptors.response.use(
       status: error.response?.status,
       statusText: error.response?.statusText,
       data: error.response?.data,
-      headers: error.config?.headers
+      headers: {
+        ...error.config?.headers,
+        Authorization: error.config?.headers?.Authorization ? 'Bearer [REDACTED]' : undefined
+      }
     });
 
     if (error.response?.status === 401) {
-      // Handle token refresh here if needed
+      // Clear invalid token
       localStorage.removeItem('token');
       localStorage.removeItem('token_expiry');
+      console.log('Cleared invalid token due to 401 response');
     }
     return Promise.reject(error);
   }

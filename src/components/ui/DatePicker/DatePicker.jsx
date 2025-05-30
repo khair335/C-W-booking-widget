@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
 
 import CalendarView from './CalendarView';
@@ -10,15 +10,24 @@ import { formatDate } from '../../../utils/dateUtils';
 
 const DatePicker = ({
   value,
+   selected,
   onChange,
   placeholder = "Select a date",
   disablePastDates = false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState('calendar');
-  const [currentDate, setCurrentDate] = useState(value || new Date());
-  const [selectedDate, setSelectedDate] = useState(value || null);
+   const dateValue = value || selected;
+   const [currentDate, setCurrentDate] = useState(dateValue || new Date());
+  const [selectedDate, setSelectedDate] = useState(dateValue || null);
 
+  // Update selectedDate when value/selected prop changes
+  useEffect(() => {
+    setSelectedDate(dateValue || null);
+    if (dateValue) {
+      setCurrentDate(dateValue);
+    }
+  }, [dateValue]);
   const isDateDisabled = (date) => {
     if (!disablePastDates) return false;
     const today = new Date();

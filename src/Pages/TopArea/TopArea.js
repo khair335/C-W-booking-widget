@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { getRequest } from "../../config/AxiosRoutes/index"
 import { buildPromotionUrl } from "../../config/api"
 import dateicon from "../../images/Chips Icons Mobile.png";
@@ -22,46 +23,92 @@ import Indicator from '../../components/Indicator/Indicator';
 import oldPubArea from "../../images/TheGriffinInn_OldPubArea.png";
 import restaurantArea from "../../images/Tap & Run_RestaurantArea.png";
 import OutdoorTerraceRooms from "../../images/Tap & Run_OutdoorTerraceRooms.png";
-export default function Area() {
+import { updateSelectedPromotion, updateCurrentStep } from '../../store/bookingSlice';
+
+export default function TopArea() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const dispatch = useDispatch();
+  const { availablePromotionIds, pubType } = useSelector((state) => state.booking);
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const { date, time, adults, children, returnBy, selectedPromotion } = bookingState;
+
+  // Local state
   const [promotions, setPromotions] = useState([]);
-  const [selectedPromotion, setSelectedPromotion] = useState(null);
-  const { date, time, adults, children, returnBy } = location.state || {};
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const isFormValid = date && time && adults && selectedPromotion;
+
   const handleNextClick = () => {
     if (!isFormValid) return;
-    navigate("/topDetails", { state: { date, time, adults, children, returnBy, selectedPromotion } });
+    dispatch(updateCurrentStep(3));
+    navigate("/topDetails");
   };
 
   useEffect(() => {
-    const handleBooking = async () => {
+    const fetchPromotions = async () => {
+      if (!availablePromotionIds.length) {
+        console.log("No promotion IDs available:", availablePromotionIds);
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
-      const token = localStorage.getItem('token');
+      setError(null);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Authentication token not found");
+        setIsLoading(false);
+        return;
+      }
+
       const headers = {
         Authorization: `Bearer ${token}`,
       };
+
       try {
-        const response = await getRequest(
-          buildPromotionUrl('tapAndRun'),
-          headers,
-        );
+        // Create query string with multiple promotionIds parameters
+        const queryString = availablePromotionIds
+          .map(id => `promotionIds=${id}`)
+          .join('&');
+
+        const url = `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Promotion?${queryString}`;
+        console.log("Making API call to:", url);
+
+        const response = await getRequest(url, headers);
+        console.log("Promotions response:", response.data);
+
+        if (response.data && Array.isArray(response.data)) {
         setPromotions(response.data);
-        console.log('promotion Data:', response.data);
+        } else {
+          setError("Invalid response format from server");
+        }
       } catch (error) {
-        console.error('Promotion Failed:', error);
+        console.error("Failed to fetch promotions:", error);
+        setError(error.message || "Failed to fetch promotions");
       } finally {
         setIsLoading(false);
       }
     };
-    handleBooking();
-  }, []);
+
+    fetchPromotions();
+  }, [availablePromotionIds]);
 
   const togglePromotion = (promotion) => {
-    setSelectedPromotion((prev) =>
-      prev?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name }
-    );
+    if (!promotion) {
+      dispatch(updateSelectedPromotion(null));
+      return;
+    }
+
+    dispatch(updateSelectedPromotion(
+      selectedPromotion?.Id === promotion.Id ? null : {
+        Id: promotion.Id,
+        Name: promotion.Name
+      }
+    ));
   };
 
   // Helper function to determine if we should show description
@@ -71,7 +118,6 @@ export default function Area() {
 
   return (
     <div className={styles.TopAreaMain} id="choose">
-
       <PubImageHeader
         pubLogo={whitelogo}
         sectionImg={sectionimg2}
@@ -87,24 +133,39 @@ export default function Area() {
           <h1 className={`${styles.logo_large} `}>Pick Your Area</h1>
         </div>
         <div className={`${styles.infochipmain} ${styles.Area_type1}`} >
-          <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
-          <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
+          <InfoChip icon={dateicon} label={date || "Select Date"} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
           <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
           <InfoChip icon={reacticon} label={children || 0} alt="react_icon" />
-
+          <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
+
         <div className={styles.promotions_container}>
           {isLoading ? (
             <div className={styles.loader_container}>
               <div className={styles.loader}></div>
               <p>Loading areas...</p>
             </div>
+          ) : error ? (
+            <div className={styles.error_container}>
+              <p className={styles.error_message}>{error}</p>
+              <button
+                className={styles.retry_button}
+                onClick={() => window.location.reload()}
+              >
+                Retry
+              </button>
+            </div>
+          ) : promotions.length === 0 ? (
+            <div className={styles.no_areas}>
+              <p>No areas available for the selected time and date.</p>
+            </div>
           ) : (
             promotions.map((promotion) => {
               let restaurantImage;
               if (promotion.Name.includes("Restaurant Area")) {
                 restaurantImage = restaurantArea;
-              } else if (promotion.Name.includes("(Outdoor Terrace Rooms)")) {
+              } else if (promotion.Name.includes("Outdoor Terrace Rooms")) {
                 restaurantImage = OutdoorTerraceRooms;
               } else {
                 restaurantImage = oldPubArea;
@@ -123,21 +184,20 @@ export default function Area() {
             })
           )}
         </div>
+
         <div className={styles.Area_type}>
           <p className={styles.tabletext}>
             Your table is required to be returned by {returnBy || "XX:XX PM"}
           </p>
         </div>
+
         <div className={`${styles.Area_type} ${styles.DatabtnMain}`}>
-
-
           <CustomButton
             label="BACK"
             to="/topandrun"
             bgColor="#3D3D3D"
             color="#FFFCF7"
           />
-
 
           <CustomButton
             label="NEXT"
@@ -147,9 +207,11 @@ export default function Area() {
             color={!isFormValid ? "#666" : "#fff"}
           />
         </div>
+
         <div className={styles.changeTopMainn}>
           <Indicator step={2} />
         </div>
+
         <div className={styles.Area_type_footer}>
           <div className={styles.chose_m_link}>
             <Link to="/Select" className='chose__another__link'>

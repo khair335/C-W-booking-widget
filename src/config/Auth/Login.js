@@ -2,6 +2,8 @@ import { loginRequest } from '../AxiosRoutes/index';
 
 export const loginAndStoreToken = async () => {
   try {
+    console.log('Starting loginAndStoreToken...');
+
     // Clear any existing tokens before attempting login
     localStorage.removeItem('token');
     localStorage.removeItem('token_expiry');
@@ -19,7 +21,12 @@ export const loginAndStoreToken = async () => {
       password: process.env.REACT_APP_API_PASSWORD || "yZ/&J[!tGKIt[9Ke+[g/sfQ#3h|l8K"
     };
 
+    console.log('Making login request...');
     const response = await loginRequest('/api/Jwt/v2/Authenticate', credentials);
+    console.log('Login response received:', {
+      hasToken: !!response?.Token,
+      hasExpiry: !!response?.TokenExpiryUtc
+    });
 
     if (!response?.Token) {
       console.error('Invalid login response:', response);
@@ -32,31 +39,34 @@ export const loginAndStoreToken = async () => {
     localStorage.setItem('token', Token);
     localStorage.setItem('token_expiry', TokenExpiryUtc);
 
+    // Verify storage
+    const storedToken = localStorage.getItem('token');
+    const storedExpiry = localStorage.getItem('token_expiry');
+
+    console.log('Token storage verification:', {
+      tokenStored: !!storedToken,
+      tokenLength: storedToken?.length,
+      expiryStored: !!storedExpiry
+    });
+
+    if (!storedToken || !storedExpiry) {
+      throw new Error('Token storage verification failed');
+    }
+
     // Log successful login (remove in production)
     console.log('Successfully authenticated with ResDiary API');
-
     return Token;
   } catch (error) {
-    // Enhanced error logging
     console.error('Login failed:', {
       message: error.message,
       response: error.response?.data,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      headers: error.response?.headers,
-      config: {
-        url: error.config?.url,
-        method: error.config?.method,
-        baseURL: error.config?.baseURL,
-        headers: error.config?.headers
-      }
+      status: error.response?.status
     });
 
     // Clear any existing invalid tokens
     localStorage.removeItem('token');
     localStorage.removeItem('token_expiry');
 
-    // Handle specific error cases
     if (!error.response) {
       throw new Error('Network error. Please check your internet connection and try again.');
     }

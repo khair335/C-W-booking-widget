@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import dateicon from "../../images/Chips Icons Mobile.png";
@@ -16,14 +17,45 @@ import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
+import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests } from '../../store/bookingSlice';
 
 export default function Details() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { date, time, adults, children, selectedPromotion } = location.state || {};
+  const dispatch = useDispatch();
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const {
+    date,
+    time,
+    adults,
+    children,
+    selectedPromotion,
+    customerDetails,
+    specialRequests
+  } = bookingState;
+
+  // Format date for display
+  const displayDate = React.useMemo(() => {
+    if (!date) return "Select Date";
+    try {
+      const [year, month, day] = date.split('-').map(Number);
+      const dateObj = new Date(year, month - 1, day);
+      return dateObj.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return "Select Date";
+    }
+  }, [date]);
+
+  // Local state
   const [globalError, setGlobalError] = useState('');
   const [formData, setFormData] = useState({
-    SpecialRequests: '',
+    SpecialRequests: specialRequests || '',
     PromotionId: 0,
     PromotionName: '',
     IsLeaveTimeConfirmed: true,
@@ -40,42 +72,67 @@ export default function Details() {
     },
     DateOfBirth: '',
   });
+
+  // Sync form data with Redux state
+  useEffect(() => {
+    if (customerDetails) {
+      setFormData(prev => ({
+        ...prev,
+        Customer: {
+          ...prev.Customer,
+          ...customerDetails
+        }
+      }));
+    }
+  }, [customerDetails]);
+
   const handleChange = (field, value) => {
-    setFormData((prev) => ({
+    const updatedCustomer = {
+      ...formData.Customer,
+      [field]: value
+    };
+    setFormData(prev => ({
       ...prev,
-      Customer: {
-        ...prev.Customer,
-        [field]: value,
-      },
+      Customer: updatedCustomer
     }));
+    dispatch(updateCustomerDetails({ [field]: value }));
   };
 
   const handleMarketingChange = (e) => {
     const isChecked = e.target.checked;
-    setFormData((prev) => ({
+    const updatedCustomer = {
+      ...formData.Customer,
+      ReceiveEmailMarketing: isChecked,
+      ReceiveSmsMarketing: isChecked,
+      ReceiveRestaurantEmailMarketing: isChecked,
+      ReceiveRestaurantSmsMarketing: isChecked,
+    };
+    setFormData(prev => ({
       ...prev,
-      Customer: {
-        ...prev.Customer,
-        ReceiveEmailMarketing: isChecked,
-        ReceiveSmsMarketing: isChecked,
-        ReceiveRestaurantEmailMarketing: isChecked,
-        ReceiveRestaurantSmsMarketing: isChecked,
-      },
+      Customer: updatedCustomer
+    }));
+    dispatch(updateCustomerDetails({
+      ReceiveEmailMarketing: isChecked,
+      ReceiveSmsMarketing: isChecked,
+      ReceiveRestaurantEmailMarketing: isChecked,
+      ReceiveRestaurantSmsMarketing: isChecked,
     }));
   };
 
   const handleDateChange = (e) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      DateOfBirth: e.target.value,
+      DateOfBirth: e.target.value
     }));
   };
 
   const handleSpecialRequestChange = (e) => {
-    setFormData((prev) => ({
+    const value = e.target.value;
+    setFormData(prev => ({
       ...prev,
-      SpecialRequests: e.target.value,
+      SpecialRequests: value
     }));
+    dispatch(updateSpecialRequests(value));
   };
 
   const handleNextClick = () => {
@@ -96,23 +153,12 @@ export default function Details() {
     }
 
     setGlobalError('');
-    const submissionData = {
-      ...formData,
-      VisitDate: date,
-      VisitTime: time,
-      PartySize: adults + children,
-      PromotionId: selectedPromotion?.Id,
-      PromotionName: selectedPromotion?.Name,
-      ChannelCode: 'ONLINE',
-    };
-    console.log('Submission Data:', submissionData);
-    navigate("/confirm", { state: submissionData });
+    dispatch(updateCurrentStep(4));
+    navigate("/Confirm");
   };
 
   return (
     <div className={styles.DetailsMain} id="choose">
-
-
       <PubImageHeader
         pubLogo={logo}
         sectionImg={sectionimage}
@@ -128,27 +174,28 @@ export default function Details() {
           <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Enter Your Details</h1>
         </div>
         <div className={styles.Data_type} id="Data_type1">
-
-          <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
-          <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
+          <InfoChip icon={dateicon} label={displayDate} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
           <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
           <InfoChip icon={reacticon} label={children || 0} alt="react_icon" />
           <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
+
         {globalError && (
           <div style={{ color: 'red', marginBottom: '1rem', fontWeight: 'bold' }}>
             {globalError}
           </div>
         )}
+
         <div className={`${styles.Data_type} ${styles.inputmain}`}>
-           <CustomInput
+          <CustomInput
             required
             label="First Name"
             value={formData.Customer.FirstName}
             onChange={(e) => handleChange('FirstName', e.target.value)}
             className={`${`inputfeild`}`}
           />
-            <CustomInput
+          <CustomInput
             required
             label="Last Name"
             value={formData.Customer.Surname}
@@ -156,8 +203,8 @@ export default function Details() {
             className={`${`inputfeild`}`}
           />
           <div className={styles.textfieldMain}>
-            <div className={styles.feildproblem} style={{ display: 'flex', flexDirection: 'row', gap: '10px',width: '100%' }}>
-             <CustomInput
+            <div className={styles.feildproblem} style={{ display: 'flex', flexDirection: 'row', gap: '10px', width: '100%' }}>
+              <CustomInput
                 required
                 label="Country Code"
                 value={formData.Customer.MobileCountryCode}
@@ -165,7 +212,7 @@ export default function Details() {
                 style={{ flex: '0 0 180px' }}
                 helperText='E.G. +44 7111 111111'
               />
-                <CustomInput
+              <CustomInput
                 required
                 label="Mobile Number"
                 value={formData.Customer.Mobile}
@@ -173,22 +220,22 @@ export default function Details() {
                 style={{ flex: 1 }}
               />
             </div>
-
           </div>
-          <div className={styles.textfieldMain}>
-             <CustomInput
-            required
-            label="Email Address"
-            value={formData.Customer.Email}
-            onChange={(e) => handleChange('Email', e.target.value)}
-            className={`${styles.inputfeild} ${styles.feildproblem}`}
-            type="email"
-            helperText="E.G. Name@gmail.com"
-          />
 
-          </div>
           <div className={styles.textfieldMain}>
-             <DatePicker
+            <CustomInput
+              required
+              label="Email Address"
+              value={formData.Customer.Email}
+              onChange={(e) => handleChange('Email', e.target.value)}
+              className={`${styles.inputfeild} ${styles.feildproblem}`}
+              type="email"
+              helperText="E.G. Name@gmail.com"
+            />
+          </div>
+
+          <div className={styles.textfieldMain}>
+            <DatePicker
               value={formData.DateOfBirth ? new Date(formData.DateOfBirth) : undefined}
               onChange={(newDate) => {
                 const year = newDate.getFullYear();
@@ -200,56 +247,52 @@ export default function Details() {
                 }));
               }}
               placeholder="Date of Birth"
-              maxDate={new Date()}
             />
-
           </div>
+
           <div className={styles.textfieldMain}>
-              <CustomInput
-              required
+            <TextField
               label="Special Requests"
+              multiline
+              rows={4}
               value={formData.SpecialRequests}
               onChange={handleSpecialRequestChange}
-              className={`${styles.inputfeild} ${styles.feildproblem} ${styles.comments}`}
-              helperText="2000 of 2000 characters remaining"
+              className={styles.inputfeild}
             />
           </div>
 
-          <div className='my-4 w-100'>
+          <div className={styles.checkbox_container}>
             <CustomCheckbox
               checked={formData.Customer.ReceiveEmailMarketing}
               onChange={handleMarketingChange}
-              id="emailMarketing"
-              label="I would like to receive news and offers from Tap & Run by email"
+              label="I would like to receive email marketing"
             />
           </div>
         </div>
-        <div className={`${styles.Data_type} ${styles.DetailbnMain}`}>
-               <CustomButton
+
+        <div className={`${styles.Data_type} ${styles.DatabtnMain}`}>
+          <CustomButton
             label="BACK"
-            to="/area"
+            to="/Area"
             bgColor="#3D3D3D"
             color="#FFFCF7"
           />
-
-
           <CustomButton
             label="NEXT"
             onClick={handleNextClick}
-
-
+            bgColor="#000"
+            color="#fff"
           />
         </div>
-        <div className={`${styles.chose_m_link} pt-3`}>
-
+        <div className={styles.chose_m_link}>
           <Indicator step={3} />
         </div>
         <div className={styles.Area_type_footer}>
           <div className={styles.chose_m_link}>
-             <Link to="/Select" className="chose__another__link">
-            CHOOSE ANOTHER PUB
-          </Link>
-         </div>
+            <Link to="/Select" className="chose__another__link">
+              CHOOSE ANOTHER PUB
+            </Link>
+          </div>
           <Link to="/" className="exist__link">
             Exit And Cancel Booking
           </Link>

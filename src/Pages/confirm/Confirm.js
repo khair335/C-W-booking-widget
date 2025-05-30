@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { postRequest } from "../../config/AxiosRoutes/index"
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
@@ -13,19 +14,41 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
-
+import { resetBooking } from '../../store/bookingSlice';
 
 export default function Confirm() {
   const location = useLocation();
   const navigate = useNavigate();
-  const submissionData = location.state;
+  const dispatch = useDispatch();
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const { date, time, adults, children, selectedPromotion, customerDetails } = bookingState;
+
+  // Local state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleBooking = async () => {
-    const token = localStorage.getItem('token');
+    if (isSubmitting) return;
 
+    setIsSubmitting(true);
+    setError(null);
+
+    const token = localStorage.getItem('token');
     const headers = {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    const submissionData = {
+      VisitDate: date,
+      VisitTime: time,
+      PartySize: adults + children,
+      PromotionId: selectedPromotion?.Id,
+      PromotionName: selectedPromotion?.Name,
+      Customer: customerDetails,
+      ChannelCode: 'ONLINE',
     };
 
     const toUrlEncoded = (obj, prefix) => {
@@ -52,9 +75,13 @@ export default function Confirm() {
         encodedData
       );
       console.log('Booking Success:', response.data);
-      navigate('/booked');
+      dispatch(resetBooking());
+      navigate('/Booked');
     } catch (error) {
       console.error('Booking Failed:', error);
+      setError('Failed to submit booking. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -65,7 +92,7 @@ export default function Confirm() {
         // pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
-        step={3}
+        step={4}
         pubLink="/Select"
       />
       <div className={styles.ConfirmMainContainer}>
@@ -78,42 +105,47 @@ export default function Confirm() {
         <div className={styles.Data_type} id="Data_type1">
 
 
-          <InfoChip icon={dateicon} label={submissionData.VisitDate || "Select Date"} alt="date_icon" />
-          <InfoChip icon={timeicon} label={submissionData.VisitTime || "Select Time"} alt="time_icon" />
-          <InfoChip icon={membericon} label={submissionData.PartySize || "Select Party Size"} alt="member_icon" />
-          <InfoChip icon={resturanticon} label={submissionData?.PromotionName || "Select Area"} alt="react_icon" />
+          <InfoChip icon={dateicon} label={date || "Select Date"} alt="date_icon" />
+          <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
+          <InfoChip icon={membericon} label={(adults + children) || "Select Party Size"} alt="member_icon" />
+          <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
 
+        {error && (
+          <div style={{ color: 'red', marginBottom: '1rem', fontWeight: 'bold' }}>
+            {error}
+          </div>
+        )}
 
         <div className={`${styles.Data_type} ${styles.inputmain}`}>
           <div className={styles.confirmedData}>
             <p className={styles.confirmedDatatype}>
               First Name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-              <span className={styles.namedata}>{submissionData.Customer.FirstName}</span>
+              <span className={styles.namedata}>{customerDetails.FirstName}</span>
             </p>
           </div>
           <div className={styles.confirmedData}>
             <p className={styles.confirmedDatatype}>
               Last Name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-              <span className={styles.namedata}>{submissionData.Customer.Surname}</span>
+              <span className={styles.namedata}>{customerDetails.Surname}</span>
             </p>
           </div>
           <div className={styles.confirmedData}>
             <p className={styles.confirmedDatatype}>
               Mobile Number: &nbsp; &nbsp; &nbsp;
-              <span className={styles.namedata}>{submissionData.Customer.Mobile}</span>
+              <span className={styles.namedata}>{customerDetails.Mobile}</span>
             </p>
           </div>
           <div className={`${styles.confirmedData} ${styles.emaildata}`}>
             <p className={styles.confirmedDatatype}>
               Email Address: &nbsp; &nbsp; &nbsp; &nbsp;
-              <span className={styles.namedata}>{submissionData.Customer.Email}</span>
+              <span className={styles.namedata}>{customerDetails.Email}</span>
             </p>
           </div>
           <section className={styles.commentSection}>
             <h4 className={styles.comt}>Comment</h4>
             <div className={styles.commentsdata}>
-              {submissionData.SpecialRequests || "No Comment"}
+              {customerDetails.SpecialRequests || "No Comment"}
             </div>
           </section>
 
@@ -124,19 +156,20 @@ export default function Confirm() {
 
         <div className={styles.confirmCheckbox}>
           <CustomCheckbox
-            checked={submissionData.Customer.ReceiveEmailMarketing}
+            checked={customerDetails.ReceiveEmailMarketing}
             id="flexCheckDefault"
-            label="I have read and accept the Privacy Policy"
+            label="I have read and accept the Privacy Policy"
             labelStyle={styles.confirmCheckboxLabel}
+            disabled
           />
         </div>
         <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
 
 
           <CustomButton
-            label="Book a table"
+            label={isSubmitting ? "Submitting..." : "Book a table"}
             onClick={handleBooking}
-
+            disabled={isSubmitting}
           />
             <CustomButton
             label="BACK"
