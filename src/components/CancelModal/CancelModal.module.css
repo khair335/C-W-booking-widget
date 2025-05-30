@@ -1,0 +1,93 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #FFF0D5;
+  border-radius: 8px;
+  padding: 32px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0px 4px 4px 0px #391A114D, 0px 8px 12px 6px #391A1126;
+}
+
+.modalTitle {
+  font-family: "Lora", serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 130%;
+  color: #1C1C1C;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.modalText {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 140%;
+  color: #3D3D3D;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.cancelButton {
+  flex: 1;
+  background: #FFFFFF;
+  color: #1C1C1C;
+  border: 1px solid #8C826A;
+}
+
+.confirmButton {
+  flex: 1;
+  background: #C39A7B;
+  color: #FFFFFF;
+}
+
+.errorText {
+  color: #FF4D2A;
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.cancelButton:disabled,
+.confirmButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 24px;
+    width: 95%;
+  }
+
+  .modalTitle {
+    font-size: 20px;
+  }
+
+  .modalText {
+    font-size: 16px;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+  }
+}

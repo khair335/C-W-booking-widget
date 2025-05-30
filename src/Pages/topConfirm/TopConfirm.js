@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { postRequest } from "../../config/AxiosRoutes/index"
 import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
@@ -15,6 +15,7 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import { addSuccessBookingData, resetBooking } from '../../store/bookingSlice';
 
 export default function Confirm() {
   const navigate = useNavigate();
@@ -32,6 +33,9 @@ export default function Confirm() {
   } = bookingState;
 
   // Format date for display
+
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const displayDate = React.useMemo(() => {
     if (!date) return "Select Date";
     try {
@@ -49,6 +53,7 @@ export default function Confirm() {
   }, [date]);
 
   const handleBooking = async () => {
+    setIsLoading(true);
     const token = localStorage.getItem('token');
 
     const headers = {
@@ -92,10 +97,17 @@ export default function Confirm() {
         encodedData
       );
       console.log('Booking Success:', response.data);
-      navigate('/topBooked');
+      if (response.data) {
+        dispatch(addSuccessBookingData(response.data));
+        // dispatch(resetBooking());
+        navigate('/topBooked');
+      }
     } catch (error) {
       console.error('Booking Failed:', error);
+    } finally {
+      setIsLoading(false);
     }
+
   };
 
   return (
@@ -169,8 +181,9 @@ export default function Confirm() {
 
         <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
           <CustomButton
-            label="Book a table"
+            label={isLoading ? "Booking..." : "Book a table"}
             onClick={handleBooking}
+            disabled={isLoading}
           />
           <CustomButton
             label="BACK"

@@ -15,7 +15,12 @@
   text-transform: uppercase;
   transition: background 0.2s, color 0.2s;
 }
-
+.customBtn:disabled {
+  background-color: #C39A7B;
+  color: #FFFFFF;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 @media (max-width: 1024px) {
   .customBtn{
     font-size: 16px;

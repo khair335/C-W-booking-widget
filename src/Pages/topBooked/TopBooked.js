@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import logo1 from "../../images/Logo (1).png";
@@ -8,7 +8,19 @@ import styles from "./TopBooked.module.css";
 import { Link } from "react-router-dom";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import { useSelector } from 'react-redux';
+import CancelModal from '../../components/CancelModal/CancelModal';
+
 export default function Booked() {
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const {
+    successBookingData
+  } = bookingState;
+
+  console.log("Success Booking Data:", successBookingData);
   return (
     <div className={styles.BookeddMain} id="choose">
 
@@ -19,7 +31,7 @@ export default function Booked() {
       />
       <div className={styles.Confirmmain}>
         <div className={styles.Data_type}>
-          <h1 className={`${styles.logo_large} ${styles.datetilte}`}>You’re All Booked!</h1>
+          <h1 className={`${styles.logo_large} ${styles.datetilte}`}>You're All Booked!</h1>
           <h6 className={styles.confirm_text}>See You Soon At</h6>
         </div>
 
@@ -27,10 +39,12 @@ export default function Booked() {
            <img className={styles.confirm_logo} src={logo1} alt="logo" />
        </div>
         <div className={styles.booked_info}>
-          <h5>174 Main St, Swithland, Leicester LE12 8TJ, United Kingdom</h5>
-          <a href="tel:+441509890535" className={styles.numbrtag}>
+          <h5>Reference : {successBookingData?.Booking?.Reference}</h5>
+          <h5>RestaurantName : {successBookingData?.Booking?.RestaurantName}</h5>
+
+          {/* <a href="tel:+441509890535" className={styles.numbrtag}>
             +441509890535
-          </a>
+          </a> */}
         </div>
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
 
@@ -48,11 +62,25 @@ export default function Booked() {
           />
         </div>
         <div className={`${styles.Data_type} mt-5`}>
-          <Link to="/TopHome" className='exist__link'>
+          <button
+            to="#"
+            className='exist__link  bg-transparent border-0'
+            onClick={(e) => {
+              e.preventDefault();
+              setShowCancelModal(true);
+            }}
+          >
             Exit And Cancel Booking
-          </Link>
+          </button>
         </div>
       </div>
+
+      {showCancelModal && (
+        <CancelModal
+          refId={successBookingData?.Booking?.Reference}
+          onClose={() => setShowCancelModal(false)}
+        />
+      )}
     </div>
   );
 }

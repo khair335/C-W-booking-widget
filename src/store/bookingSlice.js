@@ -93,6 +93,7 @@ const bookingSlice = createSlice({
       return initialState;
     },
     addSuccessBookingData: (state, action) => {
+      console.log("Adding success booking data:", action.payload);
       state.successBookingData = action.payload;
     },
     resetSuccessBookingData: (state) => {
