@@ -50,6 +50,10 @@ axiosInstance.interceptors.request.use(
         config.url = `/api/promotion${promotionIds.length > 0 ? `?promotionIds=${promotionIds.join('&promotionIds=')}` : ''}`;
       } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken')) {
         config.url = '/api/booking';
+      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/')) {
+        // Extract the booking reference from the URL
+        const bookingReference = config.url.split('/').pop();
+        config.url = `/api/booking-details?bookingReference=${bookingReference}`;
       }
     }
     // In development, we don't need to transform URLs because the proxy in package.json handles it
