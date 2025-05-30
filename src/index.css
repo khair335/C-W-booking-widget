@@ -3,6 +3,7 @@
 
 body {
    overflow-y: auto !important;
+   padding-bottom: 40px;
 }
 
 /* global css */
