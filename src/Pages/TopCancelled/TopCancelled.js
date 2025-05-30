@@ -1,6 +1,6 @@
 import React from "react";
-import logo from "../../images/Griffin Black.png";
-import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
+import logo from "../../images/T&R White.png";
+import sectionimage from "../../images/Tap & Run_MainImage 1.png";
 import "./TopCancelled.css";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';

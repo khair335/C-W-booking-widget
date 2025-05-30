@@ -143,10 +143,10 @@ export default function TopBookingNumber() {
           }}
           value={reason}
           placeholder="Select Reason"
-          isLoading={isLoading}
+
           noDataMessage="No options available"
           error={!!error && !reason}
-          disabled={isLoading}
+
         />
 
         <div className={`${styles.Nbooking_type} ${styles.DatabtonMain}`}>

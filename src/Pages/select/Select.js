@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import chooseimg from "../../images/Left Container The Cat and Wickets.png";
 import topandrunlogo from "../../images/Logo (1).png";
 import logo from "../../images/Griffin Black.png";
@@ -6,7 +6,14 @@ import { Link } from "react-router-dom";
 import styles from "./Select.module.css";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import { useDispatch } from 'react-redux';
+import { resetBooking } from '../../store/bookingSlice';
 export default function Select() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetBooking());
+  },[])
 
   return (
     <div className={styles.selectMain} id="choose">

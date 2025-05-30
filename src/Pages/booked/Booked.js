@@ -35,11 +35,27 @@ export default function Booked() {
         <div className={styles.booked_info} >
           <h5>Reference : {successBookingData?.Booking?.Reference}</h5>
           <h5>RestaurantName : {successBookingData?.Booking?.RestaurantName}</h5>
+
+          <br />
+          <br />
+          <h5>
+            174 Main St, Swithland, Leicester LE12 8TJ, United
+            Kingdom
+
+
+
+
+          </h5>
+          <a href="tel:+441509890535" className={styles.numbrtag}>
+            +441509890535
+
+          </a>
+
         </div>
-       <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
-            <CustomButton
+        <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
+          <CustomButton
             label="Add to calender"
-             to="/"
+            to="/"
 
           />
           <CustomButton
@@ -49,8 +65,8 @@ export default function Booked() {
             bgColor="#C39A7B"
           />
         </div>
-               <div className={`${styles.Data_type} mt-5`}>
-            <button
+        <div className={`${styles.Data_type} mt-5`}>
+          <button
             to="#"
             className='exist__link  bg-transparent border-0'
             onClick={(e) => {
@@ -62,7 +78,7 @@ export default function Booked() {
           </button>
         </div>
       </div>
-       {showCancelModal && (
+      {showCancelModal && (
         <CancelModal
           refId={successBookingData?.Booking?.Reference}
           onClose={() => setShowCancelModal(false)}

@@ -170,7 +170,10 @@ color: #FD6F53;
     text-decoration: none;
     color: #000;
 }
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 1024px) {
+    .section{
+        width: 88%;
+    }
     .homeMain{
         display: flex;
         flex-direction: column;

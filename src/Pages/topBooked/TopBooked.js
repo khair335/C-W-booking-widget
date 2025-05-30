@@ -35,19 +35,30 @@ export default function Booked() {
         </div>
 
         <div className='mx-auto d-flex justify-content-center align-items-center'>
-           <img className={styles.confirm_logo} src={logo1} alt="logo" />
-       </div>
+          <img className={styles.confirm_logo} src={logo1} alt="logo" />
+        </div>
         <div className={styles.booked_info}>
           <h5>Reference : {successBookingData?.Booking?.Reference}</h5>
           <h5>RestaurantName : {successBookingData?.Booking?.RestaurantName}</h5>
+          <br />
+          <br />
+          <h5>
+            Main Road, Upper Broughton, Melton Mowbray
+            LE14 3BG, United Kingdom
 
+
+
+          </h5>
+          <a href="tel:+441664820407" className={styles.numbrtag}>
+            +441664820407
+          </a>
         </div>
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
 
 
           <CustomButton
             label="Add to calender"
-             to="/"
+            to="/"
 
           />
           <CustomButton

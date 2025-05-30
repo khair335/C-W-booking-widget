@@ -51,7 +51,7 @@ export default function BookingNumber() {
         data
       );
       console.log("Cancel booking response:", response.data);
-      navigate("/TopCancelled");
+      navigate("/Cancelled");
     } catch (error) {
       console.error("Cancel booking error:", error);
       setError(error.response?.data?.message || 'Failed to cancel the booking. Please try again.');
@@ -141,10 +141,10 @@ export default function BookingNumber() {
           }}
           value={reason}
           placeholder="Select Reason"
-          isLoading={isLoading}
+
           noDataMessage="No options available"
           error={!!error && !reason}
-          disabled={isLoading}
+
         />
 
         <div className={`${styles.Nbooking_type} ${styles.DatabtonMain}`}>

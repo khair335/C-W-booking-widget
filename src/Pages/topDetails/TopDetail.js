@@ -158,7 +158,7 @@ export default function Details() {
     if (!formData.Customer.Birthday) newErrors.Birthday = 'Date of birth is required';
     if (!date) newErrors.VisitDate = 'Visit date is required';
     if (!time) newErrors.VisitTime = 'Visit time is required';
-    if (!adults || !children) newErrors.PartySize = 'At least one guest is required';
+    if (!adults) newErrors.PartySize = 'At least one guest is required';
 
     if (Object.keys(newErrors).length > 0) {
       setGlobalError('Please fill in all required fields correctly.');
