@@ -38,30 +38,55 @@ export default function TopArea() {
   const [promotions, setPromotions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   const isFormValid = date && time && adults && selectedPromotion;
 
-  const handleNextClick = () => {
-    if (!isFormValid) return;
-    dispatch(updateCurrentStep(3));
-    navigate("/topDetails");
-  };
+  // Reset selected promotion when component mounts
+  useEffect(() => {
+    dispatch(updateSelectedPromotion(null));
+  }, []);
 
   useEffect(() => {
+    let isMounted = true;
+    let retryTimeout;
+
     const fetchPromotions = async () => {
-      if (!availablePromotionIds.length) {
-        console.log("No promotion IDs available:", availablePromotionIds);
-        setIsLoading(false);
+      // Always set loading state when starting fetch
+      if (isMounted) {
+        setIsLoading(true);
+        setError(null);
+      }
+
+      // Validate required data
+      if (!availablePromotionIds?.length) {
+        console.log("No promotion IDs available, waiting for Redux update...");
+
+        // If we haven't retried too many times, wait and try again
+        if (retryCount < 3) {
+          if (isMounted) {
+            setIsLoading(false);
+            retryTimeout = setTimeout(() => {
+              setRetryCount(prev => prev + 1);
+            }, 1000); // Wait 1 second before retrying
+          }
+          return;
+        }
+
+        // If we've retried too many times, show error instead of redirecting
+        if (isMounted) {
+          setError("Unable to load areas. Please try again.");
+          setIsLoading(false);
+        }
         return;
       }
 
-      setIsLoading(true);
-      setError(null);
-
       const token = localStorage.getItem("token");
       if (!token) {
-        setError("Authentication token not found");
-        setIsLoading(false);
+        if (isMounted) {
+          setError("Authentication token not found");
+          setIsLoading(false);
+        }
         return;
       }
 
@@ -81,21 +106,43 @@ export default function TopArea() {
         const response = await getRequest(url, headers);
         console.log("Promotions response:", response.data);
 
-        if (response.data && Array.isArray(response.data)) {
-        setPromotions(response.data);
-        } else {
-          setError("Invalid response format from server");
+        if (isMounted) {
+          if (response.data && Array.isArray(response.data)) {
+            setPromotions(response.data);
+            setRetryCount(0); // Reset retry count on success
+          } else {
+            setError("Invalid response format from server");
+          }
         }
       } catch (error) {
         console.error("Failed to fetch promotions:", error);
-        setError(error.message || "Failed to fetch promotions");
+        if (isMounted) {
+          setError(error.message || "Failed to fetch promotions");
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
+    // Always fetch promotions when component mounts or promotion IDs change
     fetchPromotions();
-  }, [availablePromotionIds]);
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+      if (retryTimeout) {
+        clearTimeout(retryTimeout);
+      }
+    };
+  }, [availablePromotionIds, navigate, dispatch, retryCount]);
+
+  const handleNextClick = () => {
+    if (!isFormValid) return;
+    dispatch(updateCurrentStep(3));
+    navigate("/topDetails");
+  };
 
   const togglePromotion = (promotion) => {
     if (!promotion) {

@@ -36,6 +36,7 @@ const initialState = {
   // Additional state properties
   availablePromotionIds: [],
   pubType: null, // 'top' or 'griffin'
+  successBookingData: null,
 };
 
 const bookingSlice = createSlice({
@@ -90,7 +91,14 @@ const bookingSlice = createSlice({
     },
     resetBooking: (state) => {
       return initialState;
+    },
+    addSuccessBookingData: (state, action) => {
+      state.successBookingData = action.payload;
+    },
+    resetSuccessBookingData: (state) => {
+      state.successBookingData = null;
     }
+
   }
 });
 
@@ -101,7 +109,9 @@ export const {
   updateSpecialRequests,
   updateCurrentStep,
   updateSelectedPub,
-  resetBooking
+  resetBooking,
+  addSuccessBookingData,
+  resetSuccessBookingData
 } = bookingSlice.actions;
 
 export default bookingSlice.reducer;

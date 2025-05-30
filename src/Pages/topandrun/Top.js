@@ -188,6 +188,8 @@ export default function Top() {
     console.log("Updated Redux state with promotion IDs");
 
     dispatch(updateCurrentStep(2));
+
+    console.log("Navigating to topArea");
     navigate("/topArea");
   };
 
