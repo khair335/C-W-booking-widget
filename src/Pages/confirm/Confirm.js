@@ -14,7 +14,7 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
-import { resetBooking } from '../../store/bookingSlice';
+import { addSuccessBookingData, resetBooking } from '../../store/bookingSlice';
 
 export default function Confirm() {
   const location = useLocation();
@@ -23,7 +23,7 @@ export default function Confirm() {
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  console.log('bookingState',bookingState);
+  console.log('bookingState', bookingState);
   const { date, time, adults, children, selectedPromotion, customerDetails, specialRequests } = bookingState;
 
   // Local state
@@ -76,8 +76,14 @@ export default function Confirm() {
         encodedData
       );
       console.log('Booking Success:', response.data);
-      dispatch(resetBooking());
-      navigate('/Booked');
+      if (response.data.Confirm) {
+        dispatch(addSuccessBookingData(response.data));
+        navigate('/Booked');
+      } else {
+        setError('Something went wrong,Please try again to book a table');
+      }
+
+
     } catch (error) {
       console.error('Booking Failed:', error);
       setError('Failed to submit booking. Please try again.');
@@ -87,7 +93,7 @@ export default function Confirm() {
   };
 
   return (
-     <div className={styles.ConfirmMain} id="choose">
+    <div className={styles.ConfirmMain} id="choose">
 
       <PubImageHeader
         // pubLogo={logo}
@@ -168,11 +174,11 @@ export default function Confirm() {
 
 
           <CustomButton
-            label={isSubmitting ? "Submitting..." : "Book a table"}
+            label={isSubmitting ? "Booking..." : "Book a table"}
             onClick={handleBooking}
             disabled={isSubmitting}
           />
-            <CustomButton
+          <CustomButton
             label="BACK"
             to="/Details"
             color="#FFFFFF"

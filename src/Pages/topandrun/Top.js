@@ -34,7 +34,7 @@ export default function Top() {
   const [selectedAdults, setSelectedAdults] = useState(adults?.toString() || "");
   const [selectedChildren, setSelectedChildren] = useState(children?.toString() || "");
   const [availablePromotionIds, setAvailablePromotionIds] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   // Update form validation whenever relevant fields change
   const isFormValid = date && time && adults;
 
@@ -42,7 +42,7 @@ export default function Top() {
   useEffect(() => {
     const fetchAvailability = async () => {
       if (!date || !adults) return;
-
+      setIsLoading(true);
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -97,6 +97,8 @@ export default function Top() {
         }
       } catch (error) {
         console.error("Availability fetch failed:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -264,6 +266,7 @@ export default function Top() {
             value={selectedTimeISO}
             onChange={handleTimeSelect}
             placeholder="Select Time"
+            isLoading={isLoading}
           />
 
           <p className={styles.tbletext}>

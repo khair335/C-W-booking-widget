@@ -11,18 +11,18 @@ import alertimg from "../../images/alert-circle.png";
 import logo1 from "../../images/Logo (1).png";
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
 import whitelogo from "../../images/T&R White.png"
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 function TopHome() {
   return (
     <>
       <div className="homeMain" id="homepage">
-        <div className="section imagesect">
-          <img
-            src={sectionimg2}
-            alt="section_image"
-            className="section_image"
-          />
-          <Link to="/" className="anotherpub">CHOOSE ANOTHER PUB</Link>
-        </div>
+
+        <PubImageHeader
+          sectionImg={sectionimg2}
+          pubLinkLabel="CHOOSE ANOTHER PUB"
+
+          pubLink="/"
+        />
         <div className="section bookingcontainer">
           <img src={logo1} alt="logo" />
           <div className="logo-large">Booking</div>

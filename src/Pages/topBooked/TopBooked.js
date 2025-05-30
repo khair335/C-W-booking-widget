@@ -20,7 +20,6 @@ export default function Booked() {
     successBookingData
   } = bookingState;
 
-  console.log("Success Booking Data:", successBookingData);
   return (
     <div className={styles.BookeddMain} id="choose">
 
@@ -42,9 +41,6 @@ export default function Booked() {
           <h5>Reference : {successBookingData?.Booking?.Reference}</h5>
           <h5>RestaurantName : {successBookingData?.Booking?.RestaurantName}</h5>
 
-          {/* <a href="tel:+441509890535" className={styles.numbrtag}>
-            +441509890535
-          </a> */}
         </div>
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
 

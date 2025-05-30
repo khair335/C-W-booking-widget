@@ -284,39 +284,39 @@ export default function Griffin() {
   const dateForPicker = date ? new Date(date) : null;
 
   // Show loading state while authenticating
-  if (isAuthenticating) {
-    return (
-      <div className={styles.griffinnMain}>
-        <div className={styles.Datamain}>
-          <h1>Authenticating...</h1>
-        </div>
-      </div>
-    );
-  }
+  // if (isAuthenticating) {
+  //   return (
+  //     <div className={styles.griffinnMain}>
+  //       <div className={styles.Datamain}>
+  //         <h1>Authenticating...</h1>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Show error state if authentication failed
-  if (authError) {
-    return (
-      <div className={styles.griffinnMain}>
-        <div className={styles.Datamain}>
-          <h1>Authentication Error</h1>
-          <p>{authError}</p>
-          <button onClick={authenticate}>Retry Authentication</button>
-        </div>
-      </div>
-    );
-  }
+  // if (authError) {
+  //   return (
+  //     <div className={styles.griffinnMain}>
+  //       <div className={styles.Datamain}>
+  //         <h1>Authentication Error</h1>
+  //         <p>{authError}</p>
+  //         <button onClick={authenticate}>Retry Authentication</button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Show loading state while fetching availability
-  if (isLoading) {
-    return (
-      <div className={styles.griffinnMain}>
-        <div className={styles.Datamain}>
-          <h1>Loading Available Times...</h1>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className={styles.griffinnMain}>
+  //       <div className={styles.Datamain}>
+  //         <h1>Loading Available Times...</h1>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className={styles.griffinnMain} id="choose">
@@ -403,6 +403,8 @@ export default function Griffin() {
               }
             }}
             placeholder="Select Time"
+            isLoading={isLoading}
+
           />
 
           <p className={styles.tbletext}>

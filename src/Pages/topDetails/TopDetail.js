@@ -19,6 +19,7 @@ import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests } from '../../store/bookingSlice';
+import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 
 export default function Details() {
   const navigate = useNavigate();
@@ -219,19 +220,35 @@ export default function Details() {
                 required
                 label="Country Code"
                 value={formData.Customer.MobileCountryCode}
-                onChange={(e) => handleChange('MobileCountryCode', e.target.value)}
+                onChange={(e) => {
+                  // Only allow numbers and + sign
+                  const value = e.target.value.replace(/[^0-9+]/g, '');
+                  handleChange('MobileCountryCode', value);
+                }}
                 style={{ flex: '0 0 180px' }}
                 helperText='E.G. +44 7111 111111'
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9+]*'
+                }}
               />
               <CustomInput
                 required
                 label="Mobile Number"
                 value={formData.Customer.Mobile}
-                onChange={(e) => handleChange('Mobile', e.target.value)}
+                onChange={(e) => {
+                  // Only allow numbers
+                  const value = e.target.value.replace(/[^0-9]/g, '');
+                  handleChange('Mobile', value);
+                }}
                 style={{ flex: 1 }}
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*'
+                }}
               />
             </div>
-            {/* <p className="eg">E.G. +44 7111 111111</p> */}
+
           </div>
           <CustomInput
             required
@@ -252,13 +269,16 @@ export default function Details() {
             <p className="eg">Date of Birth</p>
           </div>
           <div className={styles.textfieldMain}>
-            <CustomInput
+
+                  <CustomTextarea
               required
               label="Special Requests"
               value={formData.SpecialRequests}
               onChange={handleSpecialRequestChange}
-              className={`${styles.inputfeild} ${styles.feildproblem} ${styles.comments}`}
               helperText="2000 of 2000 characters remaining"
+              minRows={4}
+              maxRows={4}
+              placeholder="Enter your special requests here..."
             />
           </div>
 

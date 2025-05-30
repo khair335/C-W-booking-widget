@@ -6,10 +6,11 @@ import tablebookingimg from "../../images/table_restaurant.png";
 import modifyimg from "../../images/edit_calendar.png";
 import cancelimg from "../../images/Menu Icon Mobile.png";
 import tabimg from "../../images/Menu Icon Mobile (1).png";
-import logo from "../../images/T&R Black.png";
+import logo from "../../images/Griffin Black.png";
 import alertimg from "../../images/alert-circle.png";
 import { FiInfo } from "react-icons/fi";
 import { Modal } from 'bootstrap';
+import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 
 function Home() {
   useEffect(() => {
@@ -48,14 +49,14 @@ function Home() {
   return (
     <>
       <div className="homeMain" id="homepage">
-        <div className="section imagesect">
-          <img
-            src={sectionimage}
-            alt="section_image"
-            className="section_image"
-          />
-          <Link to="/TopHome" className="anotherpub">CHOOSE ANOTHER PUB</Link>
-        </div>
+
+
+        <PubImageHeader
+          sectionImg={sectionimage}
+          pubLinkLabel="CHOOSE ANOTHER PUB"
+
+          pubLink="/TopHome"
+        />
         <div className="section bookingcontainer">
           <img className='logo' src={logo} alt="logo" />
           <div className="logo-large">Booking</div>
@@ -73,22 +74,22 @@ function Home() {
           </div>
 
           <div className="bookingttype">
-              <Link to="/Modify" className="modifylink">
-            <div className="book-text">
-              <img src={modifyimg} alt="modify-image" />
+            <Link to="/Modify" className="modifylink">
+              <div className="book-text">
+                <img src={modifyimg} alt="modify-image" />
                 Modify A Booking
-            </div>
-            <img src={tabimg} alt="tab-img" />
-              </Link>
+              </div>
+              <img src={tabimg} alt="tab-img" />
+            </Link>
           </div>
 
           <div className="bookingttype changeborder">
-          <Link to="/Cancel" className="modifylink">
-            <div className="book-text" id="cancelid">
-              <img src={cancelimg} alt="cancel-img" />
-              Cancel A Booking
-            </div>
-            <img src={tabimg} alt="tab-img" />
+            <Link to="/Cancel" className="modifylink">
+              <div className="book-text" id="cancelid">
+                <img src={cancelimg} alt="cancel-img" />
+                Cancel A Booking
+              </div>
+              <img src={tabimg} alt="tab-img" />
             </Link>
           </div>
           <Link to="/TopHome" className="anotherpub2">
@@ -96,7 +97,7 @@ function Home() {
           </Link>
           <div>
             <Link href="#" className="Existlink">
-            Exit and cancel Booking
+              Exit and cancel Booking
             </Link>
           </div>
           {/* Modal */}
@@ -127,8 +128,8 @@ function Home() {
                   <h2 className="logo-large">Please Note:</h2>
                   <p>Our max table size is 10 people. </p>
                   <p>
-                  Cat & Wickets pubs are
-                  cashless — card or contactless payments only.</p>
+                    Cat & Wickets pubs are
+                    cashless — card or contactless payments only.</p>
                 </div>
                 <div className="modal-footer ">
                   <Link to="/Select" className="btn btn-primary confirmbtn w-100" onClick={handleModalClose}>

@@ -36,6 +36,7 @@ export default function Confirm() {
 
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const displayDate = React.useMemo(() => {
     if (!date) return "Select Date";
     try {
@@ -97,10 +98,12 @@ export default function Confirm() {
         encodedData
       );
       console.log('Booking Success:', response.data);
-      if (response.data) {
+      if (response.data.Booking) {
         dispatch(addSuccessBookingData(response.data));
         // dispatch(resetBooking());
         navigate('/topBooked');
+      } else {
+        setError('Something went wrong,Please try again to book a table');
       }
     } catch (error) {
       console.error('Booking Failed:', error);
@@ -132,6 +135,12 @@ export default function Confirm() {
           <InfoChip icon={membericon} label={`${parseInt(adults) + parseInt(children)}` || "Select Party Size"} alt="member_icon" />
           <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
+
+        {error && (
+          <div className={styles.errorMessage}>
+            {error}
+          </div>
+        )}
 
         <div className={`${styles.Data_type} ${styles.inputmain}`}>
           <div className={styles.confirmedData}>

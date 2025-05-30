@@ -147,7 +147,7 @@ export default function Details() {
     if (!formData.DateOfBirth) newErrors.DateOfBirth = 'Date of birth is required';
     if (!date) newErrors.VisitDate = 'Visit date is required';
     if (!time) newErrors.VisitTime = 'Visit time is required';
-    if (!adults || !children) newErrors.PartySize = 'At least one guest is required';
+    if (!adults) newErrors.PartySize = 'At least one guest is required';
 
     if (Object.keys(newErrors).length > 0) {
       setGlobalError('Please fill in all required fields correctly.');
@@ -205,21 +205,37 @@ export default function Details() {
             className={`${`inputfeild`}`}
           />
           <div className={styles.textfieldMain}>
-            <div className={styles.feildproblem} style={{ display: 'flex', flexDirection: 'row', gap: '10px', width: '100%' }}>
+           <div className={`${styles.feildproblem} w-100`} style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
               <CustomInput
                 required
                 label="Country Code"
                 value={formData.Customer.MobileCountryCode}
-                onChange={(e) => handleChange('MobileCountryCode', e.target.value)}
+                onChange={(e) => {
+                  // Only allow numbers and + sign
+                  const value = e.target.value.replace(/[^0-9+]/g, '');
+                  handleChange('MobileCountryCode', value);
+                }}
                 style={{ flex: '0 0 180px' }}
                 helperText='E.G. +44 7111 111111'
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9+]*'
+                }}
               />
               <CustomInput
                 required
                 label="Mobile Number"
                 value={formData.Customer.Mobile}
-                onChange={(e) => handleChange('Mobile', e.target.value)}
+                onChange={(e) => {
+                  // Only allow numbers
+                  const value = e.target.value.replace(/[^0-9]/g, '');
+                  handleChange('Mobile', value);
+                }}
                 style={{ flex: 1 }}
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*'
+                }}
               />
             </div>
           </div>
@@ -254,22 +270,7 @@ export default function Details() {
 
           <div className={styles.textfieldMain}>
 
-             {/* <TextField
-              label="Special Requests"
-              multiline
-              rows={4}
-              value={formData.SpecialRequests}
-              onChange={handleSpecialRequestChange}
-              className={styles.inputfeild}
-            /> */}
-             {/* <CustomInput
-              required
-              label="Special Requests"
-              value={formData.SpecialRequests}
-              onChange={handleSpecialRequestChange}
-              className={`${styles.inputfeild} ${styles.feildproblem} ${styles.comments}`}
-              helperText="2000 of 2000 characters remaining"
-            /> */}
+
             <CustomTextarea
               required
               label="Special Requests"

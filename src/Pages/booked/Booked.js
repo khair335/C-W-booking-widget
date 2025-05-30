@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import styles from "./Booked.module.css";
 import { Link } from "react-router-dom";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import { useSelector } from "react-redux";
+import CancelModal from '../../components/CancelModal/CancelModal';
 export default function Booked() {
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const {
+    successBookingData
+  } = bookingState;
   return (
     <div className={styles.BookeddMain} id="choose">
 
@@ -24,10 +33,8 @@ export default function Booked() {
           <img src={logo} alt="logo" />
         </div>
         <div className={styles.booked_info} >
-          <h5>174 Main St, Swithland, Leicester LE12 8TJ, United Kingdom</h5>
-          <a href="tel:+441509890535" className="numbrtag">
-            +441509890535
-          </a>
+          <h5>Reference : {successBookingData?.Booking?.Reference}</h5>
+          <h5>RestaurantName : {successBookingData?.Booking?.RestaurantName}</h5>
         </div>
        <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
             <CustomButton
@@ -43,11 +50,24 @@ export default function Booked() {
           />
         </div>
                <div className={`${styles.Data_type} mt-5`}>
-          <Link to="/" className="exist__link">
+            <button
+            to="#"
+            className='exist__link  bg-transparent border-0'
+            onClick={(e) => {
+              e.preventDefault();
+              setShowCancelModal(true);
+            }}
+          >
             Exit And Cancel Booking
-          </Link>
+          </button>
         </div>
       </div>
+       {showCancelModal && (
+        <CancelModal
+          refId={successBookingData?.Booking?.Reference}
+          onClose={() => setShowCancelModal(false)}
+        />
+      )}
     </div>
   );
 }
