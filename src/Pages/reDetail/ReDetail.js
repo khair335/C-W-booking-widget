@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import dateicon from "../../images/Chips Icons Mobile.png";
@@ -16,19 +16,53 @@ import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
+import { updateCurrentStep, updateCustomerDetails, updateSpecialRequests } from '../../store/bookingSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 
 export default function ReDetail() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { date, time, adults, children, bookingNumber, selectedPromotion } = location.state || {};
+  const dispatch = useDispatch();
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const {
+    date,
+    time,
+    adults,
+    children,
+    selectedPromotion,
+    customerDetails,
+    specialRequests
+  } = bookingState;
+
+  // Format date for display
+  const displayDate = React.useMemo(() => {
+    if (!date) return "Select Date";
+    try {
+      const [year, month, day] = date.split('-').map(Number);
+      const dateObj = new Date(year, month - 1, day);
+      return dateObj.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return "Select Date";
+    }
+  }, [date]);
+
+  // Local state
   const [globalError, setGlobalError] = useState('');
   const [formData, setFormData] = useState({
-    SpecialRequests: '',
-    IsLeaveTimeConfirmed:true,
+    SpecialRequests: specialRequests || '',
     PromotionId: 0,
     PromotionName: '',
+    IsLeaveTimeConfirmed: true,
     Customer: {
       FirstName: '',
+      Birthday: '',
       Surname: '',
       MobileCountryCode: '+44',
       Mobile: '',
@@ -38,44 +72,63 @@ export default function ReDetail() {
       ReceiveRestaurantEmailMarketing: false,
       ReceiveRestaurantSmsMarketing: false,
     },
-    DateOfBirth: '',
   });
+
+  // Sync form data with Redux state
+  useEffect(() => {
+    if (customerDetails) {
+      setFormData(prev => ({
+        ...prev,
+        Customer: {
+          ...prev.Customer,
+          ...customerDetails
+        }
+      }));
+    }
+  }, [customerDetails]);
+
   const handleChange = (field, value) => {
-    setFormData((prev) => ({
+    const updatedCustomer = {
+      ...formData.Customer,
+      [field]: value
+    };
+    setFormData(prev => ({
       ...prev,
-      Customer: {
-        ...prev.Customer,
-        [field]: value,
-      },
+      Customer: updatedCustomer
     }));
+    dispatch(updateCustomerDetails({ [field]: value }));
   };
 
   const handleMarketingChange = (e) => {
     const isChecked = e.target.checked;
-    setFormData((prev) => ({
+    const updatedCustomer = {
+      ...formData.Customer,
+      ReceiveEmailMarketing: isChecked,
+      ReceiveSmsMarketing: isChecked,
+      ReceiveRestaurantEmailMarketing: isChecked,
+      ReceiveRestaurantSmsMarketing: isChecked,
+    };
+    setFormData(prev => ({
       ...prev,
-      Customer: {
-        ...prev.Customer,
-        ReceiveEmailMarketing: isChecked,
-        ReceiveSmsMarketing: isChecked,
-        ReceiveRestaurantEmailMarketing: isChecked,
-        ReceiveRestaurantSmsMarketing: isChecked,
-      },
+      Customer: updatedCustomer
+    }));
+    dispatch(updateCustomerDetails({
+      ReceiveEmailMarketing: isChecked,
+      ReceiveSmsMarketing: isChecked,
+      ReceiveRestaurantEmailMarketing: isChecked,
+      ReceiveRestaurantSmsMarketing: isChecked,
     }));
   };
 
-  const handleDateChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      DateOfBirth: e.target.value,
-    }));
-  };
 
   const handleSpecialRequestChange = (e) => {
-    setFormData((prev) => ({
+    const value = e.target.value;
+    console.log('value',value);
+    setFormData(prev => ({
       ...prev,
-      SpecialRequests: e.target.value,
+      SpecialRequests: value
     }));
+    dispatch(updateSpecialRequests(value));
   };
 
   const handleNextClick = () => {
@@ -85,10 +138,10 @@ export default function ReDetail() {
     if (!formData.Customer.Surname.trim()) newErrors.Surname = 'Last name is required';
     if (!formData.Customer.Mobile.trim()) newErrors.Mobile = 'Mobile number is required';
     if (!formData.Customer.Email.trim()) newErrors.Email = 'Email address is required';
-    if (!formData.DateOfBirth) newErrors.DateOfBirth = 'Date of birth is required';
+   if (!formData.Customer.Birthday) newErrors.Birthday = 'Date of birth is required';
     if (!date) newErrors.VisitDate = 'Visit date is required';
     if (!time) newErrors.VisitTime = 'Visit time is required';
-    if (!adults || !children) newErrors.PartySize = 'At least one guest is required';
+    if (!adults) newErrors.PartySize = 'At least one guest is required';
 
     if (Object.keys(newErrors).length > 0) {
       setGlobalError('Please fill in all required fields correctly.');
@@ -96,29 +149,19 @@ export default function ReDetail() {
     }
 
     setGlobalError('');
-    const submissionData = {
-      ...formData,
-      VisitDate: date,
-      VisitTime: time,
-      PromotionId: selectedPromotion?.Id,
-      PromotionName: selectedPromotion?.Name,
-      PartySize: adults + children,
-      BookingNumber: bookingNumber,
-      ChannelCode: 'ONLINE',
-    };
-    console.log('Submission Data:', submissionData);
-    navigate("/Confirmed", { state: submissionData });
+    dispatch(updateCurrentStep(4));
+    navigate("/Confirmed");
   };
 
   return (
-      <div className={styles.DetailsMain} id="choose">
-
+      <div className={`${styles.DetailsMain} ${styles.topDetailMain}`} id="choose">
 
       <PubImageHeader
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
-        step={3}
+        step={4}
+        stepLength={5}
         pubLink="/Select"
       />
       <div className={styles.Dmain}>
@@ -128,7 +171,7 @@ export default function ReDetail() {
         <div className={styles.Data_type}>
           <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Enter Your Details</h1>
         </div>
-        <div className={styles.Data_type} id="Data_type1">
+        <div className={styles.Data_type} id={styles.Data_type1}>
 
           <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
           <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
@@ -142,23 +185,23 @@ export default function ReDetail() {
           </div>
         )}
         <div className={`${styles.Data_type} ${styles.inputmain}`}>
-           <CustomInput
+          <CustomInput
             required
             label="First Name"
             value={formData.Customer.FirstName}
             onChange={(e) => handleChange('FirstName', e.target.value)}
-            className={`${`inputfeild`}`}
+            className={`${styles.inputfeild}`}
           />
-            <CustomInput
+          <CustomInput
             required
             label="Last Name"
             value={formData.Customer.Surname}
             onChange={(e) => handleChange('Surname', e.target.value)}
-            className={`${`inputfeild`}`}
+            className={`${styles.inputfeild}`}
           />
           <div className={styles.textfieldMain}>
-            <div className={styles.feildproblem} style={{ display: 'flex', flexDirection: 'row', gap: '10px',width: '100%' }}>
-             <CustomInput
+            <div className={`${styles.feildproblem} w-100`} style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+              <CustomInput
                 required
                 label="Country Code"
                 value={formData.Customer.MobileCountryCode}
@@ -166,7 +209,7 @@ export default function ReDetail() {
                 style={{ flex: '0 0 180px' }}
                 helperText='E.G. +44 7111 111111'
               />
-                <CustomInput
+              <CustomInput
                 required
                 label="Mobile Number"
                 value={formData.Customer.Mobile}
@@ -174,10 +217,9 @@ export default function ReDetail() {
                 style={{ flex: 1 }}
               />
             </div>
-
+            {/* <p className="eg">E.G. +44 7111 111111</p> */}
           </div>
-          <div className={styles.textfieldMain}>
-             <CustomInput
+          <CustomInput
             required
             label="Email Address"
             value={formData.Customer.Email}
@@ -186,33 +228,39 @@ export default function ReDetail() {
             type="email"
             helperText="E.G. Name@gmail.com"
           />
-
-          </div>
           <div className={styles.textfieldMain}>
-             <DatePicker
-              value={formData.DateOfBirth ? new Date(formData.DateOfBirth) : undefined}
+ <DatePicker
+              value={formData.Customer.Birthday ? new Date(formData.Customer.Birthday) : undefined}
               onChange={(newDate) => {
                 const year = newDate.getFullYear();
                 const month = String(newDate.getMonth() + 1).padStart(2, '0');
                 const day = String(newDate.getDate()).padStart(2, '0');
+                const formattedDate = `${year}-${month}-${day}`;
+
                 setFormData(prev => ({
                   ...prev,
-                  DateOfBirth: `${year}-${month}-${day}`
+                  Customer: {
+                    ...prev.Customer,
+                    Birthday: formattedDate
+                  }
                 }));
+
+                dispatch(updateCustomerDetails({ Birthday: formattedDate }));
               }}
               placeholder="Date of Birth"
-              maxDate={new Date()}
             />
-
+            <p className="eg">Date of Birth</p>
           </div>
           <div className={styles.textfieldMain}>
-              <CustomInput
+          <CustomTextarea
               required
               label="Special Requests"
               value={formData.SpecialRequests}
               onChange={handleSpecialRequestChange}
-              className={`${styles.inputfeild} ${styles.feildproblem} ${styles.comments}`}
               helperText="2000 of 2000 characters remaining"
+              minRows={4}
+              maxRows={4}
+              placeholder="Enter your special requests here..."
             />
           </div>
 
@@ -226,9 +274,10 @@ export default function ReDetail() {
           </div>
         </div>
         <div className={`${styles.Data_type} ${styles.DetailbnMain}`}>
-               <CustomButton
+
+          <CustomButton
             label="BACK"
-            to="/Area"
+            to="/PickArea"
             bgColor="#3D3D3D"
             color="#FFFCF7"
           />
@@ -240,18 +289,18 @@ export default function ReDetail() {
 
 
           />
-        </div>
-        <div className={`${styles.chose_m_link} pt-3`}>
 
-          <Indicator step={3} />
+        </div>
+        <div className={styles.chose_m_link}>
+          <Indicator step={4} stepLength={5} />
         </div>
         <div className={styles.Area_type_footer}>
           <div className={styles.chose_m_link}>
-             <Link to="/Select" className="chose__another__link">
-            CHOOSE ANOTHER PUB
-          </Link>
-         </div>
-          <Link to="/" className="exist__link">
+            <Link to="/Select" className='chose__another__link'>
+              CHOOSE ANOTHER PUB
+            </Link>
+          </div>
+          <Link to="/TopHome" className='exist__link'>
             Exit And Cancel Booking
           </Link>
         </div>
@@ -259,3 +308,18 @@ export default function ReDetail() {
     </div>
   );
 }
+
+          //      <CustomButton
+          //   label="BACK"
+          //   to="/Area"
+          //   bgColor="#3D3D3D"
+          //   color="#FFFCF7"
+          // />
+
+
+          // <CustomButton
+          //   label="NEXT"
+          //   onClick={handleNextClick}
+
+
+          // />

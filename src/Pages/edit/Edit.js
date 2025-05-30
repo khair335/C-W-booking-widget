@@ -14,28 +14,34 @@ import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import DropDown from '../../components/ui/DropDown/DropDown';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
+import { updateBasicInfo, updateCurrentStep } from '../../store/bookingSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Edit() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { bookingNumber } = location.state;
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const dispatch = useDispatch();
+
+  // Get state from Redux
+  const bookingState = useSelector((state) => state.booking);
+  const { date, time, adults, children, returnBy } = bookingState;
+  console.log("bookingState", bookingState);
+  // Local state for UI
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [guestError, setGuestError] = useState("");
   const [selectedTimeISO, setSelectedTimeISO] = useState("");
   const [leaveTime, setLeaveTime] = useState("");
-  const [timeSlots, setTimeSlots] = useState([]);
-  const [adults, setAdults] = useState("");
-  const [children, setChildren] = useState("");
-  const [guestError, setGuestError] = useState("");
-  const [selectedAdults, setSelectedAdults] = useState(null);
-  const [selectedChildren, setSelectedChildren] = useState(null);
-  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+  const [selectedAdults, setSelectedAdults] = useState(adults?.toString() || "");
+  const [selectedChildren, setSelectedChildren] = useState(children?.toString() || "");
+  const [availablePromotionIds, setAvailablePromotionIds] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  // Update form validation whenever relevant fields change
+  const isFormValid = date && time && adults;
 
+  // Initialize time slots and selected time when component mounts or when dependencies change
   useEffect(() => {
     const fetchAvailability = async () => {
       if (!date || !adults) return;
-
-      setIsLoadingSlots(true);
+      setIsLoading(true);
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -46,7 +52,6 @@ export default function Edit() {
         ChannelCode: "ONLINE",
         PartySize: partySize,
       };
-
       try {
         const response = await postRequest(
           "/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilitySearch",
@@ -56,39 +61,150 @@ export default function Edit() {
         console.log("Availability data:", response.data);
         const slots = response.data?.TimeSlots || [];
         setTimeSlots(slots);
+
+        // Filter promotions for Top pub (Restaurant Area and Outdoor Terrace Rooms)
+        const promotions = response.data?.Promotions || [];
+        console.log("All promotions from API:", promotions);
+
+        const filteredPromotionIds = promotions
+         .filter(promo => {
+              const isRelevantPromotion =
+                promo.Name == "Stables Restaurant Area" ||
+                promo.Name == "New Bar Area " ||
+                promo.Name == "The Old Pub Area (dog friendly)";
+
+              console.log(`Checking promotion: ${promo.Name} (${promo.Id}) - ${isRelevantPromotion ? 'included' : 'excluded'}`);
+              return isRelevantPromotion;
+            })
+          .map(promo => promo.Id);
+
+        console.log("Filtered promotion IDs:", filteredPromotionIds);
+        setAvailablePromotionIds(filteredPromotionIds);
+
+        // If we have a selected time, find and set the corresponding slot
+        if (time && slots.length > 0) {
+          const selectedSlot = slots.find(slot => {
+            const slotTime = new Date(slot.TimeSlot).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            });
+            return slotTime === time;
+          });
+          if (selectedSlot) {
+            setSelectedTimeISO(selectedSlot.TimeSlot);
+            setLeaveTime(selectedSlot.LeaveTime);
+          }
+        }
       } catch (error) {
         console.error("Availability fetch failed:", error);
-        setTimeSlots([]);
       } finally {
-        setIsLoadingSlots(false);
+        setIsLoading(false);
       }
     };
 
     fetchAvailability();
-  }, [date, adults, children]);
+  }, [date, adults, children, time]);
 
-  const isFormValid = date && time && adults && bookingNumber;
-  const handleNextClick = () => {
-    if (!isFormValid) return;
-    navigate("/PickArea", {
-      state: {
-        date,
-        time,
-        adults,
-        children,
-        bookingNumber,
-        returnBy: leaveTime,
-      },
-    });
+  // Sync local state with Redux state
+  useEffect(() => {
+    setSelectedAdults(adults?.toString() || "");
+    setSelectedChildren(children?.toString() || "");
+  }, [adults, children]);
+
+  const handleDateChange = (newDate) => {
+    if (!newDate) {
+      dispatch(updateBasicInfo({ date: null }));
+      return;
+    }
+
+    // Format the date in YYYY-MM-DD format
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, '0');
+    const day = String(newDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    dispatch(updateBasicInfo({ date: formattedDate }));
   };
 
+  const handleAdultsChange = (value) => {
+    const numValue = parseInt(value);
+    if (numValue + parseInt(children || 0) <= 10) {
+      setSelectedAdults(value);
+      dispatch(updateBasicInfo({ adults: numValue }));
+      setGuestError("");
+    } else {
+      setGuestError("Total guests (adults + children) cannot exceed 10.");
+    }
+  };
+
+  const handleChildrenChange = (value) => {
+    const numValue = parseInt(value);
+    if (parseInt(adults || 0) + numValue <= 10) {
+      setSelectedChildren(value);
+      dispatch(updateBasicInfo({ children: numValue }));
+      setGuestError("");
+    } else {
+      setGuestError("Total guests (adults + children) cannot exceed 10.");
+    }
+  };
+
+  const handleTimeSelect = (value) => {
+    if (!value) {
+      dispatch(updateBasicInfo({ time: null, returnBy: null }));
+      setSelectedTimeISO("");
+      setLeaveTime("");
+      return;
+    }
+
+    setSelectedTimeISO(value);
+    const dateObj = new Date(value);
+    const formatted24Hour = dateObj.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    dispatch(updateBasicInfo({ time: formatted24Hour }));
+
+    const selectedSlot = timeSlots.find((slot) => slot.TimeSlot === value);
+    if (selectedSlot) {
+      const leaveTime = selectedSlot.LeaveTime || "";
+      dispatch(updateBasicInfo({ returnBy: leaveTime }));
+      setLeaveTime(leaveTime);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (!isFormValid) return;
+
+    // Log the promotion IDs before storing in Redux
+    console.log("Storing promotion IDs in Redux:", availablePromotionIds);
+
+    // Store the filtered promotion IDs in Redux for the next step
+    dispatch(updateBasicInfo({
+      availablePromotionIds: availablePromotionIds,
+      pubType: 'top'
+    }));
+
+    // Log the Redux state after dispatch
+    console.log("Updated Redux state with promotion IDs");
+
+    dispatch(updateCurrentStep(2));
+
+    console.log("Navigating to topArea");
+    navigate("/PickArea");
+  };
+
+
   return (
-    <div className={styles.griffinnMain} id="choose">
+      <div className={styles.griffinnMain} id="choose">
       <PubImageHeader
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
-        step={1}
+        step={2}
+        stepLength={5}
         pubLink="/Select"
       />
 
@@ -104,8 +220,8 @@ export default function Edit() {
           </div>
           <div className={`${styles.info_chip_container}`}>
 
-            <InfoChip icon={dateicon} label={date ? date : "Select Date"} alt="date_icon" />
-            <InfoChip icon={timeicon} label={time ? time : "Select Time"} alt="time_icon" />
+            <InfoChip icon={dateicon} label={date || "Select Date"} alt="date_icon" />
+            <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
             <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
             <InfoChip icon={reacticon} label={children || 0} alt="react_icon" />
           </div>
@@ -115,13 +231,8 @@ export default function Edit() {
 
             <div className='w-100'>
               <DatePicker
-                value={date ? new Date(date) : undefined}
-                onChange={(newDate) => {
-                  const year = newDate.getFullYear();
-                  const month = String(newDate.getMonth() + 1).padStart(2, '0');
-                  const day = String(newDate.getDate()).padStart(2, '0');
-                  setDate(`${year}-${month}-${day}`);
-                }}
+                value={date ? new Date(date) : null}
+                onChange={handleDateChange}
                 placeholder="Select Date"
                 disablePastDates={true}
               />
@@ -137,16 +248,7 @@ export default function Edit() {
                   status: "default"
                 }))}
                 value={selectedAdults}
-                onChange={(value) => {
-                  const numValue = parseInt(value);
-                  if (numValue + parseInt(children || 0) <= 10) {
-                    setSelectedAdults(value);
-                    setAdults(numValue);
-                    setGuestError("");
-                  } else {
-                    setGuestError("Total guests (adults + children) cannot exceed 10.");
-                  }
-                }}
+                onChange={handleAdultsChange}
                 placeholder="Select Adults Number"
               />
 
@@ -160,16 +262,7 @@ export default function Edit() {
                   status: "default"
                 }))}
                 value={selectedChildren}
-                onChange={(value) => {
-                  const numValue = parseInt(value);
-                  if (parseInt(adults || 0) + numValue <= 10) {
-                    setSelectedChildren(value);
-                    setChildren(numValue);
-                    setGuestError("");
-                  } else {
-                    setGuestError("Total guests (adults + children) cannot exceed 10.");
-                  }
-                }}
+                onChange={handleChildrenChange}
                 placeholder="Select Children Number"
               />
 
@@ -182,28 +275,18 @@ export default function Edit() {
                   const label = new Date(iso).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
+                    hour12: true,
                   });
                   return {
-                    label: label,
+                    label,
                     value: iso,
                     status: "default"
                   };
                 })}
                 value={selectedTimeISO}
-                onChange={(value) => {
-                  setSelectedTimeISO(value);
-                  const dateObj = new Date(value);
-                  const formatted24Hour = dateObj.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                  });
-                  setTime(formatted24Hour);
-                  const selectedSlot = timeSlots.find((slot) => slot.TimeSlot === value);
-                  setLeaveTime(selectedSlot?.LeaveTime || "");
-                }}
+                onChange={handleTimeSelect}
                 placeholder="Select Time"
-                isLoading={isLoadingSlots}
+                isLoading={isLoading}
                 noDataMessage="No available time slots for this date"
               />
 
@@ -222,7 +305,7 @@ export default function Edit() {
 
             <CustomButton
               label="BACK"
-              to="/Select"
+              to="/Modify"
               bgColor="#3D3D3D"
               color="#FFFCF7"
             />
@@ -237,14 +320,10 @@ export default function Edit() {
             />
           </div>
           <div className={styles.chose_m_link}>
-            <Indicator step={2} />
+            <Indicator step={2} stepLength={5} />
           </div>
           <div className={styles.Data_type}>
-            {/* <div className={styles.chose_m_link}>
-              <Link to="" className="chose__another__link">
-              CHOOSE ANOTHER PUB
-            </Link>
-            </div> */}
+
             <Link to="/" className="exist__link">
               Cancel Editing and exit
             </Link>
@@ -254,3 +333,23 @@ export default function Edit() {
     </div>
   );
 }
+
+
+{/* <div className={`${styles.Data_type} ${styles.EditbtnMain}`}>
+
+            <CustomButton
+              label="BACK"
+              to="/Select"
+              bgColor="#3D3D3D"
+              color="#FFFCF7"
+            />
+
+
+            <CustomButton
+              label="NEXT"
+              onClick={handleNextClick}
+              disabled={!isFormValid}
+              bgColor={!isFormValid ? "#ccc" : "#000"}
+              color={!isFormValid ? "#666" : "#fff"}
+            />
+          </div> */}

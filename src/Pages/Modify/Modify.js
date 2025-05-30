@@ -8,19 +8,120 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import CustomInput from '../../components/ui/CustomInput/CustomInput';
+import { addSuccessBookingData, resetBooking, updateBasicInfo, updateCustomerDetails, updateSelectedPromotion, updateSpecialRequests } from '../../store/bookingSlice';
+import { getBooking } from '../../services/bookingService';
+import { useDispatch } from 'react-redux';
 
 export default function Modify() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [bookingNumber, setBookingNumber] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (!bookingNumber) {
-      alert("Please fill booking number before submitting.");
+      setError("Please fill booking number before submitting.");
       return;
     }
-    navigate("/Edit", { state: { bookingNumber } }); // Pass as object
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const bookingData = await getBooking(bookingNumber);
+      console.log("API Response:", bookingData); // Log the full response
+
+      if (!bookingData) {
+        throw new Error("No booking data received");
+      }
+
+      // First reset the booking state
+      dispatch(resetBooking());
+
+      // Safely extract and format date/time
+      const visitDate = bookingData.VisitDate ? bookingData.VisitDate.split('T')[0] : null;
+      const visitTime = bookingData.VisitTime ? bookingData.VisitTime.substring(0, 5) : null;
+
+      // Calculate returnBy time safely
+      let returnBy = null;
+      if (visitDate && visitTime && bookingData.Duration) {
+        try {
+          const visitDateTime = new Date(`${visitDate}T${visitTime}`);
+          const returnDateTime = new Date(visitDateTime.getTime() + (bookingData.Duration * 60000));
+          returnBy = returnDateTime.toTimeString().substring(0, 8);
+        } catch (err) {
+          console.error("Error calculating return time:", err);
+        }
+      }
+
+      // Update basic booking info with safe values
+      dispatch(updateBasicInfo({
+        date: visitDate,
+        time: visitTime,
+        adults: bookingData.PartySize || 0,
+        children: 0,
+        returnBy: returnBy,
+        pubType: "top",
+        availablePromotionIds: bookingData.availablePromotionIds || []
+      }));
+
+      // Update customer details with safe values
+      if (bookingData.Customer) {
+        dispatch(updateCustomerDetails({
+          FirstName: bookingData.Customer.FirstName || '',
+          Surname: bookingData.Customer.Surname || '',
+          MobileCountryCode: bookingData.Customer.MobileCountryCode?.toString() || "+44",
+          Mobile: bookingData.Customer.Mobile || '',
+          Email: bookingData.Customer.Email || '',
+          ReceiveEmailMarketing: bookingData.Customer.ReceiveEmailMarketing || false,
+          ReceiveSmsMarketing: bookingData.Customer.ReceiveSmsMarketing || false,
+          ReceiveRestaurantEmailMarketing: bookingData.Customer.ReceiveRestaurantEmailMarketing || false,
+          ReceiveRestaurantSmsMarketing: bookingData.Customer.ReceiveRestaurantSmsMarketing || false,
+          Birthday: bookingData.Customer.Birthday || ''
+        }));
+      }
+
+      // Update special requests
+      dispatch(updateSpecialRequests(bookingData.SpecialRequests || ""));
+
+      // Update selected promotion if exists
+      if (bookingData.PromotionId) {
+        dispatch(updateSelectedPromotion({
+          Id: bookingData.PromotionId,
+          Name: bookingData.RestaurantName || 'Selected Promotion'
+        }));
+      }
+
+      // Add success booking data with safe values
+      dispatch(addSuccessBookingData({
+        reference: bookingData.Reference || '',
+        bookingId: bookingData.Id || null,
+        token: bookingData.Token || '',
+        editToken: bookingData.EditToken || '',
+        canEdit: bookingData.CanEdit || false,
+        canCancel: bookingData.CanCancel || false,
+        bookingStatus: bookingData.BookingStatus || '',
+        visitDateTime: bookingData.VisitDateTimeUtc || null,
+        duration: bookingData.Duration || 0
+      }));
+
+      // Navigate to edit page
+      navigate("/Edit", {
+        state: {
+          bookingNumber,
+          bookingData
+        }
+      });
+    } catch (err) {
+      console.error("Error in handleNextClick:", err);
+      setError(err.message || "Failed to fetch booking details. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+    // navigate("/Edit"
   return (
     <div className={styles.BookedMain} id="choose">
 
@@ -31,6 +132,7 @@ export default function Modify() {
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={1}
+        stepLength={5}
         pubLink="/Select"
       />
       <div className={styles.ModifyMain}>
@@ -68,7 +170,7 @@ export default function Modify() {
         <div className={`${styles.Area_type_footer} ${styles.ModifybtonMain}`}>
           <CustomButton
             onClick={handleNextClick}
-            label='Edit A Booking'
+             label={isLoading ? 'Loading...' : 'Edit A Booking'}
             disabled={!bookingNumber}
             bgColor={bookingNumber ? "#3D3D3D" : "#ccc"}
             color={bookingNumber ? "#fff" : "#000"}
@@ -89,6 +191,7 @@ export default function Modify() {
         <div className={styles.chose_m_link}>
           <Indicator
             step={1}
+            stepLength={5}
           />
         </div>
 

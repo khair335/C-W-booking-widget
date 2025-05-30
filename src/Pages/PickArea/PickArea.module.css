@@ -1,6 +1,6 @@
 .AreaaMain {
     width: 100%;
-    height: 110vh;
+    min-height: 100vh;
     background-color: #FFFCF7;
     display: flex;
     align-items: center;
@@ -13,7 +13,7 @@
 
 .AreaMain {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #FFFCF7;
     display: flex;
     align-items: center;
@@ -25,7 +25,7 @@
 
 .Data_imag {
     width: 100%;
-    height: 85vh;
+
     box-shadow: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
@@ -364,8 +364,20 @@
     margin-top: 10px;
     margin-left: 8px;
 }
-
-@media only screen and (max-width: 700px) {
+.chose_m_link{
+    display: none;
+}
+@media only screen and (max-width: 1024px) {
+    .Ara_main{
+        width: 88%;
+    }
+    .chose_m_link{
+        display: flex;
+        margin-top: 10px;
+        width: 88%;
+        justify-content: center;
+        align-items: center;
+    }
     .AreaimgMain {
         display: none;
     }

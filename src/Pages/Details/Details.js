@@ -62,7 +62,6 @@ export default function Details() {
     IsLeaveTimeConfirmed: true,
     Customer: {
       FirstName: '',
-      DateOfBirth: '',
       Surname: '',
       MobileCountryCode: '+44',
 

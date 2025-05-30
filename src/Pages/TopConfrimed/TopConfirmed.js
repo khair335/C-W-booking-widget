@@ -74,7 +74,8 @@ export default function TopConfirmed() {
     try {
       const encodedData = toUrlEncoded(bookingData);
       const response = await putRequest(
-        `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/BYVAAZZC`,
+        `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/${successBookingData
+          .reference}`,
         headers,
         encodedData
       );
@@ -88,20 +89,7 @@ export default function TopConfirmed() {
     }
   };
 
-  // Format date for display
-  const formatDate = (dateString) => {
-    if (!dateString) return "Not provided";
-    try {
-      const [year, month, day] = dateString.split('-');
-      return new Date(year, month - 1, day).toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      });
-    } catch (error) {
-      return dateString;
-    }
-  };
+
 
   return (
     <div className={styles.ConfirmMain} id="choose">
