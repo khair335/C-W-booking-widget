@@ -33,10 +33,19 @@ export default function TopConfirmed() {
   const [error, setError] = useState('');
   const handleBooking = async () => {
     setIsSubmitting(true);
+    setError('');
     const token = localStorage.getItem('token');
+    
+    if (!token) {
+      setError('Authentication token not found');
+      setIsSubmitting(false);
+      return;
+    }
+
     const headers = {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json'
     };
 
     const toUrlEncoded = (obj, prefix) => {
@@ -45,45 +54,64 @@ export default function TopConfirmed() {
         if (obj.hasOwnProperty(p)) {
           const key = prefix ? `${prefix}[${p}]` : p;
           const value = obj[p];
+          if (value === null || value === undefined) {
+            continue; // Skip null or undefined values
+          }
           if (typeof value === 'object' && value !== null) {
             str.push(toUrlEncoded(value, key));
           } else {
-            str.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+            // Convert boolean values to strings
+            const stringValue = typeof value === 'boolean' ? value.toString() : value;
+            str.push(encodeURIComponent(key) + '=' + encodeURIComponent(stringValue));
           }
         }
       }
       return str.join('&');
     };
 
-    // Create the booking data object
+    // Create the booking data object with only required fields
     const bookingData = {
       VisitDate: date,
       VisitTime: time,
       PartySize: parseInt(adults) + parseInt(children || 0),
-      PromotionId: selectedPromotion?.Id,
-      PromotionName: selectedPromotion?.Name,
+      PromotionId: selectedPromotion?.Id || '',
+      PromotionName: selectedPromotion?.Name || '',
       Customer: {
-        ...customerDetails,
-        Birthday: customerDetails.Birthday // Ensure Birthday is included
+        FirstName: customerDetails.FirstName || '',
+        Surname: customerDetails.Surname || '',
+        MobileCountryCode: customerDetails.MobileCountryCode || '+44',
+        Mobile: customerDetails.Mobile || '',
+        Email: customerDetails.Email || '',
+        ReceiveEmailMarketing: customerDetails.ReceiveEmailMarketing || false,
+        ReceiveSmsMarketing: customerDetails.ReceiveSmsMarketing || false,
+        ReceiveRestaurantEmailMarketing: customerDetails.ReceiveRestaurantEmailMarketing || false,
+        ReceiveRestaurantSmsMarketing: customerDetails.ReceiveRestaurantSmsMarketing || false,
+        Birthday: customerDetails.Birthday || ''
       },
-      SpecialRequests: specialRequests,
+      SpecialRequests: specialRequests || '',
       ChannelCode: 'ONLINE',
       IsLeaveTimeConfirmed: true
     };
 
     try {
       const encodedData = toUrlEncoded(bookingData);
+      console.log('Encoded booking data:', encodedData); // For debugging
+
       const response = await putRequest(
-        `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/${successBookingData
-          .reference}`,
+        `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/${successBookingData.reference}`,
         headers,
         encodedData
       );
-      console.log('Booking Updated Success:', response.data);
-      navigate('/TopUpdate');
+
+      if (response.data) {
+        console.log('Booking Updated Success:', response.data);
+        navigate('/TopUpdate');
+      } else {
+        throw new Error('No data received from server');
+      }
     } catch (error) {
       console.error('Booking Failed:', error);
-      setError('Failed to submit booking. Please try again.');
+      setError(error.response?.data?.message || 'Failed to submit booking. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
