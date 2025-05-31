@@ -78,7 +78,7 @@
     font-size: 36px ;
     line-height: 100% ;
     text-transform: capitalize ;
-    margin: 0;
+    margin: 0 0 10px;
 
 }
 
@@ -212,7 +212,7 @@ color: #FD6F53;
 
 #exampleModalToggle {
     backdrop-filter: blur(25px);
-    background: linear-gradient(0deg, rgba(245, 229, 207, 0.25), rgba(245, 229, 207, 0.25)), linear-gradient(0deg, rgba(28, 28, 28, 0.2), rgba(28, 28, 28, 0.2));
+   
 }
 
 #exampleModalToggle .modal-content {
