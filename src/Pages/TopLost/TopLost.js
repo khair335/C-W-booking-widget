@@ -11,12 +11,11 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomInput from '../../components/ui/CustomInput/CustomInput';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
+
 export default function TopLost() {
     const [email, setEmail] = useState('');
   return (
      <div className={styles.LostMain} id="choose">
-
-
       <PubImageHeader
         pubLogo={logo}
         sectionImg={sectionimage}
@@ -37,8 +36,6 @@ export default function TopLost() {
           </h4>
         </div>
         <div className={styles.textfieldMain}>
-
-
           <CustomInput
             required
             label="Email Address"
@@ -49,12 +46,9 @@ export default function TopLost() {
           />
         </div>
         <div className={`${styles.DatabtonMain} ${styles.Nbooking_type}`}>
-
-
           <CustomButton
             label="resend confirmation"
             to="/TopResent"
-
           />
           <CustomButton
             label="Back"

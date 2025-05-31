@@ -24,27 +24,26 @@
   transition: border-color 0.2s;
 }
 
-.custom-checkbox-input:checked + .custom-checkbox-box {
+.custom-checkbox-input:checked+.custom-checkbox-box {
   border-color: #1C1C1C;
 }
 
 .custom-checkbox-text {
   user-select: none;
   font-family: "Work Sans", sans-serif;
-
-font-weight: 400;
-font-size: 22px;
-line-height: 100%;
-letter-spacing: 0%;
-text-transform: capitalize;
-color: #1C1C1C;
-text-align: start;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-transform: capitalize;
+  color: #1C1C1C;
+  text-align: start;
 
 }
 
 
 @media (max-width: 1024px) {
-  .custom-checkbox-text{
+  .custom-checkbox-text {
     font-size: 18px;
   }
 }

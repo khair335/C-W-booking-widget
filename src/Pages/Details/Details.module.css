@@ -62,7 +62,8 @@
     font-size: 18px;
     font-family: Inter, sans-serif;
     font-weight: 300 !important;
-    height: 60px !important;
+    min-height: 60px !important;
+    height: auto !important;
 }
 .Detailtitle_type{
     background-color: #F5E5CF;

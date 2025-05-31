@@ -1,19 +1,21 @@
-*{
+* {
     padding: 0px;
     margin: 0px;
 
 }
-.homeMain{
-  width: 100%;
-  min-height: 100vh;
-  background-color: #FFFCF7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2%;
-  padding-top: 40px;
+
+.homeMain {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #FFFCF7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2%;
+    padding-top: 40px;
 }
-.section{
+
+.section {
     width: 40%;
     /* height: 100%; */
     display: flex;
@@ -22,68 +24,72 @@
     align-items: center;
     text-align: center;
 }
-.section_image{
+
+.section_image {
     /* width: 100%; */
     /* height: 75vh; */
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-     aspect-ratio: 664/793;
+    aspect-ratio: 664/793;
 }
-.imagesect{
-      gap: 24px;
+
+.imagesect {
+    gap: 24px;
     width: 50%;
     overflow: hidden;
     padding-top: 10vh;
 }
-.anotherpub{
-font-family: 'Avenir', sans-serif;
 
-font-weight: 700;
-font-size: 20px;
-line-height: 100%;
-letter-spacing: 10%;
-text-transform: uppercase;
-text-decoration: underline;
-color: #1C1C1C;
-
-
+.anotherpub {
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #1C1C1C;
 }
-.anotherpub2{
+
+.anotherpub2 {
     display: none;
 }
-.bookingcontainer{
+
+.bookingcontainer {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 20px;
 }
-.logo-large{
-       font-family: "Lora", serif ;
-    font-weight: 700 ;
-    font-size: 36px ;
-    line-height: 100% ;
-    text-transform: capitalize ;
+
+.logo-large {
+    font-family: "Lora", serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    text-transform: capitalize;
     margin: 0;
-
-
 }
+
 .titlehome {
     font-family: Lora;
-font-weight: 600;
-font-size: 24px;
-line-height: 100%;
-text-align: center;
-text-transform: capitalize;
-color: #1C1C1C;
-padding-bottom: 16px;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 100%;
+    text-align: center;
+    text-transform: capitalize;
+    color: #1C1C1C;
+    padding-bottom: 16px;
 }
-.bookingicons{
+
+.bookingicons {
     width: 60px;
 }
-.bookingttype{
-       display: flex;
+
+.bookingttype {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 85%;
@@ -91,13 +97,15 @@ padding-bottom: 16px;
     padding-bottom: 40px;
     padding-top: 12px;
     cursor: pointer;
-     margin-top: 16px;
+    margin-top: 16px;
 }
-.changeborder{
+
+.changeborder {
     border-bottom: none;
 }
-.book-text{
-        align-items: center;
+
+.book-text {
+    align-items: center;
     display: flex;
     justify-content: center;
     gap: 16px;
@@ -109,22 +117,25 @@ padding-bottom: 16px;
     text-transform: capitalize;
     color: #3D3D3D;
 }
-#cancelid{
+
+#cancelid {
     gap: 17px;
     margin-left: -5px;
 }
-.Existlink{
-font-family: 'Avenir', sans-serif;
-font-weight: 700;
-font-size: 20px;
-line-height: 100%;
-letter-spacing: 10%;
-text-transform: uppercase;
-text-decoration: underline;
-color: #FD6F53;
+
+.Existlink {
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #FD6F53;
 }
-.confirmbtn{
-     width: 100%;
+
+.confirmbtn {
+    width: 100%;
     color: white;
     font-weight: bold;
     background-color: #3D3D3D;
@@ -140,22 +151,24 @@ color: #FD6F53;
     line-height: 100%;
     letter-spacing: 10%;
     text-transform: uppercase;
-
-
 }
-.confirmbtn:hover{
+
+.confirmbtn:hover {
     background-color: #000;
 }
-.modal-body{
+
+.modal-body {
     text-align: left;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 100;
 }
-.mainpop{
+
+.mainpop {
     width: 350px;
     justify-self: center;
 }
-.modifylink{
+
+.modifylink {
     text-decoration: none;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 20px;
@@ -166,53 +179,65 @@ color: #FD6F53;
     width: 100%;
     cursor: pointer;
 }
-.modifylink:hover{
+
+.modifylink:hover {
     text-decoration: none;
     color: #000;
 }
+
 @media only screen and (max-width: 1024px) {
-    .section{
+    .section {
         width: 88%;
     }
-    .homeMain{
+
+    .homeMain {
         display: flex;
         flex-direction: column;
         gap: 0%;
     }
+
     .section_image {
-      display: none;
-    }
-    .imagesect{
         display: none;
     }
-    .bookingcontainer{
+
+    .imagesect {
+        display: none;
+    }
+
+    .bookingcontainer {
         width: 85%;
     }
-    .logo-large{
+
+    .logo-large {
         font-size: 25px;
     }
-    .book-text{
+
+    .book-text {
         font-size: 15px;
         gap: 20px;
 
     }
-    .booking-type{
+
+    .booking-type {
         padding-bottom: 15px;
         padding-top: 10px;
     }
-    .changeborder{
+
+    .changeborder {
         border-bottom: none;
     }
-    .anotherpub{
+
+    .anotherpub {
         display: none;
     }
-    .anotherpub2{
+
+    .anotherpub2 {
         display: flex;
         text-decoration: underline;
         font-size: 17px;
         font-weight: bold;
         color: #000;
     }
-  }
+}
 
 /* Select  */

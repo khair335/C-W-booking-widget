@@ -7,8 +7,6 @@ import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import reacticon from "../../images/Chips Icons Mobile (2).png";
 import resturanticon from "../../images/table_restaurant.png";
-import Areimg1 from "../../images/Image (1).png";
-import Areimg2 from "../../images/Image (2).png";
 import tabimg from "../../images/Menu Icon Mobile (1).png";
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
 import whitelogo from "../../images/T&R White.png"

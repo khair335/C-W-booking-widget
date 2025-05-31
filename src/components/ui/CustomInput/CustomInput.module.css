@@ -5,14 +5,15 @@
 
 .input {
   width: 100%;
-    height: 50px !important;
+  min-height: 50px !important;
+  height: auto !important;
 }
 
 /* Base input styles */
 .input :global(.MuiOutlinedInput-root) {
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
-    height: 50px;
+  height: 50px;
 }
 
 .input :global(.MuiOutlinedInput-notchedOutline) {

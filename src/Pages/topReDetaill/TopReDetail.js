@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../images/Griffin Black.png";
 import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
@@ -125,7 +125,7 @@ export default function TopReDetail() {
 
   const handleSpecialRequestChange = (e) => {
     const value = e.target.value;
-    console.log('value',value);
+    console.log('value', value);
     setFormData(prev => ({
       ...prev,
       SpecialRequests: value
@@ -140,7 +140,7 @@ export default function TopReDetail() {
     if (!formData.Customer.Surname.trim()) newErrors.Surname = 'Last name is required';
     if (!formData.Customer.Mobile.trim()) newErrors.Mobile = 'Mobile number is required';
     if (!formData.Customer.Email.trim()) newErrors.Email = 'Email address is required';
-   if (!formData.Customer.Birthday) newErrors.Birthday = 'Date of birth is required';
+    if (!formData.Customer.Birthday) newErrors.Birthday = 'Date of birth is required';
     if (!date) newErrors.VisitDate = 'Visit date is required';
     if (!time) newErrors.VisitTime = 'Visit time is required';
     if (!adults) newErrors.PartySize = 'At least one guest is required';
@@ -157,7 +157,7 @@ export default function TopReDetail() {
 
 
   return (
-      <div className={`${styles.DetailsMain} ${styles.topDetailMain}`} id="choose">
+    <div className={`${styles.DetailsMain} ${styles.topDetailMain}`} id="choose">
 
       <PubImageHeader
         pubLogo={whitelogo}
@@ -232,7 +232,7 @@ export default function TopReDetail() {
             helperText="E.G. Name@gmail.com"
           />
           <div className={styles.textfieldMain}>
- <DatePicker
+            <DatePicker
               value={formData.Customer.Birthday ? new Date(formData.Customer.Birthday) : undefined}
               onChange={(newDate) => {
                 const year = newDate.getFullYear();
@@ -255,7 +255,7 @@ export default function TopReDetail() {
             <p className="eg">Date of Birth</p>
           </div>
           <div className={styles.textfieldMain}>
-          <CustomTextarea
+            <CustomTextarea
               required
               label="Special Requests"
               value={formData.SpecialRequests}
@@ -284,13 +284,9 @@ export default function TopReDetail() {
             bgColor="#3D3D3D"
             color="#FFFCF7"
           />
-
-
           <CustomButton
             label="NEXT"
             onClick={handleNextClick}
-
-
           />
 
         </div>

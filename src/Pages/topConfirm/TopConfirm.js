@@ -32,7 +32,7 @@ export default function Confirm() {
     specialRequests
   } = bookingState;
 
-  console.log("bookingState",bookingState);
+  console.log("bookingState", bookingState);
 
   // Format date for display
 

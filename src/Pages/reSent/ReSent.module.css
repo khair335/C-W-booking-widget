@@ -1,4 +1,4 @@
-.ReSentMain{
+.ReSentMain {
     width: 100%;
     min-height: 100vh;
     background-color: #FFFCF7;
@@ -7,8 +7,9 @@
     justify-content: center;
     /* padding-top: 50px; */
     gap: 2%;
-  }
-.Data_imag{
+}
+
+.Data_imag {
     width: 100%;
     height: 85vh;
     box-shadow: 20px;
@@ -17,7 +18,7 @@
     margin-bottom: 15px;
 }
 
-.Nbooking-type{
+.Nbooking-type {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,10 +28,12 @@
     font-family: Inter, sans-serif;
     gap: 15px;
 }
-.existemail{
+
+.existemail {
     margin-top: -50px;
 }
-#Nbooking-type1{
+
+#Nbooking-type1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -38,27 +41,30 @@
     width: 80%;
     align-items: flex-start;
 }
-.logodatta{
+
+.logodatta {
     align-self: flex-start;
     width: 120px;
     position: absolute;
     margin-top: 20px;
     margin-left: 30px;
 }
-.confirmedData{
+
+.confirmedData {
     width: 80%;
     border-bottom: 1px solid gray;
     height: 30px;
 }
 
-.DetailsimgMain{
+.DetailsimgMain {
     width: 45%;
     align-items: center;
     display: flex;
     flex-direction: column;
     height: 85vh;
 }
-.Modify_main{
+
+.Modify_main {
     width: 43%;
     display: flex;
     flex-direction: column;
@@ -66,44 +72,51 @@
     justify-content: center;
     gap: 25px;
 }
-.Modify_main_container{
+
+.Modify_main_container {
     width: 88%;
-     display: flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 24px;
 }
-.btn1{
+
+.btn1 {
     margin-bottom: 10px;
 }
-.logos{
+
+.logos {
     width: 85px;
 }
 
-.textfieldMain{
+.textfieldMain {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     /* margin-right: -117px; */
 }
-.DatabtonMain{
+
+.DatabtonMain {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
-.btn3{
+
+.btn3 {
     text-transform: uppercase;
     font-weight: bold;
     /* width: 100%; */
 }
-.btn2{
+
+.btn2 {
     text-transform: uppercase;
     font-weight: bold;
     background-color: #C39A7B !important;
 }
-.modifybtn{
+
+.modifybtn {
     width: 100%;
     height: 50px;
     background-color: #000;
@@ -116,41 +129,50 @@
     text-decoration: none;
     justify-content: center;
 }
-.modifybtn:hover{
+
+.modifybtn:hover {
     color: white;
     text-decoration: none;
 }
-.imgdata{
+
+.imgdata {
     display: none;
 }
-.changetab1{
+
+.changetab1 {
     width: 18%;
 }
-.changeMainmob{
+
+.changeMainmob {
     display: none;
 }
-.feildproblem{
+
+.feildproblem {
     width: 100%;
 }
-.Bookingmainmob{
+
+.Bookingmainmob {
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
 }
-.BookingNumtab{
+
+.BookingNumtab {
     width: 48% !important;
     height: 8px;
     border-radius: 10px;
     border: solid 1px #C39A7B;
     display: flex;
 }
-.selectrdata{
+
+.selectrdata {
     height: 55px;
     width: 80%;
     background-color: #FFFCF7;
 }
-.reasonmain{
+
+.reasonmain {
     background-color: #C39A7B;
     color: #000;
     font-weight: bold;
@@ -172,63 +194,76 @@
     text-transform: capitalize;
     color: #1C1C1C;
 }
+
 @media only screen and (max-width: 1024px) {
 
-    .Modify_main_container{
+    .Modify_main_container {
         width: 100%;
     }
-    .Modify_main{
+
+    .Modify_main {
         width: calc(100% - 32px);
     }
-    .DetailsimgMain{
-     display: none;
+
+    .DetailsimgMain {
+        display: none;
     }
+
     .chose_m_link {
-    display: flex;
-    width: 100%;
-}
-    .Modify-main{
+        display: flex;
+        width: 100%;
+    }
+
+    .Modify-main {
         width: 100%;
         gap: 10px;
     }
-    .imgdata{
+
+    .imgdata {
         display: flex;
         margin-top: 0px;
         margin-bottom: 10px;
     }
-    #Nbooking-type1{
+
+    #Nbooking-type1 {
         gap: 10px;
         width: 80%;
         font-size: 5px;
     }
-    .Datamain{
+
+    .Datamain {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 10px;
     }
-    .BookingNmob{
+
+    .BookingNmob {
         display: flex;
         flex-direction: row;
         width: 80%;
         justify-content: space-between;
     }
-    .BookingNtab{
+
+    .BookingNtab {
         width: 48%;
         height: 8px;
         border-radius: 10px;
         border: solid 1px #C39A7B;
     }
-    .DetailsMain{
+
+    .DetailsMain {
         height: 700px;
         padding-top: 0px;
         width: 100%;
     }
-    .existemail{
+
+    .existemail {
         margin-top: -0px;
     }
-        .textfieldMain{
+
+    .textfieldMain {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -236,8 +271,8 @@
         margin-right: -0px;
     }
 
-         .subtext {
+    .subtext {
         font-size: 20px;
     }
 
-  }
+}

@@ -206,10 +206,7 @@ export default function TopEdit() {
         stepLength={4}
         pubLink="/Select"
       />
-
       <div className={styles.Datamain}>
-
-
         <div className={styles.edit_container}>
           <div className={`${styles.Data_type} ${styles.imgdata}`}>
             <img src={logo} alt="logo" />
@@ -218,7 +215,6 @@ export default function TopEdit() {
             <h1 className={`${styles.logo_large} ${styles.datetilte}`}>edit Date, time & Guests</h1>
           </div>
           <div className={`${styles.info_chip_container}`}>
-
             <InfoChip icon={dateicon} label={date || "Select Date"} alt="date_icon" />
             <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
             <InfoChip icon={membericon} label={adults || 0} alt="member_icon" />
@@ -226,7 +222,6 @@ export default function TopEdit() {
           </div>
           <div className={styles.input_container}>
             {guestError && <p className="text-danger">{guestError}</p>}
-
 
             <div className='w-100'>
               <DatePicker
@@ -237,7 +232,6 @@ export default function TopEdit() {
               />
               <p className={styles.eg}>Edit Date</p>
             </div>
-
 
             <div className='w-100'>
               <DropDown
@@ -288,28 +282,20 @@ export default function TopEdit() {
                 isLoading={isLoading}
                 noDataMessage="No available time slots for this date"
               />
-
               <p className={styles.eg}>Edit Time</p>
             </div>
-
-
-
-
 
             <p className={styles.tabletextedit}>
               Your table is required to be returned by {leaveTime || "XX:XX PM"}
             </p>
           </div>
           <div className={`${styles.Data_type} ${styles.EditbtnMain}`}>
-
             <CustomButton
               label="BACK"
               to="/TopModify"
               bgColor="#3D3D3D"
               color="#FFFCF7"
             />
-
-
             <CustomButton
               label="NEXT"
               onClick={handleNextClick}

@@ -73,11 +73,11 @@
 }
 
 .homeMain .logo-large {
-    font-family: "Lora", serif ;
-    font-weight: 700 ;
-    font-size: 36px ;
-    line-height: 100% ;
-    text-transform: capitalize ;
+    font-family: "Lora", serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    text-transform: capitalize;
     margin: 0 0 10px;
 
 }
@@ -145,14 +145,14 @@
 }
 
 .Existlink {
-font-family: 'Avenir', sans-serif;
-font-weight: 700;
-font-size: 20px;
-line-height: 100%;
-letter-spacing: 10%;
-text-transform: uppercase;
-text-decoration: underline;
-color: #FD6F53;
+    font-family: 'Avenir', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 10%;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: #FD6F53;
 
 }
 
@@ -209,10 +209,8 @@ color: #FD6F53;
     color: #000;
 }
 
-
 #exampleModalToggle {
     backdrop-filter: blur(25px);
-   
 }
 
 #exampleModalToggle .modal-content {
@@ -266,9 +264,10 @@ color: #FD6F53;
 }
 
 @media only screen and (max-width: 1024px) {
-     .section{
+    .section {
         width: 88%;
     }
+
     .homeMain {
         display: flex;
         flex-direction: column;

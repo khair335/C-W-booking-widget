@@ -40,6 +40,7 @@ body {
 @media (max-width: 700px) {
     .exist__link {
         font-size: 16px;
+        margin-top: 12px;
     }
     .chose__another__link {
         font-size: 16px;

@@ -7,21 +7,20 @@
 }
 
 .indicatorTab {
-
-    height: 12px;
-    border-radius: 10px;
-    border: solid 2px #E5BA96;
-    transition: all 0.3s ease;
+  height: 12px;
+  border-radius: 10px;
+  border: solid 2px #E5BA96;
+  transition: all 0.3s ease;
 }
 
 .active {
   background-color: #E5BA96;
 }
 
-.fill{
+.fill {
   background-color: #E5BA96;
-    border: solid 2px #E5BA96;
-    opacity: 0.5;
+  border: solid 2px #E5BA96;
+  opacity: 0.5;
 }
 
 .indicatorTab:hover {

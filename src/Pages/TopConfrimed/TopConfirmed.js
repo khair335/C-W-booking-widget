@@ -138,8 +138,6 @@ export default function TopConfirmed() {
         <img className={styles.confirmLogo} src={logo} alt="logo" />
         <h5 className={styles.bookingInfo}>Your Booking Info</h5>
         <div className={styles.Data_type} id="Data_type1">
-
-
           <InfoChip icon={dateicon} label={date || "Select Date"} alt="date_icon" />
           <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
           <InfoChip icon={membericon} label={(adults + children) || "Select Party Size"} alt="member_icon" />
@@ -199,8 +197,6 @@ export default function TopConfirmed() {
           />
         </div>
         <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
-
-
           <CustomButton
             label={isSubmitting ? "Booking..." : "Book a table"}
             onClick={handleBooking}
@@ -212,9 +208,6 @@ export default function TopConfirmed() {
             color="#FFFFFF"
             bgColor="#C39A7B"
           />
-
-
-
         </div>
         <div className={styles.changeTopMainn}>
           <Indicator step={4} stepLength={4} />

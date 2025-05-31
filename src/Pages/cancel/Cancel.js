@@ -5,6 +5,7 @@ import "./Cancel.css";
 import { Link } from "react-router-dom";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
+
 export default function Cancel() {
   return (
     <div className="CancelMain" id="choose">

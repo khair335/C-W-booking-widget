@@ -26,14 +26,6 @@
     object-fit: cover;
   object-position: left;
 }
-
-
-
-
-
-
-
-
 @media only screen and (max-width: 1024px) {
   .pubImgMain {
     display: none;
@@ -41,3 +33,8 @@
 
 
 }
+
+.center {
+  object-position: center;
+}
+

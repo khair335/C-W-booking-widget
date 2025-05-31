@@ -1,4 +1,4 @@
-.CancelledMain{
+.CancelledMain {
     width: 100%;
     min-height: 100vh;
     background-color: #FFFCF7;
@@ -7,17 +7,17 @@
     justify-content: center;
     /* padding-top: 50px; */
     gap: 2%;
-  }
-.Data_imag{
-    width: 100%;
+}
 
+.Data_imag {
+    width: 100%;
     box-shadow: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
     margin-bottom: 15px;
 }
 
-.Cancel-type{
+.Cancel-type {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,7 +28,7 @@
     gap: 7px;
 }
 
-#Data_type1{
+#Data_type1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -36,33 +36,36 @@
     width: 80%;
     align-items: flex-start;
 }
-.logodatta{
+
+.logodatta {
     align-self: flex-start;
     width: 120px;
     position: absolute;
     margin-top: 20px;
     margin-left: 30px;
 }
+
 /* .choosemain{
     display:flex;
 } */
 
-.confirmedData{
-   width: 80%;
+.confirmedData {
+    width: 80%;
     /* background-color: #000; */
     border-bottom: 1px solid #8C826A;
     height: 66px;
     padding: 20px 0;
 }
 
-.DetailsimgMain{
+.DetailsimgMain {
     width: 45%;
     align-items: center;
     display: flex;
     flex-direction: column;
     height: 85vh;
 }
-.Modify-main{
+
+.Modify-main {
     width: 43%;
     display: flex;
     flex-direction: column;
@@ -70,29 +73,35 @@
     justify-content: center;
     gap: 25px;
 }
-.btn1{
+
+.btn1 {
     margin-bottom: 10px;
 }
-.logos{
+
+.logos {
     width: 85px;
 }
-.CancelbtnMain{
+
+.CancelbtnMain {
     width: 80%;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-.btn3{
+
+.btn3 {
     text-transform: uppercase;
     font-weight: bold;
     /* width: 100%; */
 }
-.btn2{
+
+.btn2 {
     text-transform: uppercase;
     font-weight: bold;
     background-color: #C39A7B !important;
 }
-.Cancelbtn{
+
+.Cancelbtn {
     width: 100%;
     height: 50px;
     background-color: #000;
@@ -105,63 +114,77 @@
     text-decoration: none;
     justify-content: center;
 }
-.Cancelbtn:hover{
+
+.Cancelbtn:hover {
     color: white;
     text-decoration: none;
 }
-.imgdata{
+
+.imgdata {
     display: none;
 }
-.changetab1{
+
+.changetab1 {
     width: 18%;
 }
-.changeMainmob{
+
+.changeMainmob {
     display: none;
 }
-.feildproblem{
+
+.feildproblem {
     width: 100%;
 }
-.Changeta{
+
+.Changeta {
     width: 18% !important;
     height: 8px;
     border-radius: 10px;
     border: solid 1px #C39A7B;
     display: flex;
 }
-.belowt{
+
+.belowt {
     font-size: 25px;
 }
+
 @media only screen and (max-width: 700px) {
-    .DetailsimgMain{
-     display: none;
+    .DetailsimgMain {
+        display: none;
     }
-    .Modify-main{
+
+    .Modify-main {
         width: 100%;
         gap: 10px;
     }
-    .imgdata{
+
+    .imgdata {
         display: flex;
         margin-top: 0px;
         margin-bottom: 10px;
     }
-    #Data_type1{
+
+    #Data_type1 {
         gap: 10px;
         width: 80%;
         font-size: 5px;
     }
-    .Datamain{
+
+    .Datamain {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 10px;
     }
-    .DetailsMain{
+
+    .DetailsMain {
         height: 700px;
         padding-top: 0px;
         width: 100%;
     }
-    .belowt{
+
+    .belowt {
         font-size: 15px;
     }
-  }
+}

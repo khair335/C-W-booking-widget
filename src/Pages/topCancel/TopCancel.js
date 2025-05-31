@@ -6,6 +6,7 @@ import styles from "./TopCancel.module.css";
 import { Link } from "react-router-dom";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
+
 export default function Cancel() {
   return (
     <div className={styles.CancelMain} id="choose">
@@ -30,22 +31,16 @@ export default function Cancel() {
           <h3 className={`${styles.subtext}`}>Are You Sure You Want To Cancel Your Booking?</h3>
         </div>
         <div className={`${styles.Cancel_type} ${styles.CancelbtnMain}`}>
-
-
-
           <CustomButton
             to="/TopBookingNumber"
             label="Cancel A Booking"
           />
-
           <CustomButton
             label="Edit A Booking"
             to="/TopModify"
             bgColor="#C39A7B"
             color="#FFFCF7"
           />
-
-
         </div>
         <div className={`${styles.Cancel_type}`}>
           <Link to="/" className={`exist__link`}>

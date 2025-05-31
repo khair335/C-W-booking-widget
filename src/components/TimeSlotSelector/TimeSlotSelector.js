@@ -13,7 +13,7 @@ const TimeSlotSelector = ({
     const date = new Date(slot.TimeSlot);
     const hour = date.getHours();
     const key = `${hour}:00`;
-    
+
     if (!groups[key]) {
       groups[key] = [];
     }
@@ -23,14 +23,14 @@ const TimeSlotSelector = ({
 
   const handleTimeSelect = (slot) => {
     if (disabled) return;
-    
+
     const dateObj = new Date(slot.TimeSlot);
     const formatted24Hour = dateObj.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
     });
-    
+
     onTimeSelect({
       iso: slot.TimeSlot,
       formatted: formatted24Hour,

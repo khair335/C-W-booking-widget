@@ -15,8 +15,6 @@ import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
 
-
-
 export default function Confirmed() {
   const location = useLocation();
   const navigate = useNavigate();

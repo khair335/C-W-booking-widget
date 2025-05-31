@@ -8,12 +8,13 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { useDispatch } from 'react-redux';
 import { resetBooking } from '../../store/bookingSlice';
+
 export default function Select() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(resetBooking());
-  },[])
+  }, [])
 
   return (
     <div className={styles.selectMain} id="choose">
@@ -22,7 +23,7 @@ export default function Select() {
       </div> */}
       <PubImageHeader
         sectionImg={chooseimg}
-
+        imagePosition={"center"}
       />
       <div className={styles.select_container}>
         <div className={styles.select_typee}>
@@ -40,8 +41,6 @@ export default function Select() {
           <a href="tel:+441664820407" className={styles.numbrtag}>
             +441664820407
           </a>
-
-
           <CustomButton
             label="SELECT"
             to="/topandrun"
@@ -58,8 +57,6 @@ export default function Select() {
           <a href="tel:+441509890535" className={styles.numbrtag}>
             +441509890535
           </a>
-
-
           <CustomButton
             label="SELECT"
             to="/griffin"

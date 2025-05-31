@@ -1,5 +1,3 @@
-
-
 .topDetailMain .tabletext {
     display: flex;
     flex-direction: row;
@@ -11,7 +9,7 @@
 }
 
 
-.DetailsMain{
+.DetailsMain {
     width: 100%;
     height: fit-content;
     background-color: #FFFCF7;
@@ -20,8 +18,9 @@
     justify-content: center;
     padding-top: 50px;
     gap: 2%;
-  }
-.Data_imag{
+}
+
+.Data_imag {
     width: 100%;
     height: 85vh;
     box-shadow: 20px;
@@ -30,7 +29,7 @@
     margin-bottom: 15px;
 }
 
-.Data_type{
+.Data_type {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,7 +40,7 @@
     gap: 7px;
 }
 
-#Data_type1{
+#Data_type1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -49,7 +48,8 @@
     width: 80%;
     align-items: flex-start;
 }
-.inputmain{
+
+.inputmain {
     gap: 28px;
     margin-top: 10px;
     align-items: center;
@@ -59,10 +59,12 @@
     max-width: 88%;
     width: 100%;
 }
-.inputunik{
+
+.inputunik {
     background-color: #FFFCF7;
 }
-.inputfeild{
+
+.inputfeild {
     width: 80%;
     border: 1px solid grey;
     border-radius: 5px;
@@ -72,9 +74,11 @@
     font-size: 18px;
     font-family: Inter, sans-serif;
     font-weight: 300 !important;
-    height: 60px !important;
+    min-height: 60px !important;
+    height: auto !important;
 }
-.Detailtitle_type{
+
+.Detailtitle_type {
     background-color: #F5E5CF;
     box-shadow: 0px 1px 3px 0px #0000004D, 0px 4px 8px 3px #00000026;
     border-radius: 8px;
@@ -82,8 +86,7 @@
     width: auto;
     font-size: small;
     align-items: center;
-    display: flex
-;
+    display: flex;
     justify-content: center;
     padding: 4px 8px;
     gap: 8px;
@@ -97,41 +100,46 @@
     vertical-align: middle;
     text-transform: capitalize;
 }
-.logodata{
+
+.logodata {
     align-self: flex-start;
     width: 120px;
     position: absolute;
     margin-top: 20px;
     margin-left: 30px;
 }
+
 /* .choosemain{
     display:flex;
 } */
-.DetailsimgMain{
+.DetailsimgMain {
     width: 45%;
     align-items: center;
     display: flex;
     flex-direction: column;
     height: 85vh;
 }
-.changeMain{
+
+.changeMain {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 10px;
 }
-.changetab{
-      width: calc(100% / 4 - 24px);
+
+.changetab {
+    width: calc(100% / 4 - 24px);
     height: 12px;
     border-radius: 10px;
     border: solid 2px #E5BA96;
 }
 
-.fixedit{
+.fixedit {
     background-color: #C39A7B;
 }
-.Dmain{
+
+.Dmain {
     width: 43%;
     display: flex;
     flex-direction: column;
@@ -139,26 +147,29 @@
     justify-content: center;
     gap: 10px;
 }
-.textfieldMain{
+
+.textfieldMain {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     /* margin-right: -117px; */
 }
-.eg{
-  margin: 0 4px;
-  font-family: "Work Sans", sans-serif;
-  font-weight: 400;
-  font-style: italic;
-  font-size: 14px;
-  line-height: 130%;
-  letter-spacing: 0%;
-  vertical-align: middle;
-  text-transform: capitalize;
-  color: #3D3D3D;
+
+.eg {
+    margin: 0 4px;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    text-transform: capitalize;
+    color: #3D3D3D;
 }
-.selecterdata{
+
+.selecterdata {
     width: 80%;
     border: 1px solid grey;
     border-radius: 5px;
@@ -167,11 +178,12 @@
     font-weight: 300 !important;
     font-size: 18px;
 }
-.logos{
+
+.logos {
     width: 85px;
 }
 
-.tabletext{
+.tabletext {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -180,25 +192,28 @@
     /* font-weight: bold; */
     text-align: start;
     letter-spacing: 1px;
-    width: 88% ;
+    width: 88%;
 }
-.checktext{
+
+.checktext {
     margin-left: 25px;
 }
-.check_box{
+
+.check_box {
     margin-left: 0px;
     background-color: white;
 }
 
-.DetailbnMain{
-    width: 88% ;
+.DetailbnMain {
+    width: 88%;
     display: flex;
     justify-content: space-between !;
-    flex-direction: row ;
-    gap: 10px ;
+    flex-direction: row;
+    gap: 10px;
 }
-.detailbutton{
-       width: calc(50% - 12px);
+
+.detailbutton {
+    width: calc(50% - 12px);
     height: 58px;
     background-color: #3D3D3D;
     color: white;
@@ -206,8 +221,7 @@
     border: none;
     border-radius: 4px;
     align-items: center;
-    display: flex
-;
+    display: flex;
     text-decoration: none;
     justify-content: center;
     font-family: 'Avenir', sans-serif;
@@ -218,8 +232,9 @@
     text-transform: uppercase;
     color: #FFFCF7;
 }
-.DetailsMain .griffinbuttn3{
-        width: calc(50% - 12px);
+
+.DetailsMain .griffinbuttn3 {
+    width: calc(50% - 12px);
     height: 58px;
     background-color: #3D3D3D;
     color: white;
@@ -227,8 +242,7 @@
     border: none;
     border-radius: 4px;
     align-items: center;
-    display: flex
-;
+    display: flex;
     text-decoration: none;
     justify-content: center;
     font-family: 'Avenir', sans-serif;
@@ -239,17 +253,21 @@
     text-transform: uppercase;
     color: #FFFCF7;
 }
-.detailbutton:hover{
+
+.detailbutton:hover {
     color: white;
     text-decoration: none;
 }
-.imgdata{
+
+.imgdata {
     display: none;
 }
-.changeMainmob{
+
+.changeMainmob {
     display: none;
 }
-.feildproblem{
+
+.feildproblem {
     width: 88%;
 
 }
@@ -268,6 +286,7 @@
     border-radius: 10px;
     border: solid 1px #C39A7B;
 }
+
 .Area_type_footer {
     display: flex;
     flex-direction: column;
@@ -290,9 +309,11 @@
     font-family: Inter, sans-serif;
     gap: 36px;
 }
+
 .chose_m_link {
     display: none;
 }
+
 .logo_large {
     font-family: "Lora", serif;
     font-weight: 700;
@@ -302,72 +323,85 @@
     margin: 0;
     padding-bottom: 6px;
 }
+
 @media only screen and (max-width: 1024px) {
 
-   .chose_m_link {
+    .chose_m_link {
         display: flex;
         width: 88%;
         justify-content: center;
         align-items: center;
     }
-    .DetailsimgMain{
-     display: none;
+
+    .DetailsimgMain {
+        display: none;
     }
-    .Dmain{
+
+    .Dmain {
         width: 100%;
     }
-    .textfieldMain{
+
+    .textfieldMain {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         margin-right: -0px;
     }
-    .feildproblem{
+
+    .feildproblem {
         width: 100% !important;
     }
-    .inputunik{
+
+    .inputunik {
         width: 92% !important;
     }
-    .imgdata{
+
+    .imgdata {
         display: flex;
         margin-top: 20px;
     }
-    #Data_type1{
+
+    #Data_type1 {
         gap: 10px;
         width: 80%;
     }
-    .Datamain{
+
+    .Datamain {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 10px;
     }
+
     /* .detailbutton{
         height: 40px;
     } */
-    .DetailsMainmob{
+    .DetailsMainmob {
         width: 80%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         margin-bottom: 10px;
     }
-    .Detailstab{
+
+    .Detailstab {
         width: 22%;
         height: 8px;
         border-radius: 10px;
         border: solid 1px #C39A7B;
     }
-    .anotherpub2{
+
+    .anotherpub2 {
         display: flex;
         text-decoration: underline;
         font-size: 17px;
         font-weight: bold;
         color: #000;
     }
-    .DetailsMain{
+
+    .DetailsMain {
         height: 700px;
         padding-top: 0px;
         width: 100%;
@@ -399,4 +433,4 @@
         padding-bottom: 6px;
 
     }
-  }
+}

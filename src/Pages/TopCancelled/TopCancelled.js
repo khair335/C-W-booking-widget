@@ -4,11 +4,10 @@ import sectionimage from "../../images/Tap & Run_MainImage 1.png";
 import "./TopCancelled.css";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
+
 export default function Cancel() {
   return (
     <div className="CancelledMain" id="choose">
-
-
        <PubImageHeader
         pubLogo={logo}
         sectionImg={sectionimage}
@@ -26,8 +25,6 @@ export default function Cancel() {
           <h3>Sorry To Miss You This Time — We Hope To Welcome You Soon!</h3>
         </div>
         <div className="Cancel-type CancelbtnMain">
-
-
           <CustomButton
             label="Make a New Booking"
             to="/Select"
@@ -38,7 +35,6 @@ export default function Cancel() {
             to="/"
             bgColor="#C39A7B"
             color="#FFFFFF"
-
           />
         </div>
 

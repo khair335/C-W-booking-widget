@@ -21,7 +21,6 @@ import { updateBasicInfo, updateCurrentStep } from '../../store/bookingSlice';
 export default function Top() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
   const { date, time, adults, children, returnBy } = bookingState;
@@ -62,11 +61,9 @@ export default function Top() {
         console.log("Availability data:", response.data);
         const slots = response.data?.TimeSlots || [];
         setTimeSlots(slots);
-
         // Filter promotions for Top pub (Restaurant Area and Outdoor Terrace Rooms)
         const promotions = response.data?.Promotions || [];
         console.log("All promotions from API:", promotions);
-
         const filteredPromotionIds = promotions
           .filter(promo => {
             const isRelevantPromotion =
@@ -101,7 +98,6 @@ export default function Top() {
         setIsLoading(false);
       }
     };
-
     fetchAvailability();
   }, [date, adults, children, time]);
 
@@ -116,13 +112,11 @@ export default function Top() {
       dispatch(updateBasicInfo({ date: null }));
       return;
     }
-
     // Format the date in YYYY-MM-DD format
     const year = newDate.getFullYear();
     const month = String(newDate.getMonth() + 1).padStart(2, '0');
     const day = String(newDate.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-
     dispatch(updateBasicInfo({ date: formattedDate }));
   };
 
@@ -165,7 +159,6 @@ export default function Top() {
     });
 
     dispatch(updateBasicInfo({ time: formatted24Hour }));
-
     const selectedSlot = timeSlots.find((slot) => slot.TimeSlot === value);
     if (selectedSlot) {
       const leaveTime = selectedSlot.LeaveTime || "";
@@ -176,21 +169,16 @@ export default function Top() {
 
   const handleNextClick = () => {
     if (!isFormValid) return;
-
     // Log the promotion IDs before storing in Redux
     console.log("Storing promotion IDs in Redux:", availablePromotionIds);
-
     // Store the filtered promotion IDs in Redux for the next step
     dispatch(updateBasicInfo({
       availablePromotionIds: availablePromotionIds,
       pubType: 'top'
     }));
-
     // Log the Redux state after dispatch
     console.log("Updated Redux state with promotion IDs");
-
     dispatch(updateCurrentStep(2));
-
     console.log("Navigating to topArea");
     navigate("/topArea");
   };

@@ -8,6 +8,7 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import CustomInput from '../../components/ui/CustomInput/CustomInput';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
+
 export default function Lost() {
   const [email, setEmail] = useState('');
   return (
@@ -34,8 +35,6 @@ export default function Lost() {
           </h4>
         </div>
         <div className={styles.textfieldMain}>
-
-
           <CustomInput
             required
             label="Email Address"
@@ -46,12 +45,9 @@ export default function Lost() {
           />
         </div>
         <div className={`${styles.DatabtonMain} ${styles.Nbooking_type}`}>
-
-
           <CustomButton
             label="resend confirmation"
             to="/Resent"
-
           />
           <CustomButton
             label="Back"

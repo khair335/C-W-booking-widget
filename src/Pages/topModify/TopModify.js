@@ -131,9 +131,6 @@ export default function Modify() {
 
   return (
     <div className={styles.BookedMain} id="choose">
-
-
-
       <PubImageHeader
         pubLogo={logo}
         sectionImg={sectionimg2}
@@ -143,25 +140,18 @@ export default function Modify() {
         pubLink="/Select"
       />
       <div className={styles.ModifyMain}>
-
         <div className={styles.modify_container}>
-
-
           <div className={`${styles.Data_type} ${styles.imgdata}`}>
             <img src={logo} alt="logo" />
           </div>
           <div className={styles.Data_type}>
             <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Modify A Booking </h1>
           </div>
-
           <h4 className={styles.subtext}>
             Please Enter Your Booking Number, As <br className='block md:hidden' /> Provided In Your Confirmation
             Email.
           </h4>
-
           <div className={styles.textfieldMain}>
-
-
             <CustomInput
               required
               label="Booking Number"
@@ -179,10 +169,7 @@ export default function Modify() {
                 {error}
               </p>
             )}
-
-
           </div>
-
           <div className={`${styles.Area_type_footer} ${styles.ModifybtonMain}`}>
             <CustomButton
               onClick={handleNextClick}
@@ -190,7 +177,6 @@ export default function Modify() {
               disabled={!bookingNumber || isLoading}
               bgColor={bookingNumber && !isLoading ? "#3D3D3D" : "#ccc"}
               color={bookingNumber && !isLoading ? "#fff" : "#000"}
-
             />
             <CustomButton
               label="resend the confirmation email"
@@ -198,10 +184,6 @@ export default function Modify() {
               bgColor="#C39A7B"
               color="#FFFCF7"
             />
-
-
-
-
           </div>
 
           <div className={styles.chose_m_link}>
