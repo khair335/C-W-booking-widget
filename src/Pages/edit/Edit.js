@@ -204,7 +204,7 @@ export default function Edit() {
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={2}
-        stepLength={5}
+          stepLength={4}
         pubLink="/Select"
       />
 
@@ -320,7 +320,7 @@ export default function Edit() {
             />
           </div>
           <div className={styles.chose_m_link}>
-            <Indicator step={2} stepLength={5} />
+            <Indicator step={2} stepLength={4} />
           </div>
           <div className={styles.Data_type}>
 
@@ -335,21 +335,3 @@ export default function Edit() {
 }
 
 
-{/* <div className={`${styles.Data_type} ${styles.EditbtnMain}`}>
-
-            <CustomButton
-              label="BACK"
-              to="/Select"
-              bgColor="#3D3D3D"
-              color="#FFFCF7"
-            />
-
-
-            <CustomButton
-              label="NEXT"
-              onClick={handleNextClick}
-              disabled={!isFormValid}
-              bgColor={!isFormValid ? "#ccc" : "#000"}
-              color={!isFormValid ? "#666" : "#fff"}
-            />
-          </div> */}

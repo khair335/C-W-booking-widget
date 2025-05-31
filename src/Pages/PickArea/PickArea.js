@@ -133,7 +133,7 @@ export default function PickArea() {
   const handleNextClick = () => {
     if (!isFormValid) return;
     dispatch(updateCurrentStep(4));
-    navigate("/ReDetail", {
+    navigate("/Confirmed", {
       state: {
         date,
         time,
@@ -167,7 +167,7 @@ export default function PickArea() {
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={3}
-        stepLength={5}
+        stepLength={4}
         pubLink="/Select"
       />
 
@@ -256,7 +256,7 @@ export default function PickArea() {
 
         <div className={styles.chose_m_link}>
           <Indicator step={3}
-        stepLength={5} />
+        stepLength={4} />
         </div>
 
         <div className={styles.Area_type}>

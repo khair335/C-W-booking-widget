@@ -203,7 +203,7 @@ export default function TopEdit() {
         sectionImg={sectionimg2}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={2}
-        stepLength={5}
+        stepLength={4}
         pubLink="/Select"
       />
 
@@ -319,7 +319,7 @@ export default function TopEdit() {
             />
           </div>
           <div className={styles.chose_m_link}>
-            <Indicator step={2} stepLength={5} />
+            <Indicator step={2} stepLength={4} />
           </div>
           <div className={styles.Data_type}>
 

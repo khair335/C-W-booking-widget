@@ -161,7 +161,7 @@ export default function ReDetail() {
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={4}
-        stepLength={5}
+        stepLength={4}
         pubLink="/Select"
       />
       <div className={styles.Dmain}>
@@ -292,7 +292,7 @@ export default function ReDetail() {
 
         </div>
         <div className={styles.chose_m_link}>
-          <Indicator step={4} stepLength={5} />
+          <Indicator step={4} stepLength={4} />
         </div>
         <div className={styles.Area_type_footer}>
           <div className={styles.chose_m_link}>
@@ -309,17 +309,3 @@ export default function ReDetail() {
   );
 }
 
-          //      <CustomButton
-          //   label="BACK"
-          //   to="/Area"
-          //   bgColor="#3D3D3D"
-          //   color="#FFFCF7"
-          // />
-
-
-          // <CustomButton
-          //   label="NEXT"
-          //   onClick={handleNextClick}
-
-
-          // />

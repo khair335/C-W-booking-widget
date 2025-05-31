@@ -136,7 +136,7 @@ export default function TopPickArea() {
   const handleNextClick = () => {
     if (!isFormValid) return;
     dispatch(updateCurrentStep(4));
-    navigate("/TopReDetail", {
+    navigate("/TopConfirmed", {
       state: {
         date,
         time,
@@ -170,7 +170,7 @@ export default function TopPickArea() {
         sectionImg={sectionimg2}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={3}
-        stepLength={5}
+        stepLength={4}
         pubLink="/Select"
       />
 
@@ -259,7 +259,7 @@ export default function TopPickArea() {
 
         <div className={styles.chose_m_link}>
           <Indicator step={3}
-        stepLength={5} />
+            stepLength={4} />
         </div>
 
         <div className={styles.Area_type}>

@@ -132,7 +132,7 @@ export default function Modify() {
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={1}
-        stepLength={5}
+        stepLength={4}
         pubLink="/Select"
       />
       <div className={styles.ModifyMain}>
@@ -191,7 +191,7 @@ export default function Modify() {
         <div className={styles.chose_m_link}>
           <Indicator
             step={1}
-            stepLength={5}
+            stepLength={4}
           />
         </div>
 

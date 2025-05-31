@@ -35,7 +35,7 @@ export default function TopConfirmed() {
     setIsSubmitting(true);
     setError('');
     const token = localStorage.getItem('token');
-    
+
     if (!token) {
       setError('Authentication token not found');
       setIsSubmitting(false);
@@ -126,8 +126,8 @@ export default function TopConfirmed() {
         // pubLogo={logo}
         sectionImg={sectionimg2}
         pubLinkLabel="CHOOSE ANOTHER PUB"
-        step={5}
-        stepLength={5}
+        step={4}
+        stepLength={4}
         pubLink="/Select"
       />
       <div className={styles.ConfirmMainContainer}>
@@ -217,7 +217,7 @@ export default function TopConfirmed() {
 
         </div>
         <div className={styles.changeTopMainn}>
-          <Indicator step={5} stepLength={5} />
+          <Indicator step={4} stepLength={4} />
         </div>
         <div className={styles.Area_type_footer}>
           <div className={styles.chose_m_link}>

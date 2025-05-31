@@ -439,7 +439,7 @@ export default function Griffin() {
               CHOOSE ANOTHER PUB
             </Link>
           </div>
-          <Link to="/TopHome" className="exist__link">
+          <Link to="/" className="exist__link">
             Exit And Cancel Booking
           </Link>
         </div>
