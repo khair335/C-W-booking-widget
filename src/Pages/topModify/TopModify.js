@@ -178,12 +178,7 @@ export default function Modify() {
               bgColor={bookingNumber && !isLoading ? "#3D3D3D" : "#ccc"}
               color={bookingNumber && !isLoading ? "#fff" : "#000"}
             />
-            <CustomButton
-              label="resend the confirmation email"
-              to="/TopArea"
-              bgColor="#C39A7B"
-              color="#FFFCF7"
-            />
+
           </div>
 
           <div className={styles.chose_m_link}>
@@ -194,7 +189,7 @@ export default function Modify() {
           </div>
 
           <p className={styles.lost_booking}>
-            Lost your booking details? Press the button  to resend the confirmation email.
+            {/* Lost your booking details? Press the button  to resend the confirmation email. */}
           </p>
           <div className={styles.Data_type}>
             <Link to="/" className='exist__link'>

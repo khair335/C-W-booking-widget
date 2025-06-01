@@ -140,7 +140,7 @@ export default function Area() {
               let restaurantImage;
               if (promotion.Name.includes("The Old Pub Area (dog friendly)")) {
                 restaurantImage = oldPubArea;
-              } else if (promotion.Name.includes("(Restaurant Area)")) {
+              } else if (promotion.Name.includes("New Bar Area")) {
                 restaurantImage = newBarArea;
               } else {
                 restaurantImage = stablesRestaurantArea;

@@ -209,12 +209,12 @@ export default function PickArea() {
           ) : (
             promotions.map((promotion) => {
               let restaurantImage;
-              if (promotion.Name.includes("Restaurant Area")) {
-                restaurantImage = stablesRestaurantArea;
-              } else if (promotion.Name.includes("Outdoor Terrace Rooms")) {
+              if (promotion.Name.includes("The Old Pub Area (dog friendly)")) {
+                restaurantImage = oldPubArea;
+              } else if (promotion.Name.includes("New Bar Area")) {
                 restaurantImage = newBarArea;
               } else {
-                restaurantImage = oldPubArea;
+                restaurantImage = stablesRestaurantArea;
               }
               return (
                 <AreaSelectionCard
