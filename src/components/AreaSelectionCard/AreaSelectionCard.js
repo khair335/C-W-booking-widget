@@ -41,7 +41,7 @@ const AreaSelectionCard = ({
                 promotion.Name
               )}
             </h3>
-            {promotion.Description && isRestaurant && showInfoToggle && (
+            {promotion.Description && showInfoToggle && (
               <Link
                 className={`${styles.readinfo} ${isInfoOpen ? styles.open : ''}`}
                 onClick={handleInfoClick}
@@ -55,7 +55,7 @@ const AreaSelectionCard = ({
             )}
           </p>
         </div>
-        {promotion.Description && isRestaurant && (
+        {promotion.Description  && (
           <div
             className={`${styles.readtext} ${isInfoOpen ? styles.open : ''}`}
             aria-hidden={!isInfoOpen}

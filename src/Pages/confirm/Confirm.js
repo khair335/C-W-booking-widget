@@ -76,7 +76,7 @@ export default function Confirm() {
         encodedData
       );
       console.log('Booking Success:', response.data);
-      if (response.data.Reference) {
+      if (response.data.Booking.Reference) {
         dispatch(addSuccessBookingData(response.data));
         navigate('/Booked');
       } else {

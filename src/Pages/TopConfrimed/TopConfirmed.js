@@ -204,7 +204,7 @@ export default function TopConfirmed() {
           />
           <CustomButton
             label="Back"
-            to="/TopReDetail"
+            to="/topPickArea"
             color="#FFFFFF"
             bgColor="#C39A7B"
           />

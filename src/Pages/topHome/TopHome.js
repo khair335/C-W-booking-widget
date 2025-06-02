@@ -1,6 +1,7 @@
 import React from "react";
 import "./TopHome.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import * as bootstrap from 'bootstrap';
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import tablebookingimg from "../../images/table_restaurant.png";
 import modifyimg from "../../images/edit_calendar.png";
@@ -12,7 +13,34 @@ import logo1 from "../../images/Logo (1).png";
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
 import whitelogo from "../../images/T&R White.png"
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+
 function TopHome() {
+  const navigate = useNavigate();
+
+  const handleConfirmClick = (e) => {
+    e.preventDefault();
+    const modal = document.getElementById('exampleModalToggle');
+    const modalInstance = bootstrap.Modal.getInstance(modal);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+
+    // Clean up all modal-related elements and classes
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+      backdrop.remove();
+    }
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+
+    // Remove any remaining fade classes
+    modal.classList.remove('show');
+    modal.style.display = 'none';
+
+    navigate('/Select');
+  };
+
   return (
     <>
       <div className="homeMain" id="homepage">
@@ -94,9 +122,12 @@ function TopHome() {
                   cashless — card or contactless payments only.</p>
                 </div>
                 <div className="modal-footer">
-                  <Link to="/Select" className="btn btn-primary confirmbtn w-100">
+                  <button
+                    onClick={handleConfirmClick}
+                    className="btn btn-primary confirmbtn w-100"
+                  >
                     CONFIRM
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>

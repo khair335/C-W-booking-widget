@@ -207,7 +207,7 @@ export default function Confirmed() {
           />
           <CustomButton
             label="Back"
-            to="/ReDetail"
+            to="/PickArea"
             color="#FFFFFF"
             bgColor="#C39A7B"
           />
