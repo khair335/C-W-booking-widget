@@ -69,6 +69,17 @@ export default function Details() {
     }
   }, [customerDetails]);
 
+  // Update the useEffect that sets special requests
+  useEffect(() => {
+    // Only add children prefix if there are children
+    const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
+    setFormData(prev => ({
+      ...prev,
+      SpecialRequests: childrenPrefix
+    }));
+    dispatch(updateSpecialRequests(childrenPrefix));
+  }, [children, dispatch]);
+
   // Format date for display
   const displayDate = React.useMemo(() => {
     if (!date) return "Select Date";
@@ -139,13 +150,24 @@ export default function Details() {
     }));
   };
 
+  // Update the handleSpecialRequestChange function
   const handleSpecialRequestChange = (e) => {
     const value = e.target.value;
+    const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
+
+    // Remove the children prefix if it exists
+    const userInput = value.replace(/^Includes \d+ children(?: - )?/, '');
+
+    // Only add the prefix if there are children
+    const formattedRequest = children > 0
+      ? `${childrenPrefix}${userInput ? ` - ${userInput}` : ''}`
+      : userInput;
+
     setFormData(prev => ({
       ...prev,
-      SpecialRequests: value
+      SpecialRequests: formattedRequest
     }));
-    dispatch(updateSpecialRequests(value));
+    dispatch(updateSpecialRequests(formattedRequest));
   };
 
   const handleNextClick = () => {
@@ -286,14 +308,14 @@ export default function Details() {
           <div className={styles.textfieldMain}>
 
                   <CustomTextarea
-              required
+
               label="Special Requests"
               value={formData.SpecialRequests}
               onChange={handleSpecialRequestChange}
               helperText="2000 of 2000 characters remaining"
               minRows={4}
               maxRows={4}
-              placeholder="Enter your special requests here..."
+              placeholder={children > 0 ? `Includes ${children} children` : "Enter any special requests"}
             />
           </div>
 

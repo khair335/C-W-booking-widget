@@ -60,7 +60,7 @@ export default function Booked() {
           />
           <CustomButton
             label="Back To the table"
-            to="/TopHome"
+            to="/"
             color="#FFFFFF"
             bgColor="#C39A7B"
           />

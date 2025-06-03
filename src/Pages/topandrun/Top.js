@@ -30,8 +30,8 @@ export default function Top() {
   const [guestError, setGuestError] = useState("");
   const [selectedTimeISO, setSelectedTimeISO] = useState("");
   const [leaveTime, setLeaveTime] = useState("");
-  const [selectedAdults, setSelectedAdults] = useState(adults?.toString() || "");
-  const [selectedChildren, setSelectedChildren] = useState(children?.toString() || "");
+  const [selectedAdults, setSelectedAdults] = useState(null);
+  const [selectedChildren, setSelectedChildren] = useState(null);
   const [availablePromotionIds, setAvailablePromotionIds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   // Update form validation whenever relevant fields change
@@ -102,10 +102,10 @@ export default function Top() {
   }, [date, adults, children, time]);
 
   // Sync local state with Redux state
-  useEffect(() => {
-    setSelectedAdults(adults?.toString() || "");
-    setSelectedChildren(children?.toString() || "");
-  }, [adults, children]);
+  // useEffect(() => {
+  //   setSelectedAdults(adults?.toString() || null);
+  //   setSelectedChildren(children?.toString() || null);
+  // }, [adults, children]);
 
   const handleDateChange = (newDate) => {
     if (!newDate) {
@@ -226,7 +226,7 @@ export default function Top() {
             placeholder="Select Adults Number"
           />
 
-          <DropDown
+         <DropDown
             options={[...Array(11).keys()].map((num) => ({
               label: num.toString(),
               value: num.toString(),
@@ -236,14 +236,13 @@ export default function Top() {
             onChange={handleChildrenChange}
             placeholder="Select Children Number"
           />
-
           <DropDown
             options={timeSlots.map((slot) => {
               const iso = slot.TimeSlot;
               const label = new Date(iso).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
-                hour12: true,
+             hour12: true,
               });
               return {
                 label,

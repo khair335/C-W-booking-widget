@@ -378,8 +378,9 @@ export default function Griffin() {
             options={timeSlots.map((slot) => {
               const iso = slot.TimeSlot;
               const label = new Date(iso).toLocaleTimeString([], {
-                hour: "2-digit",
+                 hour: "2-digit",
                 minute: "2-digit",
+                 hour12: true,
               });
               return {
                 label: label,
