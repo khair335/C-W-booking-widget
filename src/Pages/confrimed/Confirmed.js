@@ -194,7 +194,7 @@ export default function Confirmed() {
             id="flexCheckDefault"
             label="I have read and accept the Privacy Policy"
             labelStyle={styles.confirmCheckboxLabel}
-            disabled
+
           />
         </div>
         <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>

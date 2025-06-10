@@ -380,7 +380,7 @@ export default function Griffin() {
               const label = new Date(iso).toLocaleTimeString([], {
                  hour: "2-digit",
                 minute: "2-digit",
-                 hour12: true,
+                 hour12: false,
               });
               return {
                 label: label,
