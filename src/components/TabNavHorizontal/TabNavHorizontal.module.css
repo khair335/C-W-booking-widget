@@ -1,0 +1,113 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.darkSkin {
+  background-color: var(--colorGrey700);
+}
+
+.tab {
+  margin-left: 16px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  @media (--viewportLarge) {
+    margin-left: 24px;
+  }
+}
+
+.tabContent {
+  composes: a from global;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* height: 100%; */
+
+  /* Font */
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 24px;
+
+  color: var(--colorWhite);
+  padding-bottom: 10px;
+
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: transparent;
+
+  transition: var(--transitionStyleButton);
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: var(--colorWhite);
+  }
+
+  @media (--viewportMedium) {
+    border-bottom-width: 2px;
+    padding: 16px 10px 15px 10px;
+  }
+}
+
+.button {
+  /* Override Chrome's border-radius which is visible when
+   border is used as underline */
+  border-radius: 0;
+  /* Override Chrome's button outline */
+  outline: 0;
+
+  & h3 {
+    font-weight: 300;
+
+  }
+}
+
+.selectedTabContent {
+  border-bottom-color: var(--marketplaceColor);
+  color: var(--colorWhite);
+  font-weight: 500;
+
+  & p {
+    font-weight: 500;
+  }
+
+  &.selectedListingPageTab {
+    border-bottom: 6px solid #fff;
+
+  }
+
+  & h3 {
+    font-weight: 500;
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  color: var(--colorGrey300);
+  text-decoration: none;
+}
+
+/* Dark skin */
+.tabContentDarkSkin {
+  color: var(--colorGrey300);
+
+  &:hover {
+    color: var(--colorWhite);
+  }
+}
+
+.selectedTabContentDarkSkin {
+  border-bottom-color: var(--colorWhite);
+  color: var(--colorWhite);
+}
+
+.disabledDarkSkin {
+  color: var(--colorBlack);
+  opacity: 0.3;
+}

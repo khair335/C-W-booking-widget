@@ -1,0 +1,207 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  /* Dimensions */
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+
+  @media (--viewportMedium) {
+    padding-top: 2px;
+  }
+}
+
+.error {
+  color: var(--colorFail);
+}
+
+.input {
+  flex-shrink: 0;
+  width: 100%;
+  margin-bottom: 24px;
+  margin-top: 44px;
+  @media (--viewportMedium) {
+    margin-bottom: 37px;
+  }
+}
+
+.submitButton {
+  margin-top: auto;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+  height: 60px;
+  max-width: 241px;
+  width: max-content;
+  @media (--viewportLarge) {
+    display: inline-block;
+    width: 241px;
+  }
+  @media (max-width: 1023px) {
+    height: 48px;
+    padding: 12px 24px;
+    min-height: 48px;
+  }
+}
+.saveDraftButton {
+  composes: buttonDefaultResting from global;
+  padding: 12px 74px;
+  @media (max-width: 1023px) {
+    height: 48px;
+    padding: 12px 24px;
+    min-height: 48px;
+  }
+}
+.buttonsGroup {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  @media (max-width: 767px) {
+    flex-direction: column;
+    & > button{
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+.overridenWarning {
+  font-size: 14px;
+  color: gray;
+}
+
+.priceContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+  & > div {
+    max-width: 229px;
+    width: 100%;
+  }
+  @media (max-width: 1023px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
+.radioButton {
+  border-radius: 10px;
+  border: 0.5px solid var(--Mid-Grey, #9d9d9d);
+  background: var(--Slate, #171819);
+  display: flex;
+  & label {
+    padding: 26px;
+  }
+}
+
+.label {
+  color: #fff;
+  font-family: 'Sofia Pro';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 16px; /* 106.667% */
+  letter-spacing: -0.2px;
+  text-transform: capitalize;
+  margin: 0 0 18px;
+}
+
+.radioButtonWithInput {
+  border-radius: 10px;
+  border: 0.5px solid var(--Mid-Grey, #9d9d9d);
+  background: var(--Slate, #171819);
+  display: flex;
+  align-items: center;
+  padding: 24px 26px;
+  max-width: 229px;
+  position: relative;
+  & > div{
+    margin-left: 6px;
+  }
+  & label {
+    padding: 0;
+  }
+  & input {
+    border: none !important;
+    border-radius: 0;
+    border-bottom: 1px solid #fff !important;
+    max-width: 111px;
+    padding: 0;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px; /* 137.5% */
+    letter-spacing: -0.2px;
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+  & .editIcon {
+    transform: translateX(-16px);
+  }
+}
+
+.refundPolicyHeading {
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 16px; /* 106.667% */
+  letter-spacing: -0.2px;
+  text-transform: capitalize;
+  margin: 47px 0 14px;
+}
+
+.refundPolicyContainer {
+  border-radius: 10px;
+  border: 0.5px solid var(--Mid-Grey, #9d9d9d);
+  background: var(--Slate, #171819);
+  padding: 16px 26px;
+  @media (max-width: 1023px) {
+    padding: 16px 16px;
+  }
+}
+
+.refundPolicySubHeading {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px; /* 137.5% */
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+.refundPolicyText {
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 22px;
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+.refundPolicyCheckbox {
+  margin-top: 19px;
+  display: block;
+  & label {
+    & span {
+      color: #fff;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 16px; /* 123.077% */
+      letter-spacing: -0.2px;
+    }
+  }
+}
+
+
+.priceLabel {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

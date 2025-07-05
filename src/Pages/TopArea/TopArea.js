@@ -31,7 +31,7 @@ export default function TopArea() {
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
   const { date, time, adults, children, returnBy, selectedPromotion, availablePromotionIds } = bookingState;
-  console.log('bookingState',bookingState);
+  console.log('availablePromotionIds',availablePromotionIds);
 
   // Local state
   const [promotions, setPromotions] = useState([]);
@@ -102,7 +102,7 @@ export default function TopArea() {
     ));
   };
 
-
+console.log('availablePromotionIds',availablePromotionIds);
   return (
     <div className={styles.TopAreaMain} id="choose">
       <PubImageHeader

@@ -106,6 +106,7 @@ const CalendarView = ({
                 ${isSelected ? styles.calendarCellSelected : ''}
                 ${isTodayDate ? styles.calendarCellToday : ''}
                 ${disabled ? styles.calendarCellDisabled : ''}
+                ${!disabled && !isSelected && !isTodayDate ? styles.calendarCellAvailable : ''}
               `}
             >
               {day}

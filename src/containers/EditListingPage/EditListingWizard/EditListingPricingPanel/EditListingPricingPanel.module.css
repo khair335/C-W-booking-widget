@@ -1,0 +1,30 @@
+@import '../../../../styles/customMediaQueries.css';
+.root {
+  flex-grow: 1;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  flex-grow: 1;
+}
+
+.priceCurrencyInvalid {
+  color: var(--colorFail);
+}
+
+.title{
+  margin: 0 0 37px;
+  padding: 0;
+}
+
+.confirmButton{
+  background-color: var(--marketplaceColor);
+}
+
+.cancelButton{
+  background-color: var(--colorWhite);
+  color: var(--colorBlack);
+}

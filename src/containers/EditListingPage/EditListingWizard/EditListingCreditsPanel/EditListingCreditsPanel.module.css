@@ -1,0 +1,41 @@
+@import '../../../../styles/customMediaQueries.css';
+.root {
+  flex-grow: 1;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  flex-grow: 1;
+}
+
+.priceCurrencyInvalid {
+  color: var(--colorFail);
+}
+
+.heading {
+  margin-bottom: 14px;
+  margin-top: 0;
+  padding: 0;
+}
+
+.subHeading {
+  margin-top: 0;
+  padding: 0;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 114.286% */
+  letter-spacing: -0.2px;
+}
+
+.confirmButton{
+  background-color: var(--marketplaceColor);
+}
+
+.cancelButton{
+  background-color: var(--colorWhite);
+  color: var(--colorBlack);
+}

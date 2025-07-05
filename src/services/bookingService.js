@@ -72,3 +72,46 @@ export const getBooking = async (bookingReference) => {
     );
   }
 };
+
+/**
+ * Gets availability for a date range
+ * @param {string} dateFrom - Start date in ISO format
+ * @param {string} dateTo - End date in ISO format
+ * @param {number} partySize - Number of guests
+ * @param {string} availabilityType - Type of availability (defaults to "Reservation")
+ * @returns {Promise} - The API response with available dates and times
+ * @throws {Error} - If the request fails
+ */
+export const getAvailabilityForDateRange = async (dateFrom, dateTo, partySize, availabilityType = "Reservation") => {
+  if (!dateFrom || !dateTo || !partySize) {
+    throw new Error('DateFrom, DateTo, and PartySize are required');
+  }
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('Authentication token is required');
+  }
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const data = {
+    DateFrom: dateFrom,
+    DateTo: dateTo,
+    PartySize: parseInt(partySize),
+    AvailabilityType: availabilityType
+  };
+
+  try {
+    const response = await postRequest(
+      `/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilityForDateRangeV2`,
+      headers,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Availability range fetch error:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch availability range. Please try again.');
+  }
+};

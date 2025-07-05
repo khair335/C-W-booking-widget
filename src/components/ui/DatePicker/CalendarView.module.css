@@ -180,3 +180,13 @@
 .calendarCellDisabled:hover {
   background-color: transparent;
 }
+
+.calendarCellAvailable {
+  /* background: #E8F5E8; */
+  /* color: #2D5A2D;
+  font-weight: 500; */
+}
+
+.calendarCellAvailable:hover {
+  background: #D4EDD4;
+}

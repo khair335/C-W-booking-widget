@@ -1,0 +1,147 @@
+@import '../../../styles/customMediaQueries.css';
+
+.dropdown {
+  width: calc(100vw - 0px);
+  height: 406px;
+  background-color: #000; /* Black background */
+  color: #fff;
+  border-radius: 0px 0px 30px 30px;
+
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-top: 40px;
+  @media (--viewportMedium) {
+    width: calc(100vw - 90px);
+  }
+  @media (--viewportLarge) {
+    width: 840px;
+    padding: 20px 53px;
+    margin-top: 0px;
+  }
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background-color: #1c1c1c;
+  color: #fff;
+  font-size: 16px;
+}
+
+.searchInput::placeholder {
+  color: #777;
+}
+
+.categories {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.categoryCard {
+  max-width: 211px;
+  width: 100%;
+
+  text-align: center;
+
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease;
+  &:nth-child(1) {
+    & .textContent {
+      & img {
+        @media (--viewportLarge) {
+          margin-bottom: 4px;
+        }
+      }
+    }
+  }
+  &:nth-child(2) {
+    & .textContent {
+      & svg {
+        @media (--viewportLarge) {
+          margin-bottom: 3px;
+        }
+      }
+    }
+  }
+  &:nth-child(3) {
+    & .textContent {
+      & svg {
+        @media (--viewportLarge) {
+          margin-bottom: 4px;
+        }
+      }
+    }
+  }
+}
+
+.categoryCard:hover {
+  transform: translateY(-5px);
+  /* background-color: #333; */
+}
+
+.image {
+  width: 100%;
+  height: 138px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0px;
+  @media (--viewportMedium) {
+    height: 276px;
+  }
+}
+
+.textContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 0;
+  & img {
+    width: 24px;
+    height: 2 4px;
+  }
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
+  @media (max-width: 767px) {
+    margin: 6px 0 0;
+    gap: 4px;
+    & img {
+      width: 20px;
+      height: 20px;
+    }
+    & svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.textContent h3 {
+  color: #fff;
+
+  /* H5 Title */
+  font-family: 'Sofia Sans';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 30px; /* 125% */
+  letter-spacing: -0.348px;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  @media (max-width: 767px) {
+    font-size: 18px;
+  }
+}
+
+.textContent p {
+  font-size: 14px;
+  color: #aaa;
+}

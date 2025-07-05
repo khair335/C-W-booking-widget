@@ -1,0 +1,1022 @@
+@import '../../../styles/customMediaQueries.css';
+
+.root {
+  position: relative;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @media (--viewportLarge) {
+    flex-direction: row;
+    max-width: calc(var(--contentMaxWidth) + 0px);
+    margin: 0 auto 57px auto;
+    margin-top: 52px;
+    padding: 0 36px;
+  }
+
+  @media (--viewportXLarge) {
+    max-width: var(--contentMaxWidth);
+    padding: 0;
+  }
+}
+
+.txInfo {
+  margin-bottom: 36px;
+  background: #171819;
+  display: flex;
+  flex-direction: column;
+
+  @media (--viewportLarge) {
+    flex-basis: 687px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    margin-right: 56px;
+    margin-bottom: 0;
+    padding: 40px 60px;
+  }
+}
+
+.genericError {
+  color: var(--colorFail);
+  margin: 24px 24px 0 24px;
+
+  @media (--viewportMedium) {
+    margin: 32px 24px 0 24px;
+  }
+
+  @media (--viewportLarge) {
+    margin: 32px 0 0 0;
+  }
+}
+
+/* DetailCardImage subcomponent */
+.detailCardImageWrapper {
+  /* Layout */
+  display: none;
+  width: 100%;
+  position: relative;
+  background-color: var(--colorGrey100);
+  /* Loading BG color */
+
+  @media (--viewportLarge) {
+    display: block;
+  }
+}
+
+.rootForImage {
+  /* Layout - image will take space defined by aspect ratio wrapper */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+
+  @media (--viewportLarge) {
+    border-radius: 2px 2px 0 0;
+  }
+}
+
+.avatarWrapper {
+  /* Position (over the listing image)*/
+  margin-left: 24px;
+  margin-top: -30px;
+
+  /* Rendering context to the same lavel as listing image */
+  position: relative;
+  /* Flexbox would give too much width by default. */
+  width: 60px;
+
+  @media (--viewportMedium) {
+    margin-top: -32px;
+    padding: 2px 0;
+  }
+
+  @media (--viewportLarge) {
+    margin-left: 48px;
+    width: unset;
+    padding: 2px 0;
+  }
+}
+
+/* Passed-in props for DetailCardImage subcomponent */
+.imageWrapperMobile {
+  position: relative;
+  /* background-color: var(--colorGrey100); */
+  /* Loading BG color */
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
+
+.avatarWrapperMobile {
+  composes: avatarWrapper;
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
+
+.avatar {
+  border-radius: 8px;
+  border: 1px solid var(--White, #fff);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.avatarWrapperDesktop {
+  composes: avatarWrapper;
+  display: none;
+
+  @media (--viewportLarge) {
+    display: block;
+  }
+}
+
+.avatarWrapperProviderDesktop {
+  display: none;
+
+  @media (--viewportLarge) {
+    display: block;
+    margin-top: 120px;
+  }
+}
+
+.avatarDesktop {
+  @media (--viewportLarge) {
+    display: flex;
+  }
+}
+
+/* PanelHeadings subcomponent */
+.headingOrder {
+  margin: 30px 24px 0 24px;
+
+  @media (--viewportMedium) {
+    max-width: 80%;
+    margin: 24px 24px 0 24px;
+    padding: 0px 0 0px 0;
+  }
+
+  @media (--viewportLarge) {
+    max-width: 100%;
+    margin: 43px 0 0 0;
+  }
+}
+
+.headingSale {
+  margin: 18px 24px 0 24px;
+  padding: 5px 0 1px 0;
+
+  @media (--viewportMedium) {
+    max-width: 80%;
+    margin: 24px 24px 0 24px;
+    padding: 1px 0 7px 0;
+  }
+
+  @media (--viewportLarge) {
+    max-width: 100%;
+    margin: 40px 0 0 0;
+    padding: 2px 0 6px 0;
+  }
+}
+
+.mainTitle {
+  color: #d8d8d8;
+  font-family: 'Sofia Pro';
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+  /* 123.077% */
+  letter-spacing: -1px;
+  display: block;
+  margin: 0;
+}
+
+.listingTitleMobile {
+  margin: 30px 24px 0 24px;
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
+
+.inquiryPrice {
+  composes: p from global;
+  font-weight: var(--fontWeightBold);
+}
+
+.transactionInfoMessage {
+  margin: 12px 24px 0 24px;
+
+  @media (--viewportMedium) {
+    margin: 0 24px 0 24px;
+  }
+
+  @media (--viewportLarge) {
+    margin: 0;
+  }
+}
+
+.orderDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container for order details in mobile layout */
+.orderDetailsMobileSection {
+  margin-top: 48px;
+  order: 2;
+
+  @media (--viewportMedium) {
+    margin-top: 40px;
+    padding: 4px 0 4px 0;
+  }
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
+
+.deliveryInfoSection {
+  order: 1;
+}
+
+/* "aside" section in desktop layout */
+.asideDesktop {
+  margin: 1px 0 0 0;
+  padding-bottom: 41px;
+
+  /**
+   * Aside is visible on mobile layout too, since it includes OrderPanel component.
+   * It might get rendered as a Modal in mobile layout.
+   */
+
+  @media (--viewportLarge) {
+    margin: 0px 0 0 0;
+    border-radius: 2px;
+    border: 1px solid #e6e6e6;
+    background: #171819;
+  }
+}
+
+.stickySection {
+  @media (--viewportLarge) {
+    position: sticky;
+    top: -200px;
+    /* This is a hack to showcase how the component would look when the image isn't sticky */
+    width: 409px;
+    z-index: 1;
+  }
+}
+
+.detailCard {
+  @media (--viewportLarge) {
+    /* background-color: var(--colorWhite);
+    border: 1px solid var(--colorGrey100); */
+    border-radius: 2px;
+  }
+}
+
+/* DetailCardHeadingsMaybe subcomponent */
+.detailCardHeadings {
+  display: none;
+
+  @media (--viewportLarge) {
+    display: block;
+    margin: 24px 48px 32px 48px;
+  }
+}
+
+.detailCardTitle {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.75px;
+
+  & a {
+    color: #fff;
+  }
+
+  @media (--viewportLarge) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.detailCardSubtitle {
+  composes: h5 from global;
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  @media (--viewportLarge) {
+    margin-top: 9px;
+    margin-bottom: 0;
+  }
+}
+
+/* AddressLinkMaybe subcomponent */
+.address {
+  composes: h5 from global;
+  color: var(--colorGrey700);
+  margin: 0;
+}
+
+.viewOnGoogleMapsWrapper {
+  white-space: nowrap;
+}
+
+.bookingLocationAddress,
+.pickupAddress {
+  composes: h5 from global;
+  margin: 0;
+  display: inline-block;
+
+  @media (--viewportMedium) {
+    padding: 3px 0 5px 0;
+  }
+}
+
+/* BreakdownMaybe subcomponent */
+.breakdownMaybe {
+  /* default "root" class for breakdown container */
+}
+
+.orderBreakdownTitle {
+  letter-spacing: 1px;
+  font-weight: var(--fontWeightMedium);
+  margin: 0 24px;
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  /* 166.667% */
+  letter-spacing: 0.857px;
+  text-transform: uppercase;
+
+  @media (--viewportMedium) {
+    margin: 0 48px;
+  }
+}
+
+.totalDivider {
+  /* dimensions */
+  height: 1px;
+  margin: 12px 24px 5px 24px;
+
+  border: none;
+  background-color: var(--colorGrey100);
+
+  @media (--viewportMedium) {
+    margin: 7px 48px 0 48px;
+  }
+}
+
+.breakdownContainer {
+  display: none;
+
+  @media (--viewportLarge) {
+    display: block;
+  }
+}
+
+.sectionHeading {
+  composes: p from global;
+  font-weight: var(--fontWeightBold);
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.shippingInfoContent {
+  padding: 0px 0 0px 13px;
+  margin-top: 12px;
+
+  @media (--viewportMedium) {
+    padding: 4px 0 4px 13px;
+    margin-top: 8px;
+  }
+}
+
+.bookingLocationContent,
+.pickupInfoContent {
+  composes: marketplaceSmallFontStyles from global;
+  padding: 5px 0 1px 0;
+  margin-top: 6px;
+
+  @media (--viewportMedium) {
+    padding: 1px 0 7px 0;
+    margin-top: 8px;
+  }
+}
+
+.feedContent {
+  padding: 0;
+  margin-top: 12px;
+
+  @media (--viewportMedium) {
+    margin-top: 8px;
+  }
+}
+
+.inquiryMessage {
+  /* Preserve newlines, but collapse other whitespace */
+  display: inline-block;
+  margin: 0;
+  padding: 8.5px 14px 8.5px 14px;
+  border-radius: 8px;
+  box-shadow: var(--boxShadow);
+  background-color: var(--colorWhite);
+
+  white-space: pre-line;
+
+  margin-top: 12px;
+  margin-bottom: 0;
+
+  @media (--viewportMedium) {
+    margin-top: 8px;
+    padding: 8px 14px 8px 14px;
+  }
+}
+
+.ownInquiryMessage {
+  composes: inquiryMessage;
+  background-color: var(--marketplaceColor);
+  color: var(--colorWhite);
+}
+
+.messageError {
+  color: var(--colorFail);
+  margin: 13px 0 22px 0;
+
+  @media (--viewportMedium) {
+    margin: 13px 0 23px 0;
+  }
+
+  @media (--viewportLarge) {
+    margin: 12px 0 23px 0;
+  }
+}
+
+.longWord {
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Passed-in props for FeedSection subcomponent */
+.bookingLocationContainer,
+.deliveryInfoContainer,
+.feedContainer {
+  margin: 42px 24px 0 24px;
+
+  @media (--viewportMedium) {
+    padding: 0px 0 1px 0;
+    margin: 40px 24px 0 24px;
+  }
+
+  @media (--viewportLarge) {
+    margin: 32px 0 0 0;
+  }
+}
+
+.feedContainer {
+  flex: 1;
+}
+
+/* Prop to be passed to SendMessageForm component */
+.sendMessageForm {
+  position: relative;
+  margin: 46px 24px 0 24px;
+
+  @media (--viewportMedium) {
+    margin: 49px 24px 0 24px;
+    border-top: 0;
+  }
+
+  @media (--viewportLarge) {
+    margin: 48px 0 0 0;
+  }
+
+  & textarea {
+    background: #000;
+    color: #fff;
+
+    &::placeholder {
+      color: #fff;
+    }
+
+    &:focus {
+      background: #000;
+      color: #fff;
+    }
+  }
+}
+
+.sendingMessageNotAllowed {
+  color: var(--colorGrey300);
+
+  position: relative;
+  margin: 46px 24px 0 24px;
+
+  @media (--viewportMedium) {
+    margin: 49px 24px 0 24px;
+    border-top: 0;
+  }
+
+  @media (--viewportLarge) {
+    margin: 47px 0 0 0;
+  }
+}
+
+/* SaleActionButtonsMaybe subcomponent */
+.actionButtons {
+  /* Position action button row above the footer */
+  z-index: 9;
+  /* position: fixed; */
+  bottom: 0;
+  width: 100%;
+  padding: 18px 24px 18px 24px;
+
+  /* Contain repainting to this component only */
+  /* 3D painting container helps scrolling */
+  transform: translate3d(0, 0, 0);
+
+  box-shadow: var(--boxShadowTop);
+
+  @media (--viewportLarge) {
+    z-index: unset;
+    position: static;
+    box-shadow: none;
+    width: auto;
+    margin: 0 48px 0 48px;
+    padding: 0;
+  }
+}
+
+.imageWrapperDesktop {
+  display: none;
+
+  @media (--viewportLarge) {
+    display: block;
+  }
+}
+
+.actionButtonWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  @media (--viewportLarge) {
+    flex-direction: column;
+  }
+
+  & button {
+    border-radius: 50px;
+  }
+
+  & button:first-child {
+    margin: 0 12px 0 0;
+    background-color: #ff0000;
+
+    @media (--viewportLarge) {
+      margin: 8px 0 0 0;
+
+      /* Switch order in desktop layout with accept button being on the top */
+      order: 1;
+    }
+  }
+}
+
+.viewMore {
+  background-color: #fff;
+  border-radius: 50px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f00;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  /* 150% */
+  letter-spacing: 0.3px;
+}
+
+.actionError {
+  composes: h5 from global;
+  color: var(--colorFail);
+  margin: 0 0 11px 0;
+
+  @media (--viewportMedium) {
+    margin: 0 0 10px 0;
+    padding: 1px 0 7px 0;
+  }
+
+  @media (--viewportLarge) {
+    margin: 0;
+  }
+}
+
+.actionErrors {
+  width: 100%;
+  text-align: center;
+}
+
+/* Container for SaleActionButtonsMaybe subcomponent */
+.mobileActionButtons {
+  /* display: block; */
+
+  display: none;
+  /* @media (--viewportLarge) {
+  } */
+}
+
+.mobileActionButtonSpacer {
+  width: 100%;
+  height: 20px;
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
+
+.reportIssueModal {
+  & > div {
+    & > div {
+      max-width: 610px;
+    }
+  }
+}
+
+.reportIssueHeading {
+  color: #fff;
+  text-align: center;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 50px;
+  /* 178.571% */
+  letter-spacing: 1px;
+  margin: 0;
+  padding: 0;
+}
+
+.reportIssueSubHeading {
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 26px;
+  /* 162.5% */
+  letter-spacing: 1px;
+  margin: 0;
+  padding: 0;
+}
+
+.reportIssuecontent {
+  margin-top: 16px;
+  border-top: 1px solid #fff;
+  padding-top: 36px;
+
+  & select {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--Dark-Grey);
+    background-color: #171819;
+    padding-left: 16px;
+    box-shadow: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='6' viewBox='0 0 12 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.37383 5.8583L11.8574 0.766689C11.9489 0.681733 12 0.568863 12 0.451489C12 0.334116 11.9489 0.221247 11.8574 0.136291L11.8512 0.130809C11.8068 0.0894813 11.7534 0.0565729 11.6942 0.0340853C11.635 0.0115976 11.5712 9.27764e-07 11.5068 9.23871e-07C11.4424 9.19977e-07 11.3786 0.0115976 11.3194 0.0340852C11.2602 0.0565729 11.2068 0.0894813 11.1624 0.130809L5.99897 4.92549L0.837607 0.130808C0.793229 0.0894807 0.739813 0.0565722 0.680606 0.0340846C0.621399 0.0115969 0.557639 2.62236e-07 0.493207 2.58343e-07C0.428774 2.54449e-07 0.365016 0.0115969 0.305809 0.0340846C0.246602 0.0565722 0.193184 0.0894806 0.148806 0.130808L0.142609 0.13629C0.0510671 0.221246 -2.3707e-07 0.334115 -2.51915e-07 0.451489C-2.6676e-07 0.568862 0.0510671 0.681732 0.142609 0.766688L5.62617 5.8583C5.67439 5.90308 5.73239 5.93872 5.79665 5.96308C5.86091 5.98744 5.93009 6 6 6C6.06991 6 6.13909 5.98744 6.20335 5.96308C6.26761 5.93872 6.32561 5.90308 6.37383 5.8583Z' fill='white'/%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    /* 142.857% */
+    letter-spacing: -0.305px;
+    &::placeholder {
+      color: #9d9d9d;
+    }
+    &:focus {
+      background: var(--Background);
+    }
+  }
+}
+
+.requestRefundButton {
+  margin-top: 40px;
+  background-color: #000;
+  border: 1px solid #fff;
+}
+
+.desktopActionButtons {
+  /* display: none; */
+
+  @media (--viewportLarge) {
+    display: block;
+    margin-bottom: 18px;
+  }
+}
+
+.actionButtonText {
+  text-align: center;
+  display: block;
+  text-decoration: underline;
+  & span {
+    cursor: pointer;
+  }
+}
+
+.diminishedActionButtonRoot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 18px 24px 0 24px;
+
+  @media (--viewportLarge) {
+    align-items: center;
+    padding: 0;
+  }
+}
+
+/* e.g. dispute "link" */
+.diminishedActionButton {
+  composes: marketplaceTinyFontStyles from global;
+
+  width: max-content;
+  color: #808080;
+  padding: 1px 0 5px 0;
+  margin: 0;
+
+  @media (--viewportMedium) {
+    margin: 0;
+  }
+
+  @media (--viewportLarge) {
+    padding: 0px 75px;
+    margin-top: 16px;
+  }
+}
+
+.sectionHeadingWithExtraMargin {
+  /* Font for sections titles */
+  color: var(--White, #fff);
+  font-family: 'Sofia Pro';
+  font-size: 33px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 33px;
+  /* 100% */
+  margin: 0;
+  padding: 0;
+}
+
+.episodesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(322px, 1fr));
+  gap: 35px 28px;
+  margin-top: 34px;
+  /* margin-bottom: 71px;
+  padding-bottom: 134px;
+  border-bottom: 1px solid #fff; */
+}
+
+.episodeCard {
+  background-color: #171819;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+  padding: 33px 36px 45px;
+
+  @media (max-width: 767px) {
+    padding: 33px 20px 45px;
+  }
+
+  & .episodeDetails {
+    margin-top: 24px;
+  }
+}
+
+.episodeThumbnail {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.episodeDetails {
+  margin-top: 10px;
+}
+
+.episodeTitle {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 30px;
+  /* 125% */
+  letter-spacing: -0.348px;
+  color: #fff;
+  margin: 7px 0;
+  padding: 0;
+}
+
+.episodeDescription {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0px 0 20px;
+  padding: 0;
+  word-break: break-word;
+}
+
+.episodeDuration {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  /* 157.143% */
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0;
+}
+
+.playButton {
+  background-color: #f5d90a;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 100px;
+
+  color: #000;
+
+  cursor: pointer;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  height: 28px;
+  min-height: 28px;
+  max-width: 141px;
+}
+
+.sliderContent {
+  border-top: 1px solid #fff;
+  padding-top: 62px;
+  margin-top: 64px;
+  overflow: hidden;
+  max-width: 100vw;
+
+  & :global(.slick-track) {
+    display: flex !important;
+  }
+}
+
+.detailsAspectWrapper {
+  position: relative;
+
+  /* Loading BG color */
+  max-height: 235px;
+  overflow: hidden;
+
+  & > div {
+    max-height: 235px;
+
+    & img {
+      max-height: 235px;
+    }
+  }
+}
+
+.cardImage {
+  width: 100%;
+  height: 397px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.posterAspectWrapper {
+  position: absolute;
+  overflow: hidden;
+  width: 121px;
+  height: 179px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.detailsAspectWrapper {
+  position: relative;
+  /* background-color: var(--colorGrey100); */
+  /* Loading BG color */
+  max-height: 235px;
+  overflow: hidden;
+  opacity: 0.4;
+  /* &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+  } */
+
+  & > div {
+    max-height: 235px;
+
+    & img {
+      max-height: 235px;
+      border-radius: 0;
+    }
+  }
+}
+
+.posterWrapper {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.priceContainer {
+  /* Layout */
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-right: 22px;
+  padding: 3px 0;
+
+  @media (--viewportMedium) {
+    padding: 4px 0;
+  }
+
+  @media (--viewportLarge) {
+    flex-direction: row;
+    margin-right: unset;
+    padding: 0;
+  }
+
+  color: var(--Rabel, #ed2124);
+
+  & * {
+    color: var(--Rabel, #ed2124);
+    font-family: 'Sofia Pro';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+    /* 200% */
+    letter-spacing: -0.75px;
+  }
+}
+
+.price {
+  composes: p from global;
+  font-weight: var(--fontWeightBold);
+
+  margin: 0 0 0 0px;
+
+  @media (--viewportMedium) {
+    margin: 0;
+    padding: 0;
+  }
+}
+.perUnit {
+  /* Font */
+  composes: p from global;
+  font-weight: var(--fontWeightBold);
+
+  padding: 0;
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  @media (--viewportLarge) {}
+}

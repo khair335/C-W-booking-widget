@@ -44,6 +44,8 @@ axiosInstance.interceptors.request.use(
         config.url = '/api/auth';
       } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilitySearch')) {
         config.url = '/api/availability';
+      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilityForDateRangeV2')) {
+        config.url = '/api/availability-range';
       } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Promotion')) {
         const url = new URL(config.url, 'http://dummy');
         const promotionIds = url.searchParams.getAll('promotionIds');

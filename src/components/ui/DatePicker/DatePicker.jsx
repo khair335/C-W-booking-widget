@@ -13,7 +13,8 @@ const DatePicker = ({
    selected,
   onChange,
   placeholder = "Select a date",
-  disablePastDates = false
+  disablePastDates = false,
+  isDateDisabled = null
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState('calendar');
@@ -28,15 +29,23 @@ const DatePicker = ({
       setCurrentDate(dateValue);
     }
   }, [dateValue]);
-  const isDateDisabled = (date) => {
-    if (!disablePastDates) return false;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date < today;
+  
+  const checkDateDisabled = (date) => {
+    // Check if date is in the past (if disablePastDates is true)
+    if (disablePastDates) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (date < today) return true;
+    }
+    
+    // Check custom date disabling function
+    if (isDateDisabled && isDateDisabled(date)) return true;
+    
+    return false;
   };
 
   const handleDateSelect = (date) => {
-    if (isDateDisabled(date)) return;
+    if (checkDateDisabled(date)) return;
 
     setSelectedDate(date);
     if (onChange) onChange(date);
@@ -96,7 +105,7 @@ const DatePicker = ({
             onNextMonth={() => navigateMonth('next')}
             onMonthClick={() => setView('month')}
             onYearClick={() => setView('year')}
-            isDateDisabled={isDateDisabled}
+            isDateDisabled={checkDateDisabled}
           />
         );
       case 'month':

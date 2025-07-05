@@ -142,6 +142,18 @@
     text-align: left;
 }
 
+.loadingText {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C826A;
+    text-align: center;
+    margin: 0;
+    padding: 8px 0;
+}
+
 .DatabtnMain3 {
     width: 88%;
     display: flex;

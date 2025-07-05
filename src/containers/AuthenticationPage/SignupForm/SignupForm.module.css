@@ -1,0 +1,111 @@
+@import '../../../styles/customMediaQueries.css';
+
+.root {
+  composes: marketplaceModalFormRootStyles from global;
+
+  justify-content: flex-start;
+
+  @media (--viewportMedium) {
+    justify-content: space-between;
+  }
+}
+
+.defaultUserFields {
+}
+
+.name {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+
+  @media (--viewportMedium) {
+    margin-top: 32px;
+  }
+}
+
+.row,
+.customFields {
+  margin-top: 24px;
+
+  @media (--viewportMedium) {
+    margin-top: 32px;
+  }
+}
+
+.firstNameRoot {
+  width: calc(44% - 9px);
+}
+
+.lastNameRoot {
+  width: calc(56% - 9px);
+}
+
+.password {
+  composes: marketplaceModalPasswordMargins from global;
+}
+
+.bottomWrapper {
+  composes: marketplaceModalBottomWrapper from global;
+}
+
+.tab {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.3px;
+  text-align: left;
+  margin: 0;
+  font-weight: 700;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+  padding-right: 7px;
+  color: var(--colorWhite);
+}
+
+.tabs {
+  & a:last-child {
+    & .tab {
+      padding-right: 0px;
+      &:before {
+        content: '';
+        width: 1px;
+        left: -18px;
+        top: 4px;
+        height: 18px;
+        position: absolute;
+        background-color: var(--colorWhite);
+      }
+    }
+  }
+  & a {
+    &:hover {
+    text-decoration: none;
+    }
+  }
+}
+
+.select {
+  /* padding-right: 3px; */
+  text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.7);
+
+  border-bottom: 3px solid var(--marketplaceColor);
+  padding-left: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 45px;
+  margin-bottom: 29px;
+}
+
+.loginText {
+  margin-top: 35px;
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 33px;
+  text-align: center;
+  & a {
+    color: var(--colorWhite);
+  }
+}

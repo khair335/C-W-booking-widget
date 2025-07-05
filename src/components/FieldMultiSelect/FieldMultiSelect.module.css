@@ -1,0 +1,220 @@
+.root {
+}
+
+.select {
+  color: var(--matterColorAnti);
+  border: solid 1px var(--matterColorNegative);
+  padding: 0px 15px;
+  border-radius: 10px;
+  height: 45px;
+  padding-right: 40px;
+  font-family: 'Montserrat';
+  & * {
+    font-family: 'Montserrat' !important;
+  }
+  & > option {
+    color: var(--matterColor);
+  }
+
+  & > option:disabled {
+    color: var(--matterColorAnti);
+  }
+}
+
+.selectSuccess {
+  color: var(--matterColor);
+  border-color: var(--successColor);
+}
+
+.selectError {
+  border-color: var(--failColor);
+}
+.multiSelectBox {
+  /* & :global(#react-select-3-listbox) {
+    max-height: 600px !important;
+    overflow: hidden;
+    position: relative;
+    z-index: 1000;
+    padding-bottom: 30px;
+    & div {
+      max-height: 1000px !important;
+    }
+  } */
+   & :global(#react-select-2-placeholder){
+    background-color: transparent !important;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+   }
+  & > div {
+    background: #171819;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    /* height: 48px; */
+    color: #525961;
+
+    border-color: rgb(82 89 97 / 80%);
+    &:not(:last-child) {
+      min-height: 41px;
+      @media (max-width: 767px) {
+        min-height: 33px;
+      }
+    }
+    & > div {
+      padding: 1px 8px;
+      &:nth-child(2){
+
+      }
+      & > span {
+        background-color: #fff !important;
+        display: none;
+      }
+    }
+    & input {
+      height: auto;
+    }
+  }
+
+  & > span + div {
+    & > div:first-child {
+      & > div{
+        color: var(--colorWhite);
+      }
+      & > div:not(:last-child) {
+        /* background: #fff; */
+        border-radius: 45px;
+        width: max-content;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 4px;
+        & div[role='button'] {
+          border: 1.5px solid #98a8b7;
+          border-radius: 50%;
+          height: 20px;
+          width: 20px;
+        }
+      }
+    }
+  }
+  &.singleSelect{
+    & > span + div {
+      & > div:first-child {
+        /* & > div:not(:last-child) {
+        color: var(--colorWhite);
+      } */
+      & > div {
+        color: var(--colorWhite);
+
+      }
+    }
+  }
+}}
+
+/* .selectedControl{
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: default;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  min-height: 38px;
+  outline: 0 !important;
+  position: relative;
+  -webkit-transition: all 100ms;
+  transition: all 100ms;
+  background-color: hsl(0, 0%, 100%);
+  border-color: #000;
+  border-radius: 0;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 0 1px #000;
+  box-sizing: border-box;
+
+  & > div{
+    width: max-content;
+    display: inline-flex;
+    &:first-child{
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      -webkit-box-flex-wrap: wrap;
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+      overflow: hidden;
+      padding: 1px 8px;
+      box-sizing: border-box;
+    }
+    &:last-child{
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-align-self: stretch;
+      -ms-flex-item-align: stretch;
+      align-self: stretch;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      padding: 1px 8px;
+    }
+  }
+} */
+
+.parent {
+  display: flex;
+  border-bottom: 1px solid;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 18px;
+  background-color: #171819;
+  & input {
+    width: 15px;
+    height: 15px;
+  }
+  & label {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    color: #445463;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+  }
+  & input[type='checkbox'] {
+    accent-color: #6558f5;
+  }
+}

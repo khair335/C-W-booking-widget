@@ -1,0 +1,486 @@
+@import '../../../styles/customMediaQueries.css';
+
+.root {
+  margin-top: 24px;
+
+  @media (--viewportMedium) {
+    margin-top: 48px;
+  }
+
+  & input,
+  & textarea {
+    background: var(--Background);
+    color: var(--colorWhite);
+    border: 1px solid var(--Dark-Grey);
+
+    &::placeholder {
+      color: #9d9d9d !important;
+    }
+
+    &:focus {
+      background: var(--Background);
+    }
+  }
+}
+
+.sectionContainer {
+  padding: 0;
+  margin-bottom: 0px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+}
+
+.sectionTitle {}
+
+.lastSection {
+  margin-bottom: 32px;
+  margin-top: 28px;
+
+  @media (--viewportMedium) {
+    margin-bottom: 64px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+
+    &>div {
+      width: calc(50% - 14px);
+      margin: 0;
+    }
+
+    & .sectionTitle {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.bannerWrapper {
+  position: relative;
+
+  & .avatarPlaceholder {
+    height: 319px;
+    width: 100%;
+    border-width: 2px;
+    border-radius: 8px;
+    text-align: center;
+  }
+}
+
+.buttonsGroup {
+  display: flex;
+  gap: 16px;
+  margin-top: 71px;
+}
+
+.saveDraftButton {
+  composes: buttonDefaultResting from global;
+  padding: 12px 74px;
+  min-height: 48px;
+  color: var(--colorWhite);
+  height: 48px;
+
+  @media (max-width: 1023px) {
+    height: 48px;
+    padding: 12px 20px;
+    min-height: 48px;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.submitButton {
+  margin-top: auto;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+  min-height: 48px;
+  max-width: 241px;
+  width: max-content;
+
+  @media (--viewportLarge) {
+    display: inline-block;
+    width: 241px;
+  }
+
+  @media (max-width: 1023px) {
+    height: 48px;
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+.Bannerlabel {
+  margin-top: 13px;
+
+  & div {
+    width: 100%;
+  }
+
+  & .changeAvatar {
+    width: max-content;
+  }
+
+  & .avatarContainer {
+    height: 319px;
+  }
+
+  & .uploadingImage {
+    height: 319px;
+  }
+}
+
+.uploadAvatarInput {
+  display: none;
+}
+
+.uploadAvatarWrapper {
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  width: max-content;
+}
+
+.label {
+  width: var(--ProfileSettingsForm_avatarSize);
+
+  @media (--viewportMedium) {
+    width: var(--ProfileSettingsForm_avatarSizeDesktop);
+  }
+}
+
+.avatarPlaceholder {
+  flex-direction: column;
+
+  & svg {
+    fill: transparent;
+  }
+}
+
+.avatarPlaceholder,
+.avatarContainer {
+  /* Dimension */
+  position: relative;
+  width: var(--ProfileSettingsForm_avatarSize);
+  height: var(--ProfileSettingsForm_avatarSize);
+
+  /* Center content */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Initial coloring */
+  background-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+
+  @media (--viewportMedium) {
+    width: var(--ProfileSettingsForm_avatarSizeDesktop);
+    height: var(--ProfileSettingsForm_avatarSizeDesktop);
+    border-radius: 2px;
+  }
+
+  & div {
+    border-radius: 2px;
+  }
+}
+
+.avatarPlaceholder {
+  /* Placeholder border */
+  border-style: dashed;
+  border-color: var(--colorGrey100);
+  border-width: 2px;
+  border-width: 1px;
+  transition: var(--transitionStyleButton);
+
+  &:hover {
+    border-color: var(--colorGrey300);
+  }
+}
+
+.avatarPlaceholderTextMobile {
+  @media (--viewportMedium) {
+    display: none;
+  }
+}
+
+.avatarPlaceholderText {
+  display: none;
+
+  @media (--viewportMedium) {
+    display: block;
+    max-width: 130px;
+    text-align: center;
+  }
+}
+
+.avatarUploadError {
+  /* Placeholder border */
+  border-style: dashed;
+  border-color: var(--colorFail);
+  border-width: 2px;
+}
+
+.error {
+  /* Font */
+  composes: h4 from global;
+  color: var(--colorFail);
+  margin-top: 18px;
+  margin-bottom: 0;
+
+  @media (--viewportMedium) {
+    margin-top: 22px;
+    margin-bottom: 2px;
+  }
+}
+
+.uploadError {
+  /* Font */
+  /* composes: h6 from global; */
+  color: var(--colorFail);
+  margin-top: 18px;
+  margin-bottom: 0;
+  display: block;
+
+  @media (--viewportMedium) {
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  background-image: none;
+}
+
+.changeAvatar {
+  /* Font */
+  font-weight: var(--fontWeightMedium);
+  /* Positioning: right */
+  position: absolute;
+  /* Look and feel (buttonish) */
+
+  top: 5px;
+  right: 5px;
+  margin-top: 0;
+  margin-bottom: 0;
+  transition: var(--transitionStyleButton);
+  padding: 0;
+  z-index: 2;
+
+  &:hover {
+    /* border: solid 1px var(--colorGrey300); */
+  }
+}
+
+.avatarPlaceholderHeading {
+  text-align: center;
+  text-align: center;
+  font-family: 'Sofia Pro';
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 24px;
+  /* 200% */
+  margin: 16px 0 0;
+}
+
+.avatarPlaceholderSubHeading {
+  text-align: center;
+  font-family: 'Sofia Pro';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 133.333% */
+  letter-spacing: -0.5px;
+  margin: 0;
+  padding: 0;
+}
+
+.uploadingImage {
+  /* Dimensions */
+  width: var(--ProfileSettingsForm_avatarSize);
+  height: var(--ProfileSettingsForm_avatarSize);
+
+  /* Image fitted to container */
+  object-fit: cover;
+  background-color: var(--colorGrey100);
+  /* Loading BG color */
+  border-radius: calc(var(--ProfileSettingsForm_avatarSize) / 2);
+  overflow: hidden;
+
+  display: block;
+  position: relative;
+  margin: 0;
+
+  @media (--viewportMedium) {
+    width: var(--ProfileSettingsForm_avatarSizeDesktop);
+    height: var(--ProfileSettingsForm_avatarSizeDesktop);
+    border-radius: calc(var(--ProfileSettingsForm_avatarSizeDesktop) / 2);
+  }
+}
+
+.uploadingImageOverlay {
+  /* Cover everything (overlay) */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* Overlay style */
+  background-color: var(--colorWhite);
+  opacity: 0.8;
+
+  /* Center content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatarInvisible {
+  visibility: hidden;
+  position: absolute;
+  top: -1000px;
+  left: -1000px;
+}
+
+.tip {
+  composes: marketplaceDefaultFontStyles from global;
+  color: var(--colorGrey300);
+  margin-top: 0;
+  margin-bottom: 12px;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.fileInfo {
+  composes: h5 from global;
+  color: var(--colorGrey300);
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 5px;
+  padding-bottom: 1px;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 4px 0 4px 0;
+  }
+}
+
+.nameContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 29px;
+}
+
+.row {
+  width: 100%;
+}
+
+.firstName {
+  width: calc(50% - 14px);
+}
+
+.lastName {
+  width: calc(50% - 14px);
+  position: relative;
+
+  & .atSymbol {
+    position: absolute;
+    top: 34px;
+    left: 8px;
+    font-size: 14px;
+    font-weight: 500;
+
+    @media (max-width: 767px) {
+      top: 32px;
+    }
+  }
+
+  &.userNameContainer {
+    & input {
+      padding-left: 26px;
+    }
+  }
+}
+
+.extraInfo {
+  composes: textSmall from global;
+  color: var(--colorGrey300);
+  margin-top: 11px;
+
+  @media (--viewportMedium) {
+    margin-top: 16px;
+  }
+}
+
+.ProfileImgContainer {
+  display: flex;
+  gap: 23px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+}
+
+.profileNameContainer {
+  flex: 1;
+}
+
+.audienceProfile {
+  &.ProfileImgContainer {
+    flex-direction: column;
+  }
+
+  & .audienceUserNameContainer {
+    width: 100%;
+
+    & .firstName {
+      width: 100%;
+    }
+  }
+}
+
+.audienceProfileRoot {
+  & .submitButton {
+    width: 100%;
+    display: block;
+    max-width: 100%;
+  }
+
+  & .buttonsGroup {
+    margin-top: 41px;
+  }
+}
+
+.audienceTitle {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  /* 122.222% */
+  margin-bottom: 21px;
+}
+.charaterCountBio{
+  text-align: end;
+   font-size: 0.8em;
+  color:'#fff' 
+}
+
+.profileSizeText {
+  font-family: Sofia Pro;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+}

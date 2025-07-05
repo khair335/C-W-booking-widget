@@ -1,0 +1,33 @@
+@import '../../styles/customMediaQueries.css';
+@import '../../styles/marketplaceDefaults.css';
+
+.filtersContainer {
+  max-width: var(--contentMaxWidthPages);
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 32px;
+  margin: 0 auto;
+  padding: 32px;
+  width: 100%;
+  padding: 32px 0px 0 40px;
+  @media (--viewportLarge) {
+    padding: 32px 0 0 60px;
+  }
+  @media (min-width: 1580px) {
+    padding: 32px 0 0 104px;
+  }
+
+}
+
+.filters {
+  @media (max-width: 767px) {
+  padding-right: 40px;
+  }
+}
+
+.hitsContainer {
+  max-width: 1576px;
+  @media (max-width: 1023px) {
+    max-width: calc(100vw - 40px);
+  }
+}

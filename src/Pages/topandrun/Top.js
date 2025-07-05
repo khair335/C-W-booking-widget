@@ -17,6 +17,7 @@ import Indicator from '../../components/Indicator/Indicator';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { updateBasicInfo, updateCurrentStep } from '../../store/bookingSlice';
+import { getAvailabilityForDateRange } from '../../services/bookingService';
 
 export default function Top() {
   const navigate = useNavigate();
@@ -34,8 +35,12 @@ export default function Top() {
   const [selectedChildren, setSelectedChildren] = useState(null);
   const [availablePromotionIds, setAvailablePromotionIds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [availabilityData, setAvailabilityData] = useState(null);
+  const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
   // Update form validation whenever relevant fields change
   const isFormValid = date && time && adults;
+
+  console.log('availablePromotionIds',availablePromotionIds);
 
   // Initialize time slots and selected time when component mounts or when dependencies change
   useEffect(() => {
@@ -100,6 +105,41 @@ export default function Top() {
     };
     fetchAvailability();
   }, [date, adults, children, time]);
+
+  // Fetch availability for the next month when party size changes
+  useEffect(() => {
+    const fetchMonthAvailability = async () => {
+      // Only fetch if we have a party size
+      const currentPartySize = parseInt(adults || 0) + parseInt(children || 0);
+      if (currentPartySize <= 0) return; // Skip if no party size set
+      
+      setIsLoadingAvailability(true);
+      try {
+        const partySize = currentPartySize;
+        
+        // Calculate date range for next month
+        const today = new Date();
+        const dateFrom = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const dateTo = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+        
+        // Format dates as ISO strings
+        const dateFromISO = dateFrom.toISOString();
+        const dateToISO = dateTo.toISOString();
+        
+        console.log("Fetching availability for date range:", { dateFromISO, dateToISO, partySize });
+        
+        const response = await getAvailabilityForDateRange(dateFromISO, dateToISO, partySize);
+        console.log("Month availability data:", response);
+        setAvailabilityData(response);
+      } catch (error) {
+        console.error("Month availability fetch failed:", error);
+      } finally {
+        setIsLoadingAvailability(false);
+      }
+    };
+    
+    fetchMonthAvailability();
+  }, [adults, children]);
 
   // Sync local state with Redux state
   // useEffect(() => {
@@ -183,6 +223,46 @@ export default function Top() {
     navigate("/topArea");
   };
 
+  // Function to check if a date is available based on availability data
+  const isDateAvailable = (date) => {
+    if (!availabilityData || !availabilityData.AvailableDates) {
+      console.log("No availability data yet, disabling all dates until party size is selected");
+      return false; // If no availability data, disable all dates until party size is selected
+    }
+    
+    const dateString = date.toISOString().split('T')[0]; // Get YYYY-MM-DD format
+    
+    // Check if the date exists in available dates
+    const availableDate = availabilityData.AvailableDates.find(availDate => {
+      const availDateString = availDate.Date.split('T')[0];
+      return availDateString === dateString;
+    });
+    
+    // Date is available if it exists in AvailableDates and has available times
+    const isAvailable = availableDate && availableDate.AvailableTimes && availableDate.AvailableTimes.length > 0;
+    console.log(`Date ${dateString} availability:`, isAvailable ? 'Available' : 'Not available');
+    return isAvailable;
+  };
+
+  // Function to check if a date should be disabled
+  const checkDateDisabled = (date) => {
+    // Disable past dates
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (date < today) return true;
+    
+    // Disable dates beyond next month
+    const nextMonth = new Date();
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    nextMonth.setDate(nextMonth.getDate() + 1); // Add one day to include the entire next month
+    if (date > nextMonth) return true;
+    
+    // Disable dates that are not available
+    if (!isDateAvailable(date)) return true;
+    
+    return false;
+  };
+
   return (
     <div className={styles.griffinMain} id="choose">
       <PubImageHeader
@@ -208,13 +288,7 @@ export default function Top() {
 
         <div className={styles.Dataa_type}>
           {guestError && <p className="text-danger">{guestError}</p>}
-          <DatePicker
-            value={date ? new Date(date) : null}
-            onChange={handleDateChange}
-            placeholder="Select Date"
-            disablePastDates={true}
-          />
-
+          
           <DropDown
             options={[...Array(11).keys()].slice(1).map((num) => ({
               label: num.toString(),
@@ -236,13 +310,28 @@ export default function Top() {
             onChange={handleChildrenChange}
             placeholder="Select Children Number"
           />
+
+          {isLoadingAvailability && (
+            <p className={styles.loadingText}>Loading available dates...</p>
+          )}
+          {!availabilityData && !isLoadingAvailability && (
+            <p className={styles.loadingText}>Please select number of guests to see available dates</p>
+          )}
+          <DatePicker
+            value={date ? new Date(date) : null}
+            onChange={handleDateChange}
+            placeholder={availabilityData ? "Select Date" : "Select guests first"}
+            disablePastDates={true}
+            isDateDisabled={checkDateDisabled}
+          />
+
           <DropDown
             options={timeSlots.map((slot) => {
               const iso = slot.TimeSlot;
               const label = new Date(iso).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
-             hour12: true,
+             hour12: false,
               });
               return {
                 label,

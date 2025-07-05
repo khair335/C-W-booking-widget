@@ -1,0 +1,43 @@
+/* .skeleton {
+    background: linear-gradient(90deg, #b7b7b7 25%, #e6e6e6 37%, #b7b7b7 63%);
+    background-size: 400% 100%;
+    animation: skeleton-loading 1.4s ease infinite;
+  }
+  
+  @-webkit-keyframes skeleton-loading {
+    0% {
+      background-position: 100% 50%;
+    }
+  
+    to {
+      background-position: 0 50%;
+    }
+  } */
+
+.skeleton {
+  display: inline-block;
+  height: 1em;
+  position: relative;
+  overflow: hidden;
+  background-color: #DDDBDD;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, #DDDBDD 25%, #fff 37%, #DDDBDD 63%);
+    animation: shimmer 5s infinite;
+    content: '';
+  }
+
+
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

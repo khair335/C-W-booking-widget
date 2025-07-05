@@ -1,0 +1,110 @@
+.emptyCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 357px; /* Adjust the height as needed */
+  max-height: 397px;
+  text-align: center; /* Center-align the content */
+  padding: 20px; /* Padding inside the card */
+  color: #ffffff; /* White text color */
+  max-width: 269px;
+
+  border-radius: 8px;
+  border: 1px solid var(--Mid-Grey, #9d9d9d);
+  background: linear-gradient(
+    164deg,
+    rgba(0, 0, 0, 0.44) 11.38%,
+    rgba(132, 132, 132, 0.44) 164.03%
+  );
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  position: relative;
+  z-index: 3;
+  @media (max-width: 767px) {
+    max-width: 244px;
+    height: 318px;
+  }
+}
+
+.emptyCard span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 21px; /* Space between icon and title */
+  font-size: 32px; /* Icon size */
+  color: #ffffff; /* Icon color */
+}
+
+.emptyCard h3 {
+  color: #fff;
+  text-align: center;
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px; /* 157.143% */
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin: 0 0 11px;
+  padding: 0;
+}
+
+.emptyCardLinkWrapper {
+  width: 100%;
+  max-width: 269px;
+  display: block;
+  position: relative;
+  max-height: 397px;
+  /* background-color: #000; */
+
+  @media (max-width: 767px) {
+    max-width: 244px;
+ 
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 20px 2px rgba(245, 217, 10, 0.55);
+    z-index: 1;
+    @media (max-width: 767px) {
+      right: 0px;
+    }
+
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0px;
+    height: 100%;
+    background: #000;
+    z-index: 2;
+    @media (max-width: 767px) {
+        right: 0px;
+      }
+  }
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.emptyCard p {
+  color: #fff;
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 30px; /* 125% */
+  letter-spacing: -0.348px;
+  max-width: 173px;
+  margin: 0;
+  padding: 0;
+}
