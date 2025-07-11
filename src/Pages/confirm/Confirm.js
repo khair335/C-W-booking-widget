@@ -15,6 +15,8 @@ import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { addSuccessBookingData, resetBooking } from '../../store/bookingSlice';
+import PaymentModal from '../../components/PaymentModal/PaymentModal';
+import Toast from '../../components/Toast/Toast';
 
 export default function Confirm() {
   const location = useLocation();
@@ -29,67 +31,50 @@ export default function Confirm() {
   // Local state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [transactionId, setTransactionId] = useState('');
 
   const handleBooking = async () => {
-    if (isSubmitting) return;
+    // Show payment modal instead of direct booking
+    setShowPaymentModal(true);
+  };
 
-    setIsSubmitting(true);
-    setError(null);
+  const handlePaymentSuccess = (responseData) => {
+    dispatch(addSuccessBookingData(responseData));
+    setShowPaymentModal(false);
 
-    const token = localStorage.getItem('token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
+    // Show toast with transaction ID
+    const txId = responseData.transactionId ||
+                 responseData.Booking?.Reference ||
+                 'N/A';
 
-    const submissionData = {
-      VisitDate: date,
-      VisitTime: time,
-      PartySize: adults + children,
-      PromotionId: selectedPromotion?.Id,
-      PromotionName: selectedPromotion?.Name,
-      Customer: customerDetails,
-      ChannelCode: 'ONLINE',
-    };
+    setTransactionId(txId);
+    setToastMessage('Payment successful! Your booking has been confirmed.');
+    setShowToast(true);
 
-    const toUrlEncoded = (obj, prefix) => {
-      const str = [];
-      for (const p in obj) {
-        if (obj.hasOwnProperty(p)) {
-          const key = prefix ? `${prefix}[${p}]` : p;
-          const value = obj[p];
-          if (typeof value === 'object' && value !== null) {
-            str.push(toUrlEncoded(value, key));
-          } else {
-            str.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-          }
-        }
-      }
-      return str.join('&');
-    };
+    // Navigate after a short delay to show the toast
+    setTimeout(() => {
+      navigate('/Booked');
+    }, 2000);
+  };
 
-    try {
-      const encodedData = toUrlEncoded(submissionData);
-      const response = await postRequest(
-        '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
-        headers,
-        encodedData
-      );
-      console.log('Booking Success:', response.data);
-      if (response.data.Booking.Reference) {
-        dispatch(addSuccessBookingData(response.data));
-        navigate('/Booked');
-      } else {
-        setError('Something went wrong,Please try again to book a table');
-      }
+  const handlePaymentError = (error) => {
+    setError(error);
+    setShowPaymentModal(false);
 
+    // Show error toast
+    setToastMessage(error || 'Payment failed. Please try again.');
+    setShowToast(true);
+  };
 
-    } catch (error) {
-      console.error('Booking Failed:', error);
-      setError('Failed to submit booking. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleCloseModal = () => {
+    setShowPaymentModal(false);
+  };
+
+  const handleToastClose = () => {
+    setShowToast(false);
   };
 
   return (
@@ -174,7 +159,7 @@ export default function Confirm() {
 
 
           <CustomButton
-            label={isSubmitting ? "Booking..." : "Book a table"}
+            label="Proceed to Payment"
             onClick={handleBooking}
             disabled={isSubmitting}
           />
@@ -202,6 +187,35 @@ export default function Confirm() {
           </Link>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={handleCloseModal}
+        bookingData={{
+          VisitDate: date,
+          VisitTime: time,
+          PartySize: adults + children,
+          PromotionId: selectedPromotion?.Id,
+          PromotionName: selectedPromotion?.Name,
+          SpecialRequests: specialRequests,
+          Customer: customerDetails,
+          ChannelCode: 'ONLINE',
+          IsLeaveTimeConfirmed: true
+        }}
+        onSuccess={handlePaymentSuccess}
+        onError={handlePaymentError}
+      />
+
+      {/* Toast Notification */}
+      <Toast
+        isVisible={showToast}
+        message={toastMessage}
+        title={transactionId ? "Payment Successful!" : "Payment Status"}
+        type={transactionId ? "success" : "error"}
+        transactionId={transactionId}
+        onClose={handleToastClose}
+      />
     </div>
   );
 }

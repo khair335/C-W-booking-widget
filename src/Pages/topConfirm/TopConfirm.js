@@ -16,6 +16,8 @@ import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { addSuccessBookingData, resetBooking } from '../../store/bookingSlice';
+import PaymentModal from '../../components/PaymentModal/PaymentModal';
+import Toast from '../../components/Toast/Toast';
 
 export default function Confirm() {
   const navigate = useNavigate();
@@ -39,6 +41,11 @@ export default function Confirm() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [transactionId, setTransactionId] = useState('');
+
   const displayDate = React.useMemo(() => {
     if (!date) return "Select Date";
     try {
@@ -56,63 +63,44 @@ export default function Confirm() {
   }, [date]);
 
   const handleBooking = async () => {
-    setIsLoading(true);
-    const token = localStorage.getItem('token');
+    // Show payment modal instead of direct booking
+    setShowPaymentModal(true);
+  };
 
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
+  const handlePaymentSuccess = (responseData) => {
+    dispatch(addSuccessBookingData(responseData));
+    setShowPaymentModal(false);
 
-    const submissionData = {
-      VisitDate: date,
-      VisitTime: time,
-      PartySize: parseInt(adults) + parseInt(children),
-      PromotionId: selectedPromotion?.Id,
-      PromotionName: selectedPromotion?.Name,
-      SpecialRequests: specialRequests,
-      Customer: customerDetails,
-      ChannelCode: 'ONLINE',
-      IsLeaveTimeConfirmed: true
-    };
+    // Show toast with transaction ID
+    const txId = responseData.transactionId ||
+                 responseData.Booking?.Reference ||
+                 'N/A';
 
-    const toUrlEncoded = (obj, prefix) => {
-      const str = [];
-      for (const p in obj) {
-        if (obj.hasOwnProperty(p)) {
-          const key = prefix ? `${prefix}[${p}]` : p;
-          const value = obj[p];
-          if (typeof value === 'object' && value !== null) {
-            str.push(toUrlEncoded(value, key));
-          } else {
-            str.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-          }
-        }
-      }
-      return str.join('&');
-    };
+    setTransactionId(txId);
+    setToastMessage('Payment successful! Your booking has been confirmed.');
+    setShowToast(true);
 
-    try {
-      const encodedData = toUrlEncoded(submissionData);
-      const response = await postRequest(
-        '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
-        headers,
-        encodedData
-      );
-      console.log('Booking Success:', response.data);
-      if (response.data.Booking) {
-        dispatch(addSuccessBookingData(response.data));
-        // dispatch(resetBooking());
-        navigate('/topBooked');
-      } else {
-        setError('Something went wrong,Please try again to book a table');
-      }
-    } catch (error) {
-      console.error('Booking Failed:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    // Navigate after a short delay to show the toast
+    setTimeout(() => {
+      navigate('/topBooked');
+    }, 2000);
+  };
 
+  const handlePaymentError = (error) => {
+    setError(error);
+    setShowPaymentModal(false);
+
+    // Show error toast
+    setToastMessage(error || 'Payment failed. Please try again.');
+    setShowToast(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowPaymentModal(false);
+  };
+
+  const handleToastClose = () => {
+    setShowToast(false);
   };
 
   return (
@@ -192,7 +180,7 @@ export default function Confirm() {
 
         <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
           <CustomButton
-            label={isLoading ? "Booking..." : "Book a table"}
+            label="Proceed to Payment"
             onClick={handleBooking}
             disabled={isLoading}
           />
@@ -219,6 +207,35 @@ export default function Confirm() {
           </Link>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={handleCloseModal}
+        bookingData={{
+          VisitDate: date,
+          VisitTime: time,
+          PartySize: parseInt(adults) + parseInt(children),
+          PromotionId: selectedPromotion?.Id,
+          PromotionName: selectedPromotion?.Name,
+          SpecialRequests: specialRequests,
+          Customer: customerDetails,
+          ChannelCode: 'ONLINE',
+          IsLeaveTimeConfirmed: true
+        }}
+        onSuccess={handlePaymentSuccess}
+        onError={handlePaymentError}
+      />
+
+      {/* Toast Notification */}
+      <Toast
+        isVisible={showToast}
+        message={toastMessage}
+        title={transactionId ? "Payment Successful!" : "Payment Status"}
+        type={transactionId ? "success" : "error"}
+        transactionId={transactionId}
+        onClose={handleToastClose}
+      />
     </div>
   );
 }

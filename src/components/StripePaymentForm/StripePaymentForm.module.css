@@ -1,0 +1,44 @@
+ .paymentForm {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.cardElementContainer {
+  margin-bottom: 20px;
+}
+
+.cardLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.errorMessage {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Stripe Elements styling */
+.paymentForm :global(.StripeElement) {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px;
+  background-color: white;
+}
+
+.paymentForm :global(.StripeElement--focus) {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.paymentForm :global(.StripeElement--invalid) {
+  border-color: #dc3545;
+}

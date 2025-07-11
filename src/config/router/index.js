@@ -39,6 +39,7 @@ import TopBookingNumber from "../../Pages/topBookingNumber/TopBookingNumber";
 import TopLost from "../../Pages/TopLost/TopLost";
 import TopResent from "../../Pages/topResent/TopResent";
 import TopCancelled from "../../Pages/TopCancelled/TopCancelled"
+import PaymentSuccess from '../../Pages/PaymentSuccess/PaymentSuccess';
 let Router = () => {
     return (
         <BrowserRouter>
@@ -46,19 +47,19 @@ let Router = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/griffin" element={<Griffin/>} />
                 <Route path="/select" element={<Select />} />
-                <Route path="/topandrun" element={<TopandRun />} /> 
-                <Route path="/area" element={<Area />} /> 
-                <Route path="/Details" element={<Details />} /> 
-                <Route path="/Confirm" element={<Confirm />} /> 
-                <Route path="/Booked" element={<Booked />} /> 
-                <Route path="/Modify" element={<Modify />} /> 
-                <Route path="/Edit" element={<Edit />} /> 
-                <Route path="/PickArea" element={<PickArea />} /> 
-                <Route path="/ReDetail" element={<ReDetail />} /> 
-                <Route path="/Confirmed" element={<Confirmed />} /> 
-                <Route path="/Updated" element={<Updated />} /> 
-                <Route path="/Cancel" element={<Cancel />} /> 
-                <Route path="/BookingNumber" element={<BookingNumber />} /> 
+                <Route path="/topandrun" element={<TopandRun />} />
+                <Route path="/area" element={<Area />} />
+                <Route path="/Details" element={<Details />} />
+                <Route path="/Confirm" element={<Confirm />} />
+                <Route path="/Booked" element={<Booked />} />
+                <Route path="/Modify" element={<Modify />} />
+                <Route path="/Edit" element={<Edit />} />
+                <Route path="/PickArea" element={<PickArea />} />
+                <Route path="/ReDetail" element={<ReDetail />} />
+                <Route path="/Confirmed" element={<Confirmed />} />
+                <Route path="/Updated" element={<Updated />} />
+                <Route path="/Cancel" element={<Cancel />} />
+                <Route path="/BookingNumber" element={<BookingNumber />} />
                 <Route path="/Lost" element={<Lost />} />
                 <Route path="/Resent" element={<Resent />} />
                 <Route path="/Cancelled" element={<Cancelled />} />
@@ -78,6 +79,8 @@ let Router = () => {
                 <Route path="/TopLost" element={<TopLost />} />
                 <Route path="/TopResent" element={<TopResent />} />
                 <Route path="/TopCancelled" element={<TopCancelled />} />
+                <Route path="/payment-success" element={<PaymentSuccess />} />
+
             </Routes>
         </BrowserRouter>
     )
