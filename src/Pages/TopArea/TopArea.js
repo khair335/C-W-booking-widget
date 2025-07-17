@@ -35,6 +35,7 @@ export default function TopArea() {
 
   // Local state
   const [promotions, setPromotions] = useState([]);
+  console.log('promotions',promotions);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -98,7 +99,7 @@ export default function TopArea() {
 
   const togglePromotion = (promotion) => {
     dispatch(updateSelectedPromotion(
-      selectedPromotion?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name }
+      selectedPromotion?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name,MayRequireCreditCard:promotion.MayRequireCreditCard }
     ));
   };
 

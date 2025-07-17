@@ -30,6 +30,7 @@ export default function Confirm() {
 
   // Local state
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -38,7 +39,67 @@ export default function Confirm() {
 
   const handleBooking = async () => {
     // Show payment modal instead of direct booking
-    setShowPaymentModal(true);
+  console.log('selectedPromotion',selectedPromotion);
+    if(selectedPromotion?.MayRequireCreditCard){
+      setShowPaymentModal(true);
+    }else{
+      setIsLoading(true);
+      const token = localStorage.getItem('token');
+
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      };
+  
+      const submissionData = {
+        VisitDate: date,
+        VisitTime: time,
+        PartySize: parseInt(adults) + parseInt(children),
+        PromotionId: selectedPromotion?.Id,
+        PromotionName: selectedPromotion?.Name,
+        SpecialRequests: specialRequests,
+        Customer: customerDetails,
+        ChannelCode: 'ONLINE',
+        IsLeaveTimeConfirmed: true
+      };
+  
+      const toUrlEncoded = (obj, prefix) => {
+        const str = [];
+        for (const p in obj) {
+          if (obj.hasOwnProperty(p)) {
+            const key = prefix ? `${prefix}[${p}]` : p;
+            const value = obj[p];
+            if (typeof value === 'object' && value !== null) {
+              str.push(toUrlEncoded(value, key));
+            } else {
+              str.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+            }
+          }
+        }
+        return str.join('&');
+      };
+  
+      try {
+        const encodedData = toUrlEncoded(submissionData);
+        const response = await postRequest(
+          '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
+          headers,
+          encodedData
+        );
+        console.log('Booking Success:', response.data);
+        if (response.data.Booking) {
+          dispatch(addSuccessBookingData(response.data));
+          // dispatch(resetBooking());
+          navigate('/topBooked');
+        } else {
+          setError('Something went wrong,Please try again to book a table');
+        }
+      } catch (error) {
+        console.error('Booking Failed:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   const handlePaymentSuccess = (responseData) => {

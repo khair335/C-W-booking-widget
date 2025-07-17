@@ -63,29 +63,11 @@ export default function StripePaymentForm({ bookingData, onSuccess, onError }) {
     setError('');
 
     try {
-      // Create payment method with Stripe
-      const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: elements.getElement(CardElement),
-      });
-
-      if (stripeError) {
-        setError(stripeError.message);
-        setIsProcessing(false);
-        return;
-      }
-
-      // Call your external API with the payment method
+      // 1. First API call WITHOUT stripePaymentMethodId
       const token = localStorage.getItem('token');
       const headers = {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/x-www-form-urlencoded',
-      };
-
-      // Add payment method to booking data
-      const submissionData = {
-        ...bookingData,
-        stripePaymentMethodId: paymentMethod.id,
       };
 
       const toUrlEncoded = (obj, prefix) => {
@@ -104,27 +86,61 @@ export default function StripePaymentForm({ bookingData, onSuccess, onError }) {
         return str.join('&');
       };
 
-      const encodedData = toUrlEncoded(submissionData);
+      // Remove stripePaymentMethodId if present
+      const { stripePaymentMethodId, ...bookingDataWithoutStripe } = bookingData || {};
+      const encodedData1 = toUrlEncoded(bookingDataWithoutStripe);
 
-      const response = await postRequest(
+      const response1 = await postRequest(
         '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
         headers,
-        encodedData
+        encodedData1
       );
 
-      console.log('Payment Response:', response.data);
+      if (!response1.data || !response1.data.Booking) {
+        setError('Booking failed. Please try again.');
+        setIsProcessing(false);
+        return;
+      }
 
-      if (response.data.Booking) {
+      // 2. Create payment method with Stripe
+      const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: elements.getElement(CardElement),
+      });
+
+      if (stripeError) {
+        setError(stripeError.message);
+        setIsProcessing(false);
+        return;
+      }
+
+      // 3. Second API call WITH stripePaymentMethodId
+      const submissionData2 = {
+        ...bookingData,
+        stripePaymentMethodId: paymentMethod.id,
+        StripeCheckoutSessionId :  paymentMethod.id,
+      };
+      const encodedData2 = toUrlEncoded(submissionData2);
+
+      const response2 = await postRequest(
+        '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
+        headers,
+        encodedData2
+      );
+
+      console.log('Payment Response:', response2.data);
+
+      if (response2.data.Booking) {
         // Extract transaction ID from various possible locations in the response
-        const transactionId = response.data.Booking.Reference ||
-                            response.data.Booking.Id ||
-                            response.data.paymentIntent?.id ||
-                            response.data.transactionId ||
-                            paymentMethod.id;
+        const transactionId = response2.data.Booking.Reference ||
+                              response2.data.Booking.Id ||
+                              response2.data.paymentIntent?.id ||
+                              response2.data.transactionId ||
+                              paymentMethod.id;
 
         // Create enhanced response with transaction ID
         const enhancedResponse = {
-          ...response.data,
+          ...response2.data,
           transactionId: transactionId,
           paymentMethodId: paymentMethod.id,
         };

@@ -98,7 +98,7 @@ export default function Area() {
 
   const togglePromotion = (promotion) => {
     dispatch(updateSelectedPromotion(
-      selectedPromotion?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name }
+      selectedPromotion?.Id === promotion.Id ? null : { Id: promotion.Id, Name: promotion.Name,MayRequireCreditCard:promotion.MayRequireCreditCard }
     ));
   };
 
