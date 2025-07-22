@@ -48,8 +48,8 @@ function AppContent() {
 
 // Make sure to call `loadStripe` outside of a component's render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY}`);
-console.log('stripePromise ',process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(`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`);
+console.log('stripePromise ','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');
 
 function App() {
   return (
