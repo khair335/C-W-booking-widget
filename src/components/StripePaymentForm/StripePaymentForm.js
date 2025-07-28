@@ -21,9 +21,7 @@ const CARD_ELEMENT_OPTIONS = {
 const styles = {
   paymentForm: {
     width: '100%',
-    maxWidth: '400px',
-    margin: '0 auto',
-    padding: '20px',
+  
   },
   cardElementContainer: {
     marginBottom: '20px',
@@ -172,7 +170,7 @@ export default function StripePaymentForm({ bookingData, onSuccess, onError }) {
       )}
 
       <CustomButton
-        label={isProcessing ? "Processing Payment..." : "Pay & Book Table"}
+        label={isProcessing ? "Processing..." : "Hold Card Details & Book Table"}
         onClick={handleSubmit}
         disabled={!stripe || isProcessing}
         type="submit"

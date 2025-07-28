@@ -128,7 +128,7 @@ export default function PaymentModal({
                  'N/A';
 
     setTransactionId(txId);
-    setToastMessage('Payment processed successfully! Your booking has been confirmed.');
+    setToastMessage('Card details held successfully! Your booking has been confirmed.');
     setShowToast(true);
 
     // Call the original success handler
@@ -136,7 +136,7 @@ export default function PaymentModal({
   };
 
   const handlePaymentError = (error) => {
-    setToastMessage(error || 'Payment failed. Please try again.');
+    setToastMessage(error || 'Failed to hold card details. Please try again.');
     setShowToast(true);
     onError(error);
   };
@@ -150,7 +150,7 @@ export default function PaymentModal({
       <div style={styles.modalOverlay} onClick={handleBackdropClick}>
         <div style={styles.modalContent}>
           <div style={styles.modalHeader}>
-            <h2 style={styles.modalTitle}>Payment Details</h2>
+            <h2 style={styles.modalTitle}>Hold Card Details</h2>
             <button
               style={styles.closeButton}
               onClick={handleClose}
@@ -184,6 +184,18 @@ export default function PaymentModal({
                 {bookingData.Customer?.FirstName} {bookingData.Customer?.Surname}
               </span>
             </div>
+          </div>
+
+          <div style={{
+            backgroundColor: '#fff3cd',
+            border: '1px solid #ffeaa7',
+            borderRadius: '6px',
+            padding: '15px',
+            marginBottom: '20px',
+            fontSize: '14px',
+            color: '#856404'
+          }}>
+            <strong>Note:</strong> Your card details are securely held to confirm your booking. No payment will be taken unless you don't show up or cancel with less than 48 hours' notice.
           </div>
 
           <StripePaymentForm
