@@ -15,7 +15,7 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
-import { addSuccessBookingData, resetBooking } from '../../store/bookingSlice';
+import { addSuccessBookingData, updateCustomerDetails } from '../../store/bookingSlice';
 import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import Toast from '../../components/Toast/Toast';
 
@@ -239,6 +239,11 @@ export default function Confirm() {
             checked={customerDetails.ReceiveEmailMarketing}
             id="flexCheckDefault"
             label="I have read and accept the Privacy Policy"
+            onChange={(e) =>
+              dispatch(
+                updateCustomerDetails({ ReceiveEmailMarketing: e.target.checked })
+              )
+            }
             labelStyle={styles.confirmCheckboxLabel}
           />
         </div>
