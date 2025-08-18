@@ -328,7 +328,11 @@ export default function Griffin() {
       return false; // If no availability data, disable all dates until party size is selected
     }
     
-    const dateString = date.toISOString().split('T')[0]; // Get YYYY-MM-DD format
+    // Build local date string (YYYY-MM-DD) to avoid UTC offset issues with toISOString()
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateString = `${year}-${month}-${day}`;
     
     // Check if the date exists in available dates
     const availableDate = availabilityData.AvailableDates.find(availDate => {
