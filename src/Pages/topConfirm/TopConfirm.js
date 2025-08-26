@@ -7,7 +7,6 @@ import membericon from "../../images/Chips Icons Mobile (3).png";
 import resturanticon from "../../images/table_restaurant.png";
 import logo1 from "../../images/Logo (1).png";
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
-import whitelogo from "../../images/T&R White.png"
 import styles from "./TopConfirm.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
@@ -45,6 +44,8 @@ export default function Confirm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [transactionId, setTransactionId] = useState('');
+  const [bookingResponse, setBookingResponse] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState(null);
 
   const displayDate = React.useMemo(() => {
     if (!date) return "Select Date";
@@ -63,67 +64,82 @@ export default function Confirm() {
   }, [date]);
 
   const handleBooking = async () => {
-    // Show payment modal instead of direct booking
-  console.log('selectedPromotion',selectedPromotion);
-    if(selectedPromotion?.MayRequireCreditCard){
-      setShowPaymentModal(true);
-    }else{
-      setIsLoading(true);
-      const token = localStorage.getItem('token');
+    setIsLoading(true);
+    setError('');
+    
+    const token = localStorage.getItem('token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
 
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      };
-  
-      const submissionData = {
-        VisitDate: date,
-        VisitTime: time,
-        PartySize: parseInt(adults) + parseInt(children),
-        PromotionId: selectedPromotion?.Id,
-        PromotionName: selectedPromotion?.Name,
-        SpecialRequests: specialRequests,
-        Customer: customerDetails,
-        ChannelCode: 'ONLINE',
-        IsLeaveTimeConfirmed: true
-      };
-  
-      const toUrlEncoded = (obj, prefix) => {
-        const str = [];
-        for (const p in obj) {
-          if (obj.hasOwnProperty(p)) {
-            const key = prefix ? `${prefix}[${p}]` : p;
-            const value = obj[p];
-            if (typeof value === 'object' && value !== null) {
-              str.push(toUrlEncoded(value, key));
-            } else {
-              str.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-            }
+    const submissionData = {
+      VisitDate: date,
+      VisitTime: time,
+      PartySize: parseInt(adults) + parseInt(children),
+      PromotionId: selectedPromotion?.Id,
+      PromotionName: selectedPromotion?.Name,
+      SpecialRequests: specialRequests,
+      Customer: customerDetails,
+      ChannelCode: 'ONLINE',
+      IsLeaveTimeConfirmed: true
+    };
+
+    const toUrlEncoded = (obj, prefix) => {
+      const str = [];
+      for (const p in obj) {
+        if (obj.hasOwnProperty(p)) {
+          const key = prefix ? `${prefix}[${p}]` : p;
+          const value = obj[p];
+          if (typeof value === 'object' && value !== null) {
+            str.push(toUrlEncoded(value, key));
+          } else {
+            str.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
           }
         }
-        return str.join('&');
-      };
-  
-      try {
-        const encodedData = toUrlEncoded(submissionData);
-        const response = await postRequest(
-          '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
-          headers,
-          encodedData
-        );
-        console.log('Booking Success:', response.data);
-        if (response.data.Booking) {
-          dispatch(addSuccessBookingData(response.data));
-          // dispatch(resetBooking());
-          navigate('/topBooked');
-        } else {
-          setError('Something went wrong,Please try again to book a table');
-        }
-      } catch (error) {
-        console.error('Booking Failed:', error);
-      } finally {
-        setIsLoading(false);
       }
+      return str.join('&');
+    };
+
+    try {
+      // First API call without payment method
+      const encodedData = toUrlEncoded(submissionData);
+      const response = await postRequest(
+        '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
+        headers,
+        encodedData
+      );
+      
+      console.log('Booking Response:', response.data);
+      
+      // Check response status and handle accordingly
+      switch (response.data.Status) {
+        case 'CreditCardRequired':
+          // Show payment modal with Stripe setup
+          setBookingResponse(response.data);
+          setPaymentStatus('CreditCardRequired');
+          setShowPaymentModal(true);
+          break;
+        case 'PaymentRequired':
+          // Handle payment required flow
+          setBookingResponse(response.data);
+          setPaymentStatus('PaymentRequired');
+          setShowPaymentModal(true);
+          break;
+        case 'Success':
+          // Direct success - navigate to booked page
+          dispatch(addSuccessBookingData(response.data));
+          navigate('/topBooked');
+          break;
+        default:
+          setError('Unexpected response status. Please try again.');
+          console.error('Unexpected status:', response.data.Status);
+      }
+    } catch (error) {
+      console.error('Booking Failed:', error);
+      setError('Booking failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
   // const handleBooking = async () => {
@@ -293,6 +309,8 @@ export default function Confirm() {
           ChannelCode: 'ONLINE',
           IsLeaveTimeConfirmed: true
         }}
+        bookingResponse={bookingResponse}
+        paymentStatus={paymentStatus}
         onSuccess={handlePaymentSuccess}
         onError={handlePaymentError}
       />

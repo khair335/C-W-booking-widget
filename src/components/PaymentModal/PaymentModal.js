@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StripePaymentForm from '../StripePaymentForm/StripePaymentForm';
 import CustomButton from '../ui/CustomButton/CustomButton';
 import Toast from '../Toast/Toast';
+import { useStripeContext } from '../../contexts/StripeContext';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 const styles = {
   modalOverlay: {
@@ -86,12 +89,33 @@ export default function PaymentModal({
   isOpen,
   onClose,
   bookingData,
+  bookingResponse,
+  paymentStatus,
   onSuccess,
   onError
 }) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [transactionId, setTransactionId] = useState('');
+  const { updateStripeConfig } = useStripeContext();
+  const [localStripe, setLocalStripe] = useState(null);
+
+  // Update Stripe configuration when booking response changes
+  useEffect(() => {
+    if (bookingResponse && isOpen) {
+      updateStripeConfig(bookingResponse);
+      // Also create a local Stripe instance tied to the provided account
+      if (bookingResponse.StripePublishableKey) {
+        const stripePromise = loadStripe(
+          bookingResponse.StripePublishableKey,
+          bookingResponse.StripeAccountId
+            ? { stripeAccount: bookingResponse.StripeAccountId }
+            : undefined
+        );
+        setLocalStripe(stripePromise);
+      }
+    }
+  }, [bookingResponse, isOpen, updateStripeConfig]);
 
   if (!isOpen) return null;
 
@@ -128,7 +152,13 @@ export default function PaymentModal({
                  'N/A';
 
     setTransactionId(txId);
-    setToastMessage('Card details held successfully! Your booking has been confirmed.');
+    
+    // Different messages based on payment status
+    const successMessage = paymentStatus === 'CreditCardRequired' 
+      ? 'Card details held successfully! Your booking has been confirmed.'
+      : 'Payment successful! Your booking has been confirmed.';
+    
+    setToastMessage(successMessage);
     setShowToast(true);
 
     // Call the original success handler
@@ -195,14 +225,23 @@ export default function PaymentModal({
             fontSize: '14px',
             color: '#856404'
           }}>
-            <strong>Note:</strong> Your card details are securely held to confirm your booking. No payment will be taken unless you don't show up or cancel with less than 48 hours' notice.
+            <strong>Note:</strong> {paymentStatus === 'CreditCardRequired' 
+              ? 'Your card details are securely held to confirm your booking. No payment will be taken unless you don\'t show up or cancel with less than 48 hours\' notice.'
+              : 'Payment is required to confirm your booking. Your card will be charged immediately.'
+            }
           </div>
 
-          <StripePaymentForm
-            bookingData={bookingData}
-            onSuccess={handlePaymentSuccess}
-            onError={handlePaymentError}
-          />
+          {localStripe && (
+            <Elements stripe={localStripe}>
+              <StripePaymentForm
+                bookingData={bookingData}
+                bookingResponse={bookingResponse}
+                paymentStatus={paymentStatus}
+                onSuccess={handlePaymentSuccess}
+                onError={handlePaymentError}
+              />
+            </Elements>
+          )}
 
           <div style={{ marginTop: '20px', textAlign: 'center' }}>
             <CustomButton

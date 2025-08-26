@@ -1,5 +1,6 @@
 import React from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { StripeProvider } from './contexts/StripeContext';
 import Router from "./config/router";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -53,11 +54,13 @@ const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 function App() {
   return (
     <div className="App">
-      <Elements stripe={stripePromise}>
-        <AuthProvider>
-          <AppContent />
-        </AuthProvider>
-      </Elements>
+      <StripeProvider>
+        <Elements stripe={stripePromise}>
+          <AuthProvider>
+            <AppContent />
+          </AuthProvider>
+        </Elements>
+      </StripeProvider>
     </div>
   );
 }

@@ -43,7 +43,7 @@ const styles = {
   },
 };
 
-export default function StripePaymentForm({ bookingData, onSuccess, onError }) {
+export default function StripePaymentForm({ bookingData, bookingResponse, paymentStatus, onSuccess, onError }) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -61,7 +61,6 @@ export default function StripePaymentForm({ bookingData, onSuccess, onError }) {
     setError('');
 
     try {
-      // 1. First API call WITHOUT stripePaymentMethodId
       const token = localStorage.getItem('token');
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -84,23 +83,7 @@ export default function StripePaymentForm({ bookingData, onSuccess, onError }) {
         return str.join('&');
       };
 
-      // Remove stripePaymentMethodId if present
-      const { stripePaymentMethodId, ...bookingDataWithoutStripe } = bookingData || {};
-      const encodedData1 = toUrlEncoded(bookingDataWithoutStripe);
-
-      const response1 = await postRequest(
-        '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
-        headers,
-        encodedData1
-      );
-
-      if (!response1.data || !response1.data.Booking) {
-        setError('Booking failed. Please try again.');
-        setIsProcessing(false);
-        return;
-      }
-
-      // 2. Create payment method with Stripe
+      // 1. Create payment method with Stripe
       const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
         type: 'card',
         card: elements.getElement(CardElement),
@@ -112,11 +95,17 @@ export default function StripePaymentForm({ bookingData, onSuccess, onError }) {
         return;
       }
 
-      // 3. Second API call WITH stripePaymentMethodId
+      // 2. Second API call WITH whole booking data + PaymentMethodId + SetupIntentClientSecret + StripeAccountId
       const submissionData2 = {
         ...bookingData,
+        PaymentMethodId: paymentMethod.id,
+        SetupIntentClientSecret: bookingResponse?.SetupIntentClientSecret,
+        StripeAccountId: bookingResponse?.StripeAccountId,
+        // Include Token/EditToken if present so backend can identify booking context
+        Token: bookingResponse?.Booking?.Token || bookingResponse?.Token,
+        EditToken: bookingResponse?.Booking?.EditToken || bookingResponse?.EditToken,
+        // Backward compatibility: some backends expect this field name
         stripePaymentMethodId: paymentMethod.id,
-        StripeCheckoutSessionId :  paymentMethod.id,
       };
       const encodedData2 = toUrlEncoded(submissionData2);
 

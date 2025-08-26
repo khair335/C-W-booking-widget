@@ -8,7 +8,7 @@ import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import resturanticon from "../../images/table_restaurant.png";
 import styles from "./Confirm.module.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
@@ -19,7 +19,6 @@ import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import Toast from '../../components/Toast/Toast';
 
 export default function Confirm() {
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,20 +28,21 @@ export default function Confirm() {
   const { date, time, adults, children, selectedPromotion, customerDetails, specialRequests } = bookingState;
 
   // Local state
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [transactionId, setTransactionId] = useState('');
+  const [bookingResponse, setBookingResponse] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState(null);
 
   const handleBooking = async () => {
     // Show payment modal instead of direct booking
   console.log('selectedPromotion',selectedPromotion);
-    if(selectedPromotion?.MayRequireCreditCard){
-      setShowPaymentModal(true);
-    }else{
+    // if(selectedPromotion?.MayRequireCreditCard){
+    //   setShowPaymentModal(true);
+    // }else{
       setIsLoading(true);
       const token = localStorage.getItem('token');
 
@@ -80,26 +80,46 @@ export default function Confirm() {
       };
   
       try {
+        // First API call without payment method
         const encodedData = toUrlEncoded(submissionData);
         const response = await postRequest(
           '/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
           headers,
           encodedData
         );
-        console.log('Booking Success:', response.data);
-        if (response.data.Booking) {
-          dispatch(addSuccessBookingData(response.data));
-          // dispatch(resetBooking());
-          navigate('/topBooked');
-        } else {
-          setError('Something went wrong,Please try again to book a table');
+        
+        console.log('Booking Response:', response.data);
+        
+        // Check response status and handle accordingly
+        switch (response.data.Status) {
+          case 'CreditCardRequired':
+            // Show payment modal with Stripe setup
+            setBookingResponse(response.data);
+            setPaymentStatus('CreditCardRequired');
+            setShowPaymentModal(true);
+            break;
+          case 'PaymentRequired':
+            // Handle payment required flow
+            setBookingResponse(response.data);
+            setPaymentStatus('PaymentRequired');
+            setShowPaymentModal(true);
+            break;
+          case 'Success':
+            // Direct success - navigate to booked page
+            dispatch(addSuccessBookingData(response.data));
+            navigate('/Booked');
+            break;
+          default:
+            setError('Unexpected response status. Please try again.');
+            console.error('Unexpected status:', response.data.Status);
         }
       } catch (error) {
         console.error('Booking Failed:', error);
+        setError('Booking failed. Please try again.');
       } finally {
         setIsLoading(false);
       }
-    }
+    // }
   };
 
   const handlePaymentSuccess = (responseData) => {
@@ -227,7 +247,7 @@ export default function Confirm() {
           <CustomButton
             label="Proceed to Payment"
             onClick={handleBooking}
-            disabled={isSubmitting}
+            disabled={isLoading}
           />
           <CustomButton
             label="BACK"
@@ -269,6 +289,8 @@ export default function Confirm() {
           ChannelCode: 'ONLINE',
           IsLeaveTimeConfirmed: true
         }}
+        bookingResponse={bookingResponse}
+        paymentStatus={paymentStatus}
         onSuccess={handlePaymentSuccess}
         onError={handlePaymentError}
       />
