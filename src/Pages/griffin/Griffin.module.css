@@ -176,6 +176,46 @@
     text-align: left;
 }
 
+.privacyPolicySection {
+    width: 100%;
+    margin-top: 16px;
+    text-align: left;
+}
+
+.privacyPolicyText {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 140%;
+    color: #1C1C1C;
+    margin: 0;
+}
+
+.privacyPolicyLink {
+    background: none;
+    border: none;
+    color: #C39A7B;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    transition: color 0.2s ease;
+}
+
+.privacyPolicyLink:hover {
+    color: #A67C52;
+    text-decoration: none;
+}
+
+.privacyPolicyLink:focus {
+    outline: 2px solid #C39A7B;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
 .loadingText {
     font-family: "Work Sans", sans-serif;
     font-weight: 400;

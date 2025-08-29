@@ -1,0 +1,242 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background: #FFFCF7;
+  border-radius: 10px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  animation: modalSlideIn 0.3s ease-out;
+  border: 1px solid #E5BA96;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid #E5BA96;
+  background-color: #F5E5CF;
+  border-radius: 10px 10px 0 0;
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1C1C1C;
+  font-family: "Lora", serif;
+  text-transform: capitalize;
+  letter-spacing: 0%;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #C39A7B;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-weight: 300;
+}
+
+.closeButton:hover {
+  background-color: #E5BA96;
+  color: #1C1C1C;
+}
+
+.modalBody {
+  padding: 32px 24px;
+  background-color: #FFFCF7;
+  position: relative;
+  overflow: hidden;
+}
+
+.modalBody::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(197, 154, 123, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.policyContent {
+  line-height: 1.7;
+  padding-right: 20px;
+}
+
+.policyParagraph {
+  margin: 0 0 20px 0;
+  color: #1C1C1C;
+  font-size: 16px;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  text-align: left;
+}
+
+.policyParagraph:last-child {
+  margin-bottom: 0;
+}
+
+.scrollIndicator {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 60px;
+  background-color: #E5BA96;
+  border-radius: 3px;
+  opacity: 0.6;
+}
+
+.scrollBar {
+  width: 100%;
+  height: 20px;
+  background-color: #C39A7B;
+  border-radius: 3px;
+  transition: transform 0.2s ease;
+}
+
+.modalFooter {
+  padding: 20px 24px 24px 24px;
+  border-top: 1px solid #E5BA96;
+  display: flex;
+  justify-content: center;
+  background-color: #F5E5CF;
+  border-radius: 0 0 10px 10px;
+}
+
+.acceptButton {
+  background-color: #C39A7B;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Work Sans", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.acceptButton:hover {
+  background-color: #A67C52;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+.acceptButton:active {
+  background-color: #8B6B47;
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modalContent {
+    max-width: 95%;
+    margin: 10px;
+    max-height: 90vh;
+  }
+  
+  .modalHeader {
+    padding: 20px 20px 16px 20px;
+  }
+  
+  .modalBody {
+    padding: 24px 20px;
+  }
+  
+  .modalFooter {
+    padding: 16px 20px 20px 20px;
+  }
+  
+  .modalTitle {
+    font-size: 24px;
+  }
+  
+  .policyParagraph {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  
+  .acceptButton {
+    padding: 12px 28px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    max-width: 98%;
+    margin: 5px;
+  }
+  
+  .modalHeader {
+    padding: 16px 16px 12px 16px;
+  }
+  
+  .modalBody {
+    padding: 20px 16px;
+  }
+  
+  .modalFooter {
+    padding: 16px 16px 20px 16px;
+  }
+  
+  .modalTitle {
+    font-size: 22px;
+  }
+  
+  .policyParagraph {
+    font-size: 14px;
+  }
+}

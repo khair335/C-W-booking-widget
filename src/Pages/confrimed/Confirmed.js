@@ -14,6 +14,7 @@ import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
+import PrivacyPolicyModal from '../../components/PrivacyPolicyModal';
 
 export default function Confirmed() {
   const location = useLocation();
@@ -30,6 +31,7 @@ export default function Confirmed() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
   const handleBooking = async () => {
     setIsSubmitting(true);
     setError('');
@@ -192,9 +194,19 @@ export default function Confirmed() {
           <CustomCheckbox
             checked={customerDetails.ReceiveEmailMarketing}
             id="flexCheckDefault"
-            label="I have read and accept the Privacy Policy"
+            label={
+              <span>
+                I have read and accept the{' '}
+                <button
+                  type="button"
+                  className={styles.privacyPolicyLink}
+                  onClick={() => setShowPrivacyPolicyModal(true)}
+                >
+                  Privacy Policy
+                </button>
+              </span>
+            }
             labelStyle={styles.confirmCheckboxLabel}
-
           />
         </div>
         <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
@@ -229,6 +241,13 @@ export default function Confirmed() {
           </Link>
         </div>
       </div>
+
+      {/* Privacy Policy Modal */}
+      <PrivacyPolicyModal
+        isOpen={showPrivacyPolicyModal}
+        onClose={() => setShowPrivacyPolicyModal(false)}
+        pageType="griffin"
+      />
     </div>
   );
 }

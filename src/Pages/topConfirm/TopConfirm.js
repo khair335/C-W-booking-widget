@@ -17,6 +17,7 @@ import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { addSuccessBookingData, updateCustomerDetails } from '../../store/bookingSlice';
 import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import Toast from '../../components/Toast/Toast';
+import PrivacyPolicyModal from '../../components/PrivacyPolicyModal';
 
 export default function Confirm() {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ export default function Confirm() {
   const [transactionId, setTransactionId] = useState('');
   const [bookingResponse, setBookingResponse] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState(null);
+  const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
 
   const displayDate = React.useMemo(() => {
     if (!date) return "Select Date";
@@ -254,7 +256,18 @@ export default function Confirm() {
           <CustomCheckbox
             checked={customerDetails.ReceiveEmailMarketing}
             id="flexCheckDefault"
-            label="I have read and accept the Privacy Policy"
+            label={
+              <span>
+                I have read and accept the{' '}
+                <button
+                  type="button"
+                  className={styles.privacyPolicyLink}
+                  onClick={() => setShowPrivacyPolicyModal(true)}
+                >
+                  Privacy Policy
+                </button>
+              </span>
+            }
             onChange={(e) =>
               dispatch(
                 updateCustomerDetails({ ReceiveEmailMarketing: e.target.checked })
@@ -313,6 +326,13 @@ export default function Confirm() {
         paymentStatus={paymentStatus}
         onSuccess={handlePaymentSuccess}
         onError={handlePaymentError}
+      />
+
+      {/* Privacy Policy Modal */}
+      <PrivacyPolicyModal
+        isOpen={showPrivacyPolicyModal}
+        onClose={() => setShowPrivacyPolicyModal(false)}
+        pageType="top"
       />
 
       {/* Toast Notification */}

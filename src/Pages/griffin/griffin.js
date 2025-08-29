@@ -20,6 +20,7 @@ import InfoChip from '../../components/InfoChip/InfoChip';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { updateBasicInfo, updateCurrentStep } from '../../store/bookingSlice';
 import { getAvailabilityForDateRange } from '../../services/bookingService';
+import PrivacyPolicyModal from '../../components/PrivacyPolicyModal';
 
 export default function Griffin() {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ export default function Griffin() {
   const [availablePromotionIds, setAvailablePromotionIds] = useState([]);
   const [availabilityData, setAvailabilityData] = useState(null);
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
+  const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
   const MAX_RETRIES = 2;
 
   // Ensure authentication is ready
@@ -500,6 +502,8 @@ export default function Griffin() {
           <p className={styles.tbletext}>
             Your table is required to be returned by {leaveTime || "XX:XX PM"}
           </p>
+          
+       
         </div>
 
         <div className={`${styles.Data_type} ${styles.DatabtnMain3}`}>
@@ -534,6 +538,13 @@ export default function Griffin() {
           </Link>
         </div>
       </div>
+
+      {/* Privacy Policy Modal */}
+      <PrivacyPolicyModal
+        isOpen={showPrivacyPolicyModal}
+        onClose={() => setShowPrivacyPolicyModal(false)}
+        pageType="griffin"
+      />
     </div>
   );
 }
