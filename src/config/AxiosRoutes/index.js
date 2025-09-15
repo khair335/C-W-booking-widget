@@ -66,28 +66,13 @@ axiosInstance.interceptors.request.use(
         config.url = config.url;
       }
     } else {
-      // In production (Vercel), use the serverless function endpoints
+      // In production
       if (config.url.includes('/api/Jwt/v2/Authenticate')) {
+        // Auth via serverless
         config.url = '/api/auth';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilitySearch') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilitySearch')) {
-        config.url = '/api/availability';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilityForDateRangeV2') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilityForDateRangeV2')) {
-        config.url = '/api/availability-range';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Promotion')) {
-        const url = new URL(config.url, 'http://dummy');
-        const promotionIds = url.searchParams.getAll('promotionIds');
-        config.url = `/api/promotion${promotionIds.length > 0 ? `?promotionIds=${promotionIds.join('&promotionIds=')}` : ''}`;
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/BookingWithStripeToken')) {
-        config.url = '/api/booking';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Booking/')) {
-        // Extract the booking reference from the URL
-        const bookingReference = config.url.split('/').pop();
-        config.url = `/api/booking-details?bookingReference=${bookingReference}`;
+      } else if (config.url.startsWith('/api/ConsumerApi/')) {
+        // Route ALL ConsumerApi calls directly to ResDiary in production
+        config.url = `https://api.resdiary.com${config.url}`;
       }
     }
 
