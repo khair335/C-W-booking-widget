@@ -57,8 +57,12 @@ module.exports = async (req, res) => {
       };
     }
 
+    // Extract restaurant name from the request body or use default
+    const restaurantName = req.body.RestaurantName || 'TheTapRun';
+    console.log('Using restaurant for booking:', restaurantName);
+
     const response = await axios.post(
-      'https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken',
+      `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/BookingWithStripeToken`,
       requestData,
       { headers: requestHeaders }
     );

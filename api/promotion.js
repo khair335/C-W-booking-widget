@@ -28,11 +28,15 @@ module.exports = async (req, res) => {
       return res.status(401).json({ message: 'Authorization token is required' });
     }
 
-    // Get promotion IDs from query parameters
+    // Get promotion IDs and restaurant name from query parameters
     const promotionIds = req.query.promotionIds;
+    const restaurantName = req.query.restaurantName || 'TheTapRun';
+    
     if (!promotionIds) {
       return res.status(400).json({ message: 'Promotion IDs are required' });
     }
+
+    console.log('Using restaurant for promotion:', restaurantName);
 
     // Build the URL with query parameters
     const queryString = Array.isArray(promotionIds)
@@ -40,7 +44,7 @@ module.exports = async (req, res) => {
       : `promotionIds=${encodeURIComponent(promotionIds)}`;
 
     const response = await axios.get(
-      `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion?${queryString}`,
+      `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/Promotion?${queryString}`,
       {
         headers: {
           'Accept': 'application/json',

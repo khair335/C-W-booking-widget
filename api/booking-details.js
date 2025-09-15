@@ -29,17 +29,21 @@ module.exports = async (req, res) => {
       return res.status(401).json({ message: 'Authorization token is required' });
     }
 
-    // Get the booking reference from the URL
+    // Get the booking reference and restaurant name from the URL
     const bookingReference = req.query.bookingReference;
+    const restaurantName = req.query.restaurantName || 'TheTapRun';
+    
     if (!bookingReference) {
       return res.status(400).json({ message: 'Booking reference is required' });
     }
+
+    console.log('Using restaurant for booking details:', restaurantName);
 
     let response;
     if (req.method === 'GET') {
       // Handle GET request
       response = await axios.get(
-        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/${bookingReference}`,
+        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/Booking/${bookingReference}`,
         {
           headers: {
             'Accept': 'application/json',
@@ -71,7 +75,7 @@ module.exports = async (req, res) => {
       }
 
       response = await axios.put(
-        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/${bookingReference}`,
+        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/Booking/${bookingReference}`,
         requestData,
         { headers: requestHeaders }
       );
@@ -104,7 +108,7 @@ module.exports = async (req, res) => {
       }
 
       response = await axios.post(
-        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/${actualBookingReference}/Cancel`,
+        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/Booking/${actualBookingReference}/Cancel`,
         requestData,
         { headers: requestHeaders }
       );

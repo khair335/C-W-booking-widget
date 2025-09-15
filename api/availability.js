@@ -28,13 +28,17 @@ module.exports = async (req, res) => {
       return res.status(401).json({ message: 'Authorization token is required' });
     }
 
-    const { VisitDate, ChannelCode, PartySize } = req.body;
+    const { VisitDate, ChannelCode, PartySize, RestaurantName } = req.body;
     if (!VisitDate || !ChannelCode || !PartySize) {
       return res.status(400).json({ message: 'VisitDate, ChannelCode, and PartySize are required' });
     }
 
+    // Use the restaurant name from the request, or default to TheTapRun
+    const restaurantName = RestaurantName || 'TheTapRun';
+    console.log('Using restaurant for availability search:', restaurantName);
+
     const response = await axios.post(
-      'https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilitySearch',
+      `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/AvailabilitySearch`,
       req.body,
       {
         headers: {
