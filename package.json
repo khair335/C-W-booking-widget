@@ -34,7 +34,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://api.rdbranch.com",
+  "proxy": "https://api.resdiary.com",
   "eslintConfig": {
     "extends": [
       "react-app",

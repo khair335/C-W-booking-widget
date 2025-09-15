@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
     }
 
     const response = await axios.post(
-      'https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/BookingWithStripeToken',
+      'https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken',
       requestData,
       { headers: requestHeaders }
     );

@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
     }
 
     const response = await axios.post(
-      'https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilitySearch',
+      'https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilitySearch',
       req.body,
       {
         headers: {

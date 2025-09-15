@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
       : `promotionIds=${encodeURIComponent(promotionIds)}`;
 
     const response = await axios.get(
-      `https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Promotion?${queryString}`,
+      `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion?${queryString}`,
       {
         headers: {
           'Accept': 'application/json',

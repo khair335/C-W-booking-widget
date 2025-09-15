@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
     if (req.method === 'GET') {
       // Handle GET request
       response = await axios.get(
-        `https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/${bookingReference}`,
+        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/${bookingReference}`,
         {
           headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ module.exports = async (req, res) => {
       }
 
       response = await axios.put(
-        `https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/${bookingReference}`,
+        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/${bookingReference}`,
         requestData,
         { headers: requestHeaders }
       );
@@ -104,7 +104,7 @@ module.exports = async (req, res) => {
       }
 
       response = await axios.post(
-        `https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/Booking/${actualBookingReference}/Cancel`,
+        `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/${actualBookingReference}/Cancel`,
         requestData,
         { headers: requestHeaders }
       );

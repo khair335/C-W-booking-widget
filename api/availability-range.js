@@ -25,16 +25,26 @@ module.exports = async (req, res) => {
     // Get the authorization token from the request
     const authHeader = req.headers.authorization;
     if (!authHeader) {
+      console.log('No authorization header provided');
       return res.status(401).json({ message: 'Authorization token is required' });
     }
 
-    const { DateFrom, DateTo, PartySize, AvailabilityType } = req.body;
+    // Extract restaurant name from the request body or use a default
+    // The restaurant name should be passed in the request body
+    const { DateFrom, DateTo, PartySize, AvailabilityType, RestaurantName } = req.body;
+    console.log('Availability range request:', { DateFrom, DateTo, PartySize, AvailabilityType, RestaurantName });
+    
     if (!DateFrom || !DateTo || !PartySize) {
+      console.log('Missing required fields:', { DateFrom, DateTo, PartySize });
       return res.status(400).json({ message: 'DateFrom, DateTo, and PartySize are required' });
     }
 
+    // Use the restaurant name from the request, or default to TheTapRun
+    const restaurantName = RestaurantName || 'TheTapRun';
+    console.log('Using restaurant:', restaurantName);
+
     const response = await axios.post(
-      'https://api.rdbranch.com/api/ConsumerApi/v1/Restaurant/CatWicketsTest/AvailabilityForDateRangeV2',
+      `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/AvailabilityForDateRangeV2`,
       req.body,
       {
         headers: {
@@ -44,6 +54,12 @@ module.exports = async (req, res) => {
         }
       }
     );
+
+    console.log('Availability range API response:', {
+      status: response.status,
+      dataKeys: Object.keys(response.data || {}),
+      hasTimeSlots: !!response.data?.TimeSlots
+    });
 
     return res.status(200).json(response.data);
   } catch (error) {

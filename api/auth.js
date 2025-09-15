@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
       return res.status(400).json({ message: 'Username and password are required' });
     }
 
-    const response = await axios.post('https://api.rdbranch.com/api/Jwt/v2/Authenticate', {
+    const response = await axios.post('https://api.resdiary.com/api/Jwt/v2/Authenticate', {
       username,
       password
     }, {
