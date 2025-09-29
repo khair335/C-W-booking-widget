@@ -1,16 +1,25 @@
 import axios from "axios";
+import { 
+  getProxyConfig, 
+  getBaseURL, 
+  shouldLogRequests, 
+  transformUrlForEnvironment,
+  getEnvironmentInfo 
+} from '../proxyConfig';
 
 // Determine if we're in development mode
 const isDevelopment = process.env.NODE_ENV === 'development';
 
+// Get proxy configuration
+const proxyConfig = getProxyConfig();
+const baseURL = getBaseURL();
+const shouldLog = shouldLogRequests();
+
 // Create axios instance with default config
 const axiosInstance = axios.create({
-  // In development, use the proxy (which will be handled by the React dev server)
-  // In production, use the Vercel serverless function
-  baseURL: isDevelopment
-    ? '' // Empty baseURL in development to use the proxy
-    : '', // Empty baseURL in production to use relative paths for Vercel functions
-
+  baseURL: baseURL,
+  ...proxyConfig, // Include proxy configuration if needed
+  
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -20,6 +29,11 @@ const axiosInstance = axios.create({
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept'
   }
 });
+
+// Log environment info on initialization
+if (shouldLog) {
+  console.log('Axios Configuration:', getEnvironmentInfo());
+}
 
 // Add request interceptor to handle auth token and URL transformation
 axiosInstance.interceptors.request.use(
@@ -32,64 +46,45 @@ axiosInstance.interceptors.request.use(
     } else {
       config.headers.Authorization = `Bearer ${token}`;
       // Log in development
-      if (isDevelopment) {
+      if (shouldLog) {
         console.log('Request interceptor added token:', token ? 'Yes' : 'No');
       }
     }
 
-    // Transform URLs based on environment
+    // Transform URLs based on environment using centralized configuration
+    const originalUrl = config.url;
+    
     if (isDevelopment) {
-      // In development, use direct API calls through the proxy
-      // The proxy in package.json will forward requests to https://api.resdiary.com
-      if (config.url.includes('/api/Jwt/v2/Authenticate')) {
-        // Keep the original URL for direct API call through proxy
-        config.url = '/api/Jwt/v2/Authenticate';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilitySearch') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilitySearch')) {
-        // Keep the original URL for direct API call through proxy
-        config.url = config.url;
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilityForDateRangeV2') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilityForDateRangeV2')) {
-        // Keep the original URL for direct API call through proxy
-        config.url = config.url;
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Promotion')) {
-        // Keep the original URL for direct API call through proxy
-        config.url = config.url;
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/BookingWithStripeToken')) {
-        // Keep the original URL for direct API call through proxy
-        config.url = config.url;
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Booking/')) {
-        // Keep the original URL for direct API call through proxy
-        config.url = config.url;
-      }
+      // In development, transform URLs for Fixie proxy or direct API calls
+      config.url = transformUrlForEnvironment(originalUrl);
     } else {
       // In production (Vercel), use the serverless function endpoints
-      if (config.url.includes('/api/Jwt/v2/Authenticate')) {
+      if (originalUrl.includes('/api/Jwt/v2/Authenticate')) {
         config.url = '/api/auth';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilitySearch') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilitySearch')) {
+      } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilitySearch') || 
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilitySearch')) {
         config.url = '/api/availability';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilityForDateRangeV2') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilityForDateRangeV2')) {
+      } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilityForDateRangeV2') || 
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilityForDateRangeV2')) {
         config.url = '/api/availability-range';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Promotion')) {
-        const url = new URL(config.url, 'http://dummy');
+      } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion') || 
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Promotion')) {
+        const url = new URL(originalUrl, 'http://dummy');
         const promotionIds = url.searchParams.getAll('promotionIds');
-        const restaurantName = config.url.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
+        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
         config.url = `/api/promotion?promotionIds=${promotionIds.join('&promotionIds=')}&restaurantName=${restaurantName}`;
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/BookingWithStripeToken')) {
+      } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken') || 
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/BookingWithStripeToken')) {
         config.url = '/api/booking';
-      } else if (config.url.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/') || 
-                 config.url.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Booking/')) {
+      } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/') || 
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Booking/')) {
         // Extract the booking reference from the URL
-        const bookingReference = config.url.split('/').pop();
-        const restaurantName = config.url.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
+        const bookingReference = originalUrl.split('/').pop();
+        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
         config.url = `/api/booking-details?bookingReference=${bookingReference}&restaurantName=${restaurantName}`;
+      } else {
+        // For other URLs in production, use as-is
+        config.url = originalUrl;
       }
     }
 
@@ -98,11 +93,13 @@ axiosInstance.interceptors.request.use(
     config.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS';
     config.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Accept';
 
-    // Log request details in development
-    if (isDevelopment) {
+    // Log request details if logging is enabled
+    if (shouldLog) {
       console.log('Making request:', {
-        url: config.url,
+        originalUrl: originalUrl,
+        transformedUrl: config.url,
         method: config.method,
+        environment: process.env.NODE_ENV,
         headers: {
           ...config.headers,
           Authorization: config.headers.Authorization ? 'Bearer [REDACTED]' : undefined
@@ -121,11 +118,13 @@ axiosInstance.interceptors.request.use(
 // Add response interceptor to handle errors
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Log successful response in development
-    if (isDevelopment) {
+    // Log successful response if logging is enabled
+    if (shouldLog) {
       console.log('Response received:', {
         status: response.status,
         statusText: response.statusText,
+        url: response.config?.url,
+        environment: process.env.NODE_ENV,
         headers: response.headers,
         data: response.data
       });
