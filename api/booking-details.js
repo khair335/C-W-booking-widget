@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { getProxyAgent } = require('./_proxy');
 const querystring = require('querystring');
 
 module.exports = async (req, res) => {
@@ -48,7 +49,8 @@ module.exports = async (req, res) => {
           headers: {
             'Accept': 'application/json',
             'Authorization': authHeader
-          }
+          },
+          httpsAgent: getProxyAgent()
         }
       );
     } else if (req.method === 'PUT') {
@@ -77,7 +79,7 @@ module.exports = async (req, res) => {
       response = await axios.put(
         `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/Booking/${bookingReference}`,
         requestData,
-        { headers: requestHeaders }
+        { headers: requestHeaders, httpsAgent: getProxyAgent() }
       );
     } else if (req.method === 'POST' && bookingReference === 'Cancel') {
       // Handle cancellation request
@@ -110,7 +112,7 @@ module.exports = async (req, res) => {
       response = await axios.post(
         `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/Booking/${actualBookingReference}/Cancel`,
         requestData,
-        { headers: requestHeaders }
+        { headers: requestHeaders, httpsAgent: getProxyAgent() }
       );
     } else {
       return res.status(400).json({ message: 'Invalid request' });

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { getProxyAgent } = require('./_proxy');
 const querystring = require('querystring');
 
 module.exports = async (req, res) => {
@@ -64,7 +65,7 @@ module.exports = async (req, res) => {
     const response = await axios.post(
       `https://api.resdiary.com/api/ConsumerApi/v1/Restaurant/${restaurantName}/BookingWithStripeToken`,
       requestData,
-      { headers: requestHeaders }
+      { headers: requestHeaders, httpsAgent: getProxyAgent() }
     );
 
     return res.status(200).json(response.data);

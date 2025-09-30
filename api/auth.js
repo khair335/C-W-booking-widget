@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { getProxyAgent } = require('./_proxy');
 
 module.exports = async (req, res) => {
   // Set CORS headers
@@ -35,7 +36,8 @@ module.exports = async (req, res) => {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-      }
+      },
+      httpsAgent: getProxyAgent()
     });
 
     return res.status(200).json(response.data);
