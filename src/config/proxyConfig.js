@@ -93,18 +93,13 @@ export const shouldLogRequests = () => {
  * In production, we use relative URLs to Vercel functions
  */
 export const transformUrlForEnvironment = (url) => {
-  const config = getEnvironmentConfig();
-  
-  if (config.useProxy && config.proxyType === 'fixie') {
-    // For Fixie proxy, use the full ResDiary API URL
-    if (url.startsWith('/api/')) {
-      return `${FIXIE_CONFIG.targetApiUrl}${url}`;
-    }
-    return url;
-  } else {
-    // For production (Vercel), use relative URLs
+  // In development, keep relative URLs so CRA setupProxy can forward via Fixie
+  if (process.env.NODE_ENV === 'development') {
     return url;
   }
+
+  // In other environments, leave as-is; production mapping is handled in AxiosRoutes
+  return url;
 };
 
 /**

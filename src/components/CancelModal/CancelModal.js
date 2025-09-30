@@ -18,6 +18,7 @@ const CancelModal = ({ refId, onClose }) => {
   const { pubType } = bookingState;
 
   const handleCancel = async () => {
+    
     if (!refId) {
       setError('Booking reference is missing');
       return;

@@ -39,14 +39,14 @@ export default function BookingNumber() {
     };
 
     const data = {
-      micrositeName: "TheTapRun",
+      micrositeName: "TheGriffinInn",
       bookingReference: bookingNumber,
       cancellationReasonId: parseInt(reasonId),
     };
 
     try {
       const response = await postRequest(
-        `/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/${bookingNumber}/Cancel`,
+        `/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Booking/${bookingNumber}/Cancel`,
         headers,
         data
       );
