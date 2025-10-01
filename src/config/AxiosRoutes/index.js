@@ -69,7 +69,23 @@ axiosInstance.interceptors.request.use(
         config.url = '/api/auth';
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilitySearch') || 
                  originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilitySearch')) {
+        // Ensure serverless function receives the correct restaurant name
+        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
         config.url = '/api/availability';
+        // Guard against non-object payloads
+        if (config.data == null || typeof config.data !== 'object') {
+          config.data = {};
+        }
+        // Inject RestaurantName so /api/availability does not default to TheTapRun
+        config.data.RestaurantName = restaurantName;
+        if (shouldLog || process.env.NODE_ENV === 'production') {
+          console.log('Availability URL transformation:', {
+            original: originalUrl,
+            transformed: config.url,
+            restaurantName,
+            payloadKeys: Object.keys(config.data || {})
+          });
+        }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilityForDateRangeV2') || 
                  originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilityForDateRangeV2')) {
         config.url = '/api/availability-range';
