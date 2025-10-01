@@ -69,10 +69,29 @@ axiosInstance.interceptors.request.use(
         config.url = '/api/availability-range';
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion') || 
                  originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Promotion')) {
-        const url = new URL(originalUrl, 'http://dummy');
-        const promotionIds = url.searchParams.getAll('promotionIds');
-        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
-        config.url = `/api/promotion?promotionIds=${promotionIds.join('&promotionIds=')}&restaurantName=${restaurantName}`;
+        try {
+          // Parse the URL - need to provide a base URL for relative paths
+          const url = new URL(originalUrl, 'http://localhost');
+          const promotionIds = url.searchParams.getAll('promotionIds');
+          const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
+          
+          // Build the new URL with all promotion IDs
+          if (promotionIds.length > 0) {
+            const promotionParams = promotionIds.map(id => `promotionIds=${encodeURIComponent(id)}`).join('&');
+            config.url = `/api/promotion?${promotionParams}&restaurantName=${restaurantName}`;
+          } else {
+            config.url = `/api/promotion?restaurantName=${restaurantName}`;
+          }
+          
+          console.log('Promotion URL transformation:', {
+            original: originalUrl,
+            transformed: config.url,
+            promotionIds: promotionIds
+          });
+        } catch (error) {
+          console.error('Error parsing promotion URL:', error, 'Original URL:', originalUrl);
+          config.url = originalUrl;
+        }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken') || 
                  originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/BookingWithStripeToken')) {
         config.url = '/api/booking';
