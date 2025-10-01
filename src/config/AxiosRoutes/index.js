@@ -54,6 +54,12 @@ axiosInstance.interceptors.request.use(
     // Transform URLs based on environment using centralized configuration
     const originalUrl = config.url;
     
+    // Log the original URL for debugging
+    if (shouldLog || process.env.NODE_ENV === 'production') {
+      console.log('Axios interceptor - Original URL:', originalUrl);
+      console.log('Environment:', process.env.NODE_ENV);
+    }
+    
     if (isDevelopment) {
       // In development, transform URLs for Fixie proxy or direct API calls
       config.url = transformUrlForEnvironment(originalUrl);
@@ -83,11 +89,14 @@ axiosInstance.interceptors.request.use(
             config.url = `/api/promotion?restaurantName=${restaurantName}`;
           }
           
-          console.log('Promotion URL transformation:', {
-            original: originalUrl,
-            transformed: config.url,
-            promotionIds: promotionIds
-          });
+          if (shouldLog || process.env.NODE_ENV === 'production') {
+            console.log('Promotion URL transformation:', {
+              original: originalUrl,
+              transformed: config.url,
+              promotionIds: promotionIds,
+              restaurantName: restaurantName
+            });
+          }
         } catch (error) {
           console.error('Error parsing promotion URL:', error, 'Original URL:', originalUrl);
           config.url = originalUrl;
@@ -113,16 +122,13 @@ axiosInstance.interceptors.request.use(
     config.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Accept';
 
     // Log request details if logging is enabled
-    if (shouldLog) {
+    if (shouldLog || process.env.NODE_ENV === 'production') {
       console.log('Making request:', {
         originalUrl: originalUrl,
         transformedUrl: config.url,
         method: config.method,
         environment: process.env.NODE_ENV,
-        headers: {
-          ...config.headers,
-          Authorization: config.headers.Authorization ? 'Bearer [REDACTED]' : undefined
-        }
+        hasAuth: !!config.headers.Authorization
       });
     }
 

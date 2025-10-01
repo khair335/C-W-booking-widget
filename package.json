@@ -28,7 +28,8 @@
     "tiny-date-picker": "^4.0.0-beta6",
     "web-vitals": "^5.0.3",
     "https-proxy-agent": "^7.0.5",
-    "http-proxy-middleware": "^2.0.6"
+    "http-proxy-middleware": "^2.0.6",
+    "redux-persist": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
