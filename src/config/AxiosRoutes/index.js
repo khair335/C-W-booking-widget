@@ -72,18 +72,27 @@ axiosInstance.interceptors.request.use(
         // Ensure serverless function receives the correct restaurant name
         const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
         config.url = '/api/availability';
-        // Guard against non-object payloads
-        if (config.data == null || typeof config.data !== 'object') {
-          config.data = {};
+        
+        // Handle both JSON and form-encoded data
+        if (config.data && typeof config.data === 'string') {
+          // Form-encoded data: append RestaurantName as URL parameter
+          const separator = config.data.includes('=') ? '&' : '';
+          config.data = `${config.data}${separator}RestaurantName=${encodeURIComponent(restaurantName)}`;
+        } else if (config.data && typeof config.data === 'object') {
+          // JSON data: add RestaurantName property
+          config.data.RestaurantName = restaurantName;
+        } else {
+          // No data or unexpected type: create new object
+          config.data = { RestaurantName: restaurantName };
         }
-        // Inject RestaurantName so /api/availability does not default to TheTapRun
-        config.data.RestaurantName = restaurantName;
+        
         if (shouldLog || process.env.NODE_ENV === 'production') {
           console.log('Availability URL transformation:', {
             original: originalUrl,
             transformed: config.url,
             restaurantName,
-            payloadKeys: Object.keys(config.data || {})
+            dataType: typeof config.data,
+            dataLength: config.data?.length || Object.keys(config.data || {}).length
           });
         }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilityForDateRangeV2') || 
@@ -91,18 +100,27 @@ axiosInstance.interceptors.request.use(
         // Ensure serverless function receives the correct restaurant name
         const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
         config.url = '/api/availability-range';
-        // Guard against non-object payloads
-        if (config.data == null || typeof config.data !== 'object') {
-          config.data = {};
+        
+        // Handle both JSON and form-encoded data
+        if (config.data && typeof config.data === 'string') {
+          // Form-encoded data: append RestaurantName as URL parameter
+          const separator = config.data.includes('=') ? '&' : '';
+          config.data = `${config.data}${separator}RestaurantName=${encodeURIComponent(restaurantName)}`;
+        } else if (config.data && typeof config.data === 'object') {
+          // JSON data: add RestaurantName property
+          config.data.RestaurantName = restaurantName;
+        } else {
+          // No data or unexpected type: create new object
+          config.data = { RestaurantName: restaurantName };
         }
-        // Inject RestaurantName so /api/availability-range does not default to TheTapRun
-        config.data.RestaurantName = restaurantName;
+        
         if (shouldLog || process.env.NODE_ENV === 'production') {
           console.log('AvailabilityRange URL transformation:', {
             original: originalUrl,
             transformed: config.url,
             restaurantName,
-            payloadKeys: Object.keys(config.data || {})
+            dataType: typeof config.data,
+            dataLength: config.data?.length || Object.keys(config.data || {}).length
           });
         }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion') || 
@@ -138,18 +156,27 @@ axiosInstance.interceptors.request.use(
         // Ensure serverless function receives the correct restaurant name
         const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
         config.url = '/api/booking';
-        // Guard against non-object payloads
-        if (config.data == null || typeof config.data !== 'object') {
-          config.data = {};
+        
+        // Handle both JSON and form-encoded data
+        if (config.data && typeof config.data === 'string') {
+          // Form-encoded data: append RestaurantName as URL parameter
+          const separator = config.data.includes('=') ? '&' : '';
+          config.data = `${config.data}${separator}RestaurantName=${encodeURIComponent(restaurantName)}`;
+        } else if (config.data && typeof config.data === 'object') {
+          // JSON data: add RestaurantName property
+          config.data.RestaurantName = restaurantName;
+        } else {
+          // No data or unexpected type: create new object
+          config.data = { RestaurantName: restaurantName };
         }
-        // Inject RestaurantName so /api/booking does not default to TheTapRun
-        config.data.RestaurantName = restaurantName;
+        
         if (shouldLog || process.env.NODE_ENV === 'production') {
           console.log('Booking URL transformation:', {
             original: originalUrl,
             transformed: config.url,
             restaurantName,
-            payloadKeys: Object.keys(config.data || {})
+            dataType: typeof config.data,
+            dataLength: config.data?.length || Object.keys(config.data || {}).length
           });
         }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/') || 
