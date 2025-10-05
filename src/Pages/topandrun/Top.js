@@ -25,7 +25,7 @@ export default function Top() {
   const dispatch = useDispatch();
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  const { date, time, adults, children, returnBy } = bookingState;
+  const { date, time, adults, children } = bookingState;
 
   // Local state for UI
   const [timeSlots, setTimeSlots] = useState([]);
@@ -141,6 +141,43 @@ export default function Top() {
     
     fetchMonthAvailability();
   }, [adults, children]);
+
+  // Function to fetch availability for a specific month
+  const fetchAvailabilityForMonth = async (targetDate) => {
+    const currentPartySize = parseInt(adults || 0) + parseInt(children || 0);
+    if (currentPartySize <= 0) return;
+    
+    setIsLoadingAvailability(true);
+    try {
+      const partySize = currentPartySize;
+      
+      // Calculate date range for the target month
+      const year = targetDate.getFullYear();
+      const month = targetDate.getMonth();
+      const dateFrom = new Date(year, month, 1);
+      const dateTo = new Date(year, month + 1, 0); // Last day of the month
+      
+      // Format dates as ISO strings
+      const dateFromISO = dateFrom.toISOString();
+      const dateToISO = dateTo.toISOString();
+      
+      console.log("Fetching Top availability for specific month:", { dateFromISO, dateToISO, partySize });
+      
+      const response = await getAvailabilityForDateRange(dateFromISO, dateToISO, partySize, 'top');
+      console.log("Top specific month availability data:", response);
+      setAvailabilityData(response);
+    } catch (error) {
+      console.error("Top specific month availability fetch failed:", error);
+    } finally {
+      setIsLoadingAvailability(false);
+    }
+  };
+
+  // Handle month change in DatePicker
+  const handleMonthChange = (newDate) => {
+    console.log("Top month changed to:", newDate);
+    fetchAvailabilityForMonth(newDate);
+  };
 
   // Sync local state with Redux state
   // useEffect(() => {
@@ -328,6 +365,7 @@ export default function Top() {
             placeholder={availabilityData ? "Select Date" : "Select guests first"}
             disablePastDates={true}
             isDateDisabled={checkDateDisabled}
+            onMonthChange={handleMonthChange}
           />
 
           <DropDown

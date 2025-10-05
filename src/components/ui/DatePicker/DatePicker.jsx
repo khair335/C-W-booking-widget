@@ -14,7 +14,8 @@ const DatePicker = ({
   onChange,
   placeholder = "Select a date",
   disablePastDates = false,
-  isDateDisabled = null
+  isDateDisabled = null,
+  onMonthChange = null
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState('calendar');
@@ -54,8 +55,14 @@ const DatePicker = ({
   };
 
   const handleMonthSelect = (month) => {
-    setCurrentDate(new Date(currentDate.getFullYear(), month, 1));
+    const newDate = new Date(currentDate.getFullYear(), month, 1);
+    setCurrentDate(newDate);
     setView('calendar');
+    
+    // Notify parent component about month change
+    if (onMonthChange) {
+      onMonthChange(newDate);
+    }
   };
 
   const handleYearSelect = (year) => {
@@ -71,6 +78,11 @@ const DatePicker = ({
       newDate.setMonth(newDate.getMonth() + 1);
     }
     setCurrentDate(newDate);
+    
+    // Notify parent component about month change
+    if (onMonthChange) {
+      onMonthChange(newDate);
+    }
   };
 
   const navigateYear = (direction) => {

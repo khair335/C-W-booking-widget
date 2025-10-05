@@ -3,7 +3,6 @@ import { getCurrentRestaurant } from '../../utils/restaurantUtils';
 import { useDispatch, useSelector } from 'react-redux';
 import { postRequest } from "../../config/AxiosRoutes/index"
 import { Link, useNavigate } from "react-router-dom";
-import { getHeaders } from "../../config/api";
 import { useAuth } from "../../contexts/AuthContext";
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
@@ -11,7 +10,6 @@ import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import reacticon from "../../images/Chips Icons Mobile (2).png";
-import TimeSlotSelector from "../../components/TimeSlotSelector/TimeSlotSelector";
 import styles from "./Griffin.module.css";
 import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import DropDown from '../../components/ui/DropDown/DropDown';
@@ -30,7 +28,7 @@ export default function Griffin() {
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  const { date, time, adults, children, returnBy } = bookingState;
+  const { date, time, adults, children } = bookingState;
 
   // Local state for UI
   const [selectedTimeISO, setSelectedTimeISO] = useState("");
@@ -245,6 +243,43 @@ export default function Griffin() {
     fetchMonthAvailability();
   }, [adults, children, isAuthenticated, token]);
 
+  // Function to fetch availability for a specific month
+  const fetchAvailabilityForMonth = async (targetDate) => {
+    const currentPartySize = parseInt(adults || 0) + parseInt(children || 0);
+    if (currentPartySize <= 0 || !isAuthenticated || !token) return;
+    
+    setIsLoadingAvailability(true);
+    try {
+      const partySize = currentPartySize;
+      
+      // Calculate date range for the target month
+      const year = targetDate.getFullYear();
+      const month = targetDate.getMonth();
+      const dateFrom = new Date(year, month, 1);
+      const dateTo = new Date(year, month + 1, 0); // Last day of the month
+      
+      // Format dates as ISO strings
+      const dateFromISO = dateFrom.toISOString();
+      const dateToISO = dateTo.toISOString();
+      
+      console.log("Fetching Griffin availability for specific month:", { dateFromISO, dateToISO, partySize });
+      
+      const response = await getAvailabilityForDateRange(dateFromISO, dateToISO, partySize, 'griffin');
+      console.log("Griffin specific month availability data:", response);
+      setAvailabilityData(response);
+    } catch (error) {
+      console.error("Griffin specific month availability fetch failed:", error);
+    } finally {
+      setIsLoadingAvailability(false);
+    }
+  };
+
+  // Handle month change in DatePicker
+  const handleMonthChange = (newDate) => {
+    console.log("Griffin month changed to:", newDate);
+    fetchAvailabilityForMonth(newDate);
+  };
+
   const handleDateChange = (newDate) => {
     if (!newDate) {
       dispatch(updateBasicInfo({ date: null }));
@@ -260,9 +295,6 @@ export default function Griffin() {
     dispatch(updateBasicInfo({ date: formattedDate }));
   };
 
-  const handleTimeChange = (newTime) => {
-    dispatch(updateBasicInfo({ time: newTime }));
-  };
 
   const handleAdultsChange = (value) => {
     const numValue = parseInt(value);
@@ -464,6 +496,7 @@ export default function Griffin() {
             placeholder={availabilityData ? "Select Date" : "Select guests first"}
             disablePastDates={true}
             isDateDisabled={checkDateDisabled}
+            onMonthChange={handleMonthChange}
           />
 
           <DropDown
