@@ -293,14 +293,16 @@ export default function Top() {
     today.setHours(0, 0, 0, 0);
     if (date < today) return true;
     
-    // Disable dates beyond next month
+    // If we have availability data, only disable dates that are not available
+    if (availabilityData && availabilityData.AvailableDates) {
+      return !isDateAvailable(date);
+    }
+    
+    // If no availability data, disable dates beyond next month
     const nextMonth = new Date();
     nextMonth.setMonth(nextMonth.getMonth() + 1);
     nextMonth.setDate(nextMonth.getDate() + 1); // Add one day to include the entire next month
     if (date > nextMonth) return true;
-    
-    // Disable dates that are not available
-    if (!isDateAvailable(date)) return true;
     
     return false;
   };
