@@ -59,7 +59,7 @@ export default function Griffin() {
       console.log('No auth state in Griffin, initiating authentication...');
       authenticate();
     }
-  }, [isAuthenticated, isAuthenticating, authError, authenticate]);
+  }, [isAuthenticated, isAuthenticating, authError, authenticate, token]);
 
   // Initialize local state from Redux values
   useEffect(() => {
@@ -141,24 +141,12 @@ export default function Griffin() {
           setTimeSlots(response.data.TimeSlots);
           setRetryCount(0);
 
-          // Filter promotions for specific areas
+          // Use all promotions returned by API
           const promotions = response.data?.Promotions || [];
           console.log("All Griffin promotions:", promotions);
-
-          const filteredPromotionIds = promotions
-            .filter(promo => {
-              const isRelevantPromotion =
-                promo.Name.includes("Stables Restaurant") ||
-                promo.Name.includes("New Bar Area") ||
-                promo.Name.includes("Old Pub Area");
-              
-              console.log(`Checking promotion: ${promo.Name} (${promo.Id}) - ${isRelevantPromotion ? 'included' : 'excluded'}`);
-              return isRelevantPromotion;
-            })
-            .map(promo => promo.Id);
-
-          console.log("Filtered promotion IDs for Griffin:", filteredPromotionIds);
-          setAvailablePromotionIds(filteredPromotionIds);
+          const allPromotionIds = promotions.map(promo => promo.Id);
+          console.log("All promotion IDs for Griffin:", allPromotionIds);
+          setAvailablePromotionIds(allPromotionIds);
 
           // Handle time slots
           if (time && response.data.TimeSlots.length > 0) {
@@ -206,7 +194,7 @@ export default function Griffin() {
     };
 
     fetchAvailability();
-  }, [date, adults, children, retryCount, isAuthenticating, isAuthenticated, token, authError, authenticate]);
+  }, [date, adults, children, time, retryCount, isAuthenticating, isAuthenticated, token, authError, authenticate]);
 
   // Fetch availability for the next month when party size changes
   useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getCurrentRestaurant } from '../../utils/restaurantUtils';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRequest } from "../../config/AxiosRoutes/index"
-import { buildPromotionUrl } from "../../config/api"
+// removed unused buildPromotionUrl import
 import dateicon from "../../images/Chips Icons Mobile.png";
 import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
@@ -12,22 +12,20 @@ import tabimg from "../../images/Menu Icon Mobile (1).png";
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
 import whitelogo from "../../images/T&R White.png"
 import logo1 from "../../images/Logo (1).png"
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./TopArea.module.css";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import AreaSelectionCard from '../../components/AreaSelectionCard/AreaSelectionCard';
 import Indicator from '../../components/Indicator/Indicator';
-import oldPubArea from "../../images/TheGriffinInn_OldPubArea.png";
-import restaurantArea from "../../images/Tap & Run_RestaurantArea.png";
-import OutdoorTerraceRooms from "../../images/Tap & Run_OutdoorTerraceRooms.png";
+// removed unused static area images
 import { updateSelectedPromotion, updateCurrentStep } from '../../store/bookingSlice';
 
 export default function TopArea() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
+  // removed unused location
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
@@ -98,7 +96,7 @@ export default function TopArea() {
     };
 
     fetchPromotions();
-  }, [availablePromotionIds]);
+  }, [availablePromotionIds, pubType]);
 
   const togglePromotion = (promotion) => {
     dispatch(updateSelectedPromotion(
@@ -153,14 +151,8 @@ console.log('availablePromotionIds',availablePromotionIds);
             </div>
           ) : (
             promotions.map((promotion) => {
-              let restaurantImage;
-              if (promotion.Name.includes("Restaurant Area")) {
-                restaurantImage = restaurantArea;
-              } else if (promotion.Name.includes("Outdoor Terrace Rooms")) {
-                restaurantImage = OutdoorTerraceRooms;
-              } else {
-                restaurantImage = oldPubArea;
-              }
+              const restaurantImage = promotion.HorizontalImageUrl;
+
               return (
                 <AreaSelectionCard
                   key={promotion.Id}

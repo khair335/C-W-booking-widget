@@ -71,36 +71,12 @@ export default function Edit() {
         const slots = response.data?.TimeSlots || [];
         setTimeSlots(slots);
 
-        // Filter promotions based on the current restaurant
+        // Use all promotions returned by API
         const promotions = response.data?.Promotions || [];
         console.log("All promotions from API:", promotions);
-
-        const filteredPromotionIds = promotions
-         .filter(promo => {
-              // Determine which promotions to include based on the current restaurant
-              const restaurant = getCurrentRestaurant(pubType, window.location.pathname);
-              let isRelevantPromotion = false;
-              
-              if (restaurant === 'TheTapRun') {
-                // For Tap & Run: Restaurant Area and Outdoor Terrace Rooms
-                isRelevantPromotion =
-                  promo.Name.includes("Restaurant Area") ||
-                  promo.Name.includes("Outdoor Terrace Rooms");
-              } else {
-                // For Griffin: Stables Restaurant, New Bar Area, Old Pub Area
-                isRelevantPromotion =
-                  promo.Name.includes("Stables Restaurant") ||
-                  promo.Name.includes("New Bar Area") ||
-                  promo.Name.includes("The Old Pub Area");
-              }
-
-              console.log(`Checking promotion: ${promo.Name} (${promo.Id}) for ${restaurant} - ${isRelevantPromotion ? 'included' : 'excluded'}`);
-              return isRelevantPromotion;
-            })
-          .map(promo => promo.Id);
-
-        console.log("Filtered promotion IDs:", filteredPromotionIds);
-        setAvailablePromotionIds(filteredPromotionIds);
+        const allPromotionIds = promotions.map(promo => promo.Id);
+        console.log("All promotion IDs:", allPromotionIds);
+        setAvailablePromotionIds(allPromotionIds);
 
         // If we have a selected time, find and set the corresponding slot
         if (time && slots.length > 0) {

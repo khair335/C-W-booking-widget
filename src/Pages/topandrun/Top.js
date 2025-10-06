@@ -67,21 +67,12 @@ export default function Top() {
         console.log("Availability data:", response.data);
         const slots = response.data?.TimeSlots || [];
         setTimeSlots(slots);
-        // Filter promotions for Top pub (Restaurant Area and Outdoor Terrace Rooms)
+        // Use all promotions returned by API
         const promotions = response.data?.Promotions || [];
         console.log("All promotions from API:", promotions);
-        const filteredPromotionIds = promotions
-          .filter(promo => {
-            const isRelevantPromotion =
-              promo.Name === "Restaurant Area" ||
-              promo.Name === "Outdoor Terrace Rooms";
-            console.log(`Checking promotion: ${promo.Name} (${promo.Id}) - ${isRelevantPromotion ? 'included' : 'excluded'}`);
-            return isRelevantPromotion;
-          })
-          .map(promo => promo.Id);
-
-        console.log("Filtered promotion IDs:", filteredPromotionIds);
-        setAvailablePromotionIds(filteredPromotionIds);
+        const allPromotionIds = promotions.map(promo => promo.Id);
+        console.log("All promotion IDs:", allPromotionIds);
+        setAvailablePromotionIds(allPromotionIds);
 
         // If we have a selected time, find and set the corresponding slot
         if (time && slots.length > 0) {

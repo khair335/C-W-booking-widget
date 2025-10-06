@@ -7,11 +7,11 @@ import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import reacticon from "../../images/Chips Icons Mobile (2).png";
 import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
-import whitelogo from "../../images/T&R White.png"
+// removed unused whitelogo import
 import styles from "./TopEdit.module.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
-import CustomInput from '../../components/ui/CustomInput/CustomInput';
+// removed unused CustomInput import
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
 import InfoChip from '../../components/InfoChip/InfoChip';
@@ -27,7 +27,7 @@ export default function TopEdit() {
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  const { date, time, adults, children, returnBy, pubType } = bookingState;
+  const { date, time, adults, children, pubType } = bookingState;
   console.log("bookingState", bookingState);
   // Local state for UI
   const [timeSlots, setTimeSlots] = useState([]);
@@ -73,22 +73,12 @@ export default function TopEdit() {
         const slots = response.data?.TimeSlots || [];
         setTimeSlots(slots);
 
-        // Filter promotions for Top pub (Restaurant Area and Outdoor Terrace Rooms)
+        // Use all promotions returned by API
         const promotions = response.data?.Promotions || [];
         console.log("All promotions from API:", promotions);
-
-        const filteredPromotionIds = promotions
-          .filter(promo => {
-            const isRelevantPromotion =
-              promo.Name === "Restaurant Area" ||
-              promo.Name === "Outdoor Terrace Rooms";
-            console.log(`Checking promotion: ${promo.Name} (${promo.Id}) - ${isRelevantPromotion ? 'included' : 'excluded'}`);
-            return isRelevantPromotion;
-          })
-          .map(promo => promo.Id);
-
-        console.log("Filtered promotion IDs:", filteredPromotionIds);
-        setAvailablePromotionIds(filteredPromotionIds);
+        const allPromotionIds = promotions.map(promo => promo.Id);
+        console.log("All promotion IDs:", allPromotionIds);
+        setAvailablePromotionIds(allPromotionIds);
 
         // If we have a selected time, find and set the corresponding slot
         if (time && slots.length > 0) {
@@ -113,7 +103,7 @@ export default function TopEdit() {
     };
 
     fetchAvailability();
-  }, [date, adults, children, time]);
+  }, [date, adults, children, time, pubType]);
 
   // Fetch availability for the next month when party size changes or on initial load
   useEffect(() => {

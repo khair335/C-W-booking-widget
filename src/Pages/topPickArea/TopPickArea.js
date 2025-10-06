@@ -215,14 +215,7 @@ export default function TopPickArea() {
             </div>
           ) : (
             promotions.map((promotion) => {
-              let restaurantImage;
-              if (promotion.Name.includes("Restaurant Area")) {
-                restaurantImage = restaurantArea;
-              } else if (promotion.Name.includes("Outdoor Terrace Rooms")) {
-                restaurantImage = OutdoorTerraceRooms;
-              } else {
-                restaurantImage = oldPubArea;
-              }
+              const restaurantImage = promotion.HorizontalImageUrl;
               return (
                 <AreaSelectionCard
                   key={promotion.Id}

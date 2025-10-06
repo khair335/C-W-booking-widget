@@ -212,27 +212,7 @@ export default function PickArea() {
             </div>
           ) : (
             promotions.map((promotion) => {
-              let restaurantImage;
-              const restaurant = getCurrentRestaurant(pubType, window.location.pathname);
-              
-              if (restaurant === 'TheTapRun') {
-                // For Tap & Run: use appropriate images
-                if (promotion.Name.includes("Outdoor Terrace Rooms")) {
-                  restaurantImage = stablesRestaurantArea; // Use a suitable image for outdoor terrace
-                } else {
-                  restaurantImage = newBarArea; // Use for Restaurant Area
-                }
-              } else {
-                // For Griffin: use existing logic
-                if (promotion.Name.includes("The Old Pub Area (dog friendly)")) {
-                  restaurantImage = oldPubArea;
-                } else if (promotion.Name.includes("New Bar Area")) {
-                  restaurantImage = newBarArea;
-                } else {
-                  restaurantImage = stablesRestaurantArea;
-                }
-              }
-              
+              const restaurantImage = promotion.HorizontalImageUrl;
               return (
                 <AreaSelectionCard
                   key={promotion.Id}

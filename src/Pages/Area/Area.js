@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getCurrentRestaurant } from '../../utils/restaurantUtils';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRequest } from "../../config/AxiosRoutes/index"
-import { buildPromotionUrl } from "../../config/api"
+// removed unused buildPromotionUrl import
 import { updateSelectedPromotion, updateCurrentStep } from '../../store/bookingSlice';
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
@@ -11,12 +11,9 @@ import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import reacticon from "../../images/Chips Icons Mobile (2).png";
 import resturanticon from "../../images/table_restaurant.png";
-import stablesRestaurantArea from "../../images/TheGriffinInn_Stables_NewBarFloor.png";
-import oldPubArea from "../../images/TheGriffinInn_OldPubArea.png";
-import newBarArea from "../../images/TheGriffinInn_NewBarArea.png";
-import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
+// removed unused static area images and section image
 import tabimg from "../../images/Menu Icon Mobile (1).png";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Area.module.css";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
@@ -27,7 +24,7 @@ import CustomButton from '../../components/ui/CustomButton/CustomButton';
 export default function Area() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
+  // removed unused location
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
@@ -37,7 +34,7 @@ export default function Area() {
   // Local state
   const [promotions, setPromotions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // removed unused error state
 
   const isFormValid = date && time && adults && selectedPromotion;
 
@@ -56,11 +53,11 @@ export default function Area() {
       }
 
       setIsLoading(true);
-      setError(null);
+      // no-op
 
       const token = localStorage.getItem('token');
       if (!token) {
-        setError("Authentication token not found");
+        console.error("Authentication token not found");
         setIsLoading(false);
         return;
       }
@@ -86,18 +83,17 @@ export default function Area() {
         if (response.data && Array.isArray(response.data)) {
           setPromotions(response.data);
         } else {
-          setError("Invalid response format from server");
+          console.error("Invalid response format from server");
         }
       } catch (error) {
         console.error("Failed to fetch Griffin Area promotions:", error);
-        setError(error.message || "Failed to fetch promotions");
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchPromotions();
-  }, [availablePromotionIds]);
+  }, [availablePromotionIds, pubType]);
 
   const togglePromotion = (promotion) => {
     dispatch(updateSelectedPromotion(
@@ -140,14 +136,8 @@ export default function Area() {
             </div>
           ) : (
             promotions.map((promotion) => {
-              let restaurantImage;
-              if (promotion.Name.includes("The Old Pub Area (dog friendly)")) {
-                restaurantImage = oldPubArea;
-              } else if (promotion.Name.includes("New Bar Area")) {
-                restaurantImage = newBarArea;
-              } else {
-                restaurantImage = stablesRestaurantArea;
-              }
+              const restaurantImage = promotion.HorizontalImageUrl;
+
               return (
                 <AreaSelectionCard
                   key={promotion.Id}
