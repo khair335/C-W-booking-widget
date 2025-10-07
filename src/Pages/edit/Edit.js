@@ -8,7 +8,7 @@ import timeicon from "../../images/Chips Icons Mobile (1).png";
 import membericon from "../../images/Chips Icons Mobile (3).png";
 import reacticon from "../../images/Chips Icons Mobile (2).png";
 import styles from "./Edit.module.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import DatePicker from '../../components/ui/DatePicker/DatePicker';
@@ -25,7 +25,7 @@ export default function Edit() {
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  const { date, time, adults, children, returnBy, pubType } = bookingState;
+  const { date, time, adults, children, pubType } = bookingState;
   console.log("bookingState", bookingState);
   // Local state for UI
   const [timeSlots, setTimeSlots] = useState([]);
@@ -71,13 +71,6 @@ export default function Edit() {
         const slots = response.data?.TimeSlots || [];
         setTimeSlots(slots);
 
-        // Use all promotions returned by API
-        const promotions = response.data?.Promotions || [];
-        console.log("All promotions from API:", promotions);
-        const allPromotionIds = promotions.map(promo => promo.Id);
-        console.log("All promotion IDs:", allPromotionIds);
-        setAvailablePromotionIds(allPromotionIds);
-
         // If we have a selected time, find and set the corresponding slot
         if (time && slots.length > 0) {
           const selectedSlot = slots.find(slot => {
@@ -91,6 +84,13 @@ export default function Edit() {
           if (selectedSlot) {
             setSelectedTimeISO(selectedSlot.TimeSlot);
             setLeaveTime(selectedSlot.LeaveTime);
+            
+            // Extract AvailablePromotions from the selected TimeSlot
+            if (selectedSlot.AvailablePromotions) {
+              const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
+              console.log("Edit TimeSlot AvailablePromotions:", promotionIds);
+              setAvailablePromotionIds(promotionIds);
+            }
           }
         }
       } catch (error) {
@@ -101,7 +101,7 @@ export default function Edit() {
     };
 
     fetchAvailability();
-  }, [date, adults, children, time]);
+  }, [date, adults, children, time, pubType]);
 
   // Fetch availability for the next month when party size changes or on initial load
   useEffect(() => {
@@ -136,7 +136,7 @@ export default function Edit() {
     };
     
     fetchMonthAvailability();
-  }, [adults, children]);
+  }, [adults, children, pubType]);
 
   // Sync local state with Redux state
   useEffect(() => {
@@ -186,6 +186,7 @@ export default function Edit() {
       dispatch(updateBasicInfo({ time: null, returnBy: null }));
       setSelectedTimeISO("");
       setLeaveTime("");
+      setAvailablePromotionIds([]);
       return;
     }
 
@@ -204,6 +205,16 @@ export default function Edit() {
       const leaveTime = selectedSlot.LeaveTime || "";
       dispatch(updateBasicInfo({ returnBy: leaveTime }));
       setLeaveTime(leaveTime);
+
+      // Find the selected TimeSlot and extract its AvailablePromotions
+      if (selectedSlot.AvailablePromotions) {
+        const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
+        console.log("Edit - Selected TimeSlot AvailablePromotions:", promotionIds);
+        setAvailablePromotionIds(promotionIds);
+      } else {
+        console.log("Edit - No AvailablePromotions found for selected TimeSlot");
+        setAvailablePromotionIds([]);
+      }
     }
   };
 

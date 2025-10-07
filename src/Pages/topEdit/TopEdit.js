@@ -73,13 +73,6 @@ export default function TopEdit() {
         const slots = response.data?.TimeSlots || [];
         setTimeSlots(slots);
 
-        // Use all promotions returned by API
-        const promotions = response.data?.Promotions || [];
-        console.log("All promotions from API:", promotions);
-        const allPromotionIds = promotions.map(promo => promo.Id);
-        console.log("All promotion IDs:", allPromotionIds);
-        setAvailablePromotionIds(allPromotionIds);
-
         // If we have a selected time, find and set the corresponding slot
         if (time && slots.length > 0) {
           const selectedSlot = slots.find(slot => {
@@ -93,6 +86,13 @@ export default function TopEdit() {
           if (selectedSlot) {
             setSelectedTimeISO(selectedSlot.TimeSlot);
             setLeaveTime(selectedSlot.LeaveTime);
+            
+            // Extract AvailablePromotions from the selected TimeSlot
+            if (selectedSlot.AvailablePromotions) {
+              const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
+              console.log("TopEdit TimeSlot AvailablePromotions:", promotionIds);
+              setAvailablePromotionIds(promotionIds);
+            }
           }
         }
       } catch (error) {
@@ -188,6 +188,7 @@ export default function TopEdit() {
       dispatch(updateBasicInfo({ time: null, returnBy: null }));
       setSelectedTimeISO("");
       setLeaveTime("");
+      setAvailablePromotionIds([]);
       return;
     }
 
@@ -206,6 +207,16 @@ export default function TopEdit() {
       const leaveTime = selectedSlot.LeaveTime || "";
       dispatch(updateBasicInfo({ returnBy: leaveTime }));
       setLeaveTime(leaveTime);
+
+      // Find the selected TimeSlot and extract its AvailablePromotions
+      if (selectedSlot.AvailablePromotions) {
+        const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
+        console.log("TopEdit - Selected TimeSlot AvailablePromotions:", promotionIds);
+        setAvailablePromotionIds(promotionIds);
+      } else {
+        console.log("TopEdit - No AvailablePromotions found for selected TimeSlot");
+        setAvailablePromotionIds([]);
+      }
     }
   };
 

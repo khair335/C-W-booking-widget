@@ -141,14 +141,7 @@ export default function Griffin() {
           setTimeSlots(response.data.TimeSlots);
           setRetryCount(0);
 
-          // Use all promotions returned by API
-          const promotions = response.data?.Promotions || [];
-          console.log("All Griffin promotions:", promotions);
-          const allPromotionIds = promotions.map(promo => promo.Id);
-          console.log("All promotion IDs for Griffin:", allPromotionIds);
-          setAvailablePromotionIds(allPromotionIds);
-
-          // Handle time slots
+          // Handle time slots - if a time is already selected, update availablePromotionIds
           if (time && response.data.TimeSlots.length > 0) {
             const selectedSlot = response.data.TimeSlots.find(slot => {
               const slotTime = new Date(slot.TimeSlot).toLocaleTimeString([], {
@@ -161,6 +154,13 @@ export default function Griffin() {
             if (selectedSlot) {
               setSelectedTimeISO(selectedSlot.TimeSlot);
               setLeaveTime(selectedSlot.LeaveTime);
+              
+              // Extract AvailablePromotions from the selected TimeSlot
+              if (selectedSlot.AvailablePromotions) {
+                const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
+                console.log("Griffin TimeSlot AvailablePromotions:", promotionIds);
+                setAvailablePromotionIds(promotionIds);
+              }
             }
           }
         } else {
@@ -311,6 +311,7 @@ export default function Griffin() {
       dispatch(updateBasicInfo({ time: null, returnBy: null }));
       setSelectedTimeISO("");
       setLeaveTime("");
+      setAvailablePromotionIds([]);
       return;
     }
 
@@ -320,6 +321,17 @@ export default function Griffin() {
       returnBy: leaveTime
     }));
     setLeaveTime(leaveTime);
+
+    // Find the selected TimeSlot and extract its AvailablePromotions
+    const selectedSlot = timeSlots.find(slot => slot.TimeSlot === iso);
+    if (selectedSlot && selectedSlot.AvailablePromotions) {
+      const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
+      console.log("Selected TimeSlot AvailablePromotions for Griffin:", promotionIds);
+      setAvailablePromotionIds(promotionIds);
+    } else {
+      console.log("No AvailablePromotions found for selected Griffin TimeSlot");
+      setAvailablePromotionIds([]);
+    }
   };
 
   const handleNextClick = () => {

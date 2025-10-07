@@ -67,12 +67,6 @@ export default function Top() {
         console.log("Availability data:", response.data);
         const slots = response.data?.TimeSlots || [];
         setTimeSlots(slots);
-        // Use all promotions returned by API
-        const promotions = response.data?.Promotions || [];
-        console.log("All promotions from API:", promotions);
-        const allPromotionIds = promotions.map(promo => promo.Id);
-        console.log("All promotion IDs:", allPromotionIds);
-        setAvailablePromotionIds(allPromotionIds);
 
         // If we have a selected time, find and set the corresponding slot
         if (time && slots.length > 0) {
@@ -87,6 +81,13 @@ export default function Top() {
           if (selectedSlot) {
             setSelectedTimeISO(selectedSlot.TimeSlot);
             setLeaveTime(selectedSlot.LeaveTime);
+            
+            // Extract AvailablePromotions from the selected TimeSlot
+            if (selectedSlot.AvailablePromotions) {
+              const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
+              console.log("Top TimeSlot AvailablePromotions:", promotionIds);
+              setAvailablePromotionIds(promotionIds);
+            }
           }
         }
       } catch (error) {
@@ -216,6 +217,7 @@ export default function Top() {
       dispatch(updateBasicInfo({ time: null, returnBy: null }));
       setSelectedTimeISO("");
       setLeaveTime("");
+      setAvailablePromotionIds([]);
       return;
     }
 
@@ -233,6 +235,16 @@ export default function Top() {
       const leaveTime = selectedSlot.LeaveTime || "";
       dispatch(updateBasicInfo({ returnBy: leaveTime }));
       setLeaveTime(leaveTime);
+
+      // Find the selected TimeSlot and extract its AvailablePromotions
+      if (selectedSlot.AvailablePromotions) {
+        const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
+        console.log("Selected TimeSlot AvailablePromotions for Top:", promotionIds);
+        setAvailablePromotionIds(promotionIds);
+      } else {
+        console.log("No AvailablePromotions found for selected Top TimeSlot");
+        setAvailablePromotionIds([]);
+      }
     }
   };
 
