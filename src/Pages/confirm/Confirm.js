@@ -260,7 +260,7 @@ export default function Confirm() {
 
 
           <CustomButton
-            label="Proceed to Payment"
+            label="Complete Booking"
             onClick={handleBooking}
             disabled={isLoading}
           />

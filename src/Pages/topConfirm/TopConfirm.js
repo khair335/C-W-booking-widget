@@ -283,7 +283,7 @@ export default function Confirm() {
 
         <div className={`${styles.Data_type} ${styles.ConfirmbtonMain}`}>
           <CustomButton
-            label="Proceed to Payment"
+            label="Complete Booking"
             onClick={handleBooking}
             disabled={isLoading}
           />
