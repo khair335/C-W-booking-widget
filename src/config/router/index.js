@@ -6,6 +6,24 @@ import {
 } from "react-router-dom";
 import Home from '../../Pages/home/Home'
 import Griffin from '../../Pages/griffin/griffin'
+import LongHop from '../../Pages/longhop/LongHop'
+import LongHopArea from '../../Pages/longhopArea/LongHopArea'
+import LongHopDetails from '../../Pages/longhopDetails/LongHopDetails'
+import LongHopConfirm from '../../Pages/longhopConfirm/LongHopConfirm'
+import LongHopBooked from '../../Pages/longhopBooked/LongHopBooked'
+import LongHopModify from '../../Pages/longhopModify/LongHopModify'
+import LongHopEdit from '../../Pages/longhopEdit/LongHopEdit'
+import LongHopPickArea from '../../Pages/longhopPickArea/LongHopPickArea'
+import LongHopReDetail from '../../Pages/longhopReDetail/LongHopReDetail'
+import LongHopConfirmed from '../../Pages/longhopConfirmed/LongHopConfirmed'
+import LongHopUpdated from '../../Pages/longhopUpdated/LongHopUpdated'
+import LongHopCancel from '../../Pages/longhopCancel/LongHopCancel'
+import LongHopBookingNumber from '../../Pages/longhopBookingNumber/LongHopBookingNumber'
+import LongHopLost from '../../Pages/longhopLost/LongHopLost'
+import LongHopResent from '../../Pages/longhopResent/LongHopResent'
+import LongHopCancelled from '../../Pages/longhopCancelled/LongHopCancelled'
+import LongHopHome from '../../Pages/longhopHome/LongHopHome'
+import NotFound from '../../Pages/NotFound/NotFound'
 import Select from "../../Pages/select/Select";
 import TopandRun from '../../Pages/topandrun/Top'
 import Area from "../../Pages/Area/Area";
@@ -46,6 +64,23 @@ let Router = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/griffin" element={<Griffin/>} />
+                <Route path="/longhop" element={<LongHop />} />
+                <Route path="/longhoparea" element={<LongHopArea />} />
+                <Route path="/longhopdetails" element={<LongHopDetails />} />
+                <Route path="/longhopconfirm" element={<LongHopConfirm />} />
+                <Route path="/longhopbooked" element={<LongHopBooked />} />
+                <Route path="/longhopModify" element={<LongHopModify />} />
+                <Route path="/longhopEdit" element={<LongHopEdit />} />
+                <Route path="/longhopPickArea" element={<LongHopPickArea />} />
+                <Route path="/longhopReDetail" element={<LongHopReDetail />} />
+                <Route path="/longhopConfirmed" element={<LongHopConfirmed />} />
+                <Route path="/longhopUpdated" element={<LongHopUpdated />} />
+                <Route path="/longhopCancel" element={<LongHopCancel />} />
+                <Route path="/longhopBookingNumber" element={<LongHopBookingNumber />} />
+                <Route path="/longhopLost" element={<LongHopLost />} />
+                <Route path="/longhopResent" element={<LongHopResent />} />
+                <Route path="/longhopCancelled" element={<LongHopCancelled />} />
+                <Route path="/longhopHome" element={<LongHopHome />} />
                 <Route path="/select" element={<Select />} />
                 <Route path="/topandrun" element={<TopandRun />} />
                 <Route path="/area" element={<Area />} />
@@ -80,6 +115,9 @@ let Router = () => {
                 <Route path="/TopResent" element={<TopResent />} />
                 <Route path="/TopCancelled" element={<TopCancelled />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
+                
+                {/* 404 - Catch all unmatched routes */}
+                <Route path="*" element={<NotFound />} />
 
             </Routes>
         </BrowserRouter>

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import logo from "../../images/Griffin Black.png";
-import topandrunlogo from "../../images/Logo (1).png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
-import TextField from "@mui/material/TextField";
 import styles from "./Modify.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
@@ -17,20 +15,10 @@ export default function Modify() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [bookingNumber, setBookingNumber] = useState("");
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null); // 'top' or 'griffin'
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleRestaurantSelect = (restaurantType) => {
-    setSelectedRestaurant(restaurantType);
-    setError(null);
-  };
-
   const handleNextClick = async () => {
-    if (!selectedRestaurant) {
-      setError("Please select a restaurant first.");
-      return;
-    }
     if (!bookingNumber) {
       setError("Please fill booking number before submitting.");
       return;
@@ -40,7 +28,7 @@ export default function Modify() {
     setError(null);
 
     try {
-      const bookingData = await getBooking(bookingNumber, selectedRestaurant);
+      const bookingData = await getBooking(bookingNumber, 'griffin');
       console.log("API Response:", bookingData); // Log the full response
 
       if (!bookingData) {
@@ -73,7 +61,7 @@ export default function Modify() {
         adults: bookingData.PartySize || 0,
         children: 0,
         returnBy: returnBy,
-        pubType: selectedRestaurant,
+        pubType: 'griffin',
         availablePromotionIds: bookingData.availablePromotionIds || []
       }));
 
@@ -117,7 +105,7 @@ export default function Modify() {
         duration: bookingData.Duration || 0
       }));
 
-      // Navigate to edit page
+      // Navigate to Griffin edit page
       navigate("/Edit", {
         state: {
           bookingNumber,
@@ -145,107 +133,41 @@ export default function Modify() {
       <div className={styles.ModifyMain}>
         <div className={styles.modify_container}>
           
-          {/* Restaurant Selection Section */}
-          {!selectedRestaurant ? (
-            <>
-              <div className={styles.Data_type}>
-                <h1 className={`${styles.logo_large} ${styles.datetilte}`}>
-                  Select Restaurant
-                </h1>
-              </div>
-              
-              <h4 className={styles.subtext}>
-                Please select the restaurant where you made your booking
-              </h4>
+          {/* Booking Number Input Section - Griffin */}
+          <div className={styles.Data_type}>
+            <img src={logo} alt="logo" />
+          </div>
+          
+          <div className={styles.Data_type}>
+            <h1 className={`${styles.logo_large} ${styles.datetilte}`}>
+              Modify A Booking
+            </h1>
+          </div>
 
-              <div className={styles.restaurant_selection}>
-                {/* Tap & Run Option */}
-                <div className={`${styles.restaurant_option} ${selectedRestaurant === 'top' ? styles.selected : ''}`}>
-                  <img src={topandrunlogo} alt="Tap & Run" className={styles.restaurant_logo} />
-                  <h3 className={styles.restaurant_name}>Tap & Run</h3>
-                  <p className={styles.restaurant_address}>
-                    Main Road, Upper Broughton, Melton Mowbray<br />
-                    LE14 3BG, United Kingdom
-                  </p>
-                  <a href="tel:+441664820407" className={styles.restaurant_phone}>
-                    +441664820407
-                  </a>
-                  <CustomButton
-                    label="SELECT"
-                    onClick={() => handleRestaurantSelect('top')}
-                    bgColor="#C39A7B"
-                    color="#FFFCF7"
-                  />
-                </div>
+          <h4 className={styles.subtext}>
+            Please Enter Your Booking Number, As <br className='block md:hidden' /> Provided In Your Confirmation Email.
+          </h4>
 
-                {/* Griffin Option */}
-                <div className={`${styles.restaurant_option} ${selectedRestaurant === 'griffin' ? styles.selected : ''}`}>
-                  <img src={logo} alt="The Griffin Inn" className={styles.restaurant_logo} />
-                  <h3 className={styles.restaurant_name}>The Griffin Inn</h3>
-                  <p className={styles.restaurant_address}>
-                    174 Main St, Swithland, Leicester<br />
-                    LE12 8TJ, United Kingdom
-                  </p>
-                  <a href="tel:+441509890535" className={styles.restaurant_phone}>
-                    +441509890535
-                  </a>
-                  <CustomButton
-                    label="SELECT"
-                    onClick={() => handleRestaurantSelect('griffin')}
-                    bgColor="#C39A7B"
-                    color="#FFFCF7"
-                  />
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Booking Number Input Section */}
-              <div className={styles.Data_type}>
-                <img src={selectedRestaurant === 'top' ? topandrunlogo : logo} alt="logo" />
-              </div>
-              
-              <div className={styles.Data_type}>
-                <h1 className={`${styles.logo_large} ${styles.datetilte}`}>
-                  Modify A Booking
-                </h1>
-              </div>
+          <div className={styles.textfieldMain}>
+            <CustomInput
+              required
+              label="Booking Number"
+              value={bookingNumber}
+              onChange={(e) => setBookingNumber(e.target.value)}
+              style={{ flex: '0 0 180px' }}
+              helperText='E.G. XXXX-XXXX-XXXX'
+            />
+          </div>
 
-              <h4 className={styles.subtext}>
-                Please Enter Your Booking Number, As <br className='block md:hidden' /> Provided In Your Confirmation Email.
-              </h4>
-
-              <div className={styles.textfieldMain}>
-                <CustomInput
-                  required
-                  label="Booking Number"
-                  value={bookingNumber}
-                  onChange={(e) => setBookingNumber(e.target.value)}
-                  style={{ flex: '0 0 180px' }}
-                  helperText='E.G. XXXX-XXXX-XXXX'
-                />
-              </div>
-
-              <div className={`${styles.Area_type_footer} ${styles.ModifybtonMain}`}>
-                <CustomButton
-                  onClick={handleNextClick}
-                  label={isLoading ? 'Loading...' : 'Edit A Booking'}
-                  disabled={!bookingNumber}
-                  bgColor={bookingNumber ? "#3D3D3D" : "#ccc"}
-                  color={bookingNumber ? "#fff" : "#000"}
-                />
-              </div>
-
-              <div className={styles.back_button}>
-                <CustomButton
-                  label="Back to Restaurant Selection"
-                  onClick={() => setSelectedRestaurant(null)}
-                  bgColor="#f0f0f0"
-                  color="#333"
-                />
-              </div>
-            </>
-          )}
+          <div className={`${styles.Area_type_footer} ${styles.ModifybtonMain}`}>
+            <CustomButton
+              onClick={handleNextClick}
+              label={isLoading ? 'Loading...' : 'Edit A Booking'}
+              disabled={!bookingNumber}
+              bgColor={bookingNumber ? "#3D3D3D" : "#ccc"}
+              color={bookingNumber ? "#fff" : "#000"}
+            />
+          </div>
 
           {/* Error Display */}
           {error && (
@@ -258,7 +180,7 @@ export default function Modify() {
 
           <div className={styles.chose_m_link}>
             <Indicator
-              step={selectedRestaurant ? 2 : 1}
+              step={1}
               stepLength={4}
             />
           </div>

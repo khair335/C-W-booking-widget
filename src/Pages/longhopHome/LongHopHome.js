@@ -1,31 +1,42 @@
-import React from "react";
-import "./TopHome.css";
-import { Link, useNavigate } from "react-router-dom";
-import * as bootstrap from 'bootstrap';
-import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
+import React, { useEffect } from "react";
+import styles from "./LongHopHome.module.css";
+import { Link } from "react-router-dom";
+import sectionimage from "../../images/TheLongHop_MainiMAGE.jpg";
 import tablebookingimg from "../../images/table_restaurant.png";
 import modifyimg from "../../images/edit_calendar.png";
 import cancelimg from "../../images/Menu Icon Mobile.png";
 import tabimg from "../../images/Menu Icon Mobile (1).png";
-import logo from "../../images/Griffin Black.png";
+import logo from "../../images/The Long Hop - text.png";
 import alertimg from "../../images/alert-circle.png";
-import logo1 from "../../images/Logo (1).png";
-import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
-import whitelogo from "../../images/T&R White.png"
+import { FiInfo } from "react-icons/fi";
+import { Modal } from 'bootstrap';
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 
-function TopHome() {
-  const navigate = useNavigate();
+function LongHopHome() {
+  useEffect(() => {
+    const removeBackdrop = () => {
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
 
-  const handleConfirmClick = (e) => {
-    e.preventDefault();
+    return () => {
+      removeBackdrop();
+    };
+  }, []);
+
+  const handleModalClose = () => {
     const modal = document.getElementById('exampleModalToggle');
-    const modalInstance = bootstrap.Modal.getInstance(modal);
-    if (modalInstance) {
-      modalInstance.hide();
+    if (modal) {
+      const bsModal = Modal.getInstance(modal);
+      if (bsModal) {
+        bsModal.hide();
+      }
     }
-
-    // Clean up all modal-related elements and classes
     const backdrop = document.querySelector('.modal-backdrop');
     if (backdrop) {
       backdrop.remove();
@@ -33,26 +44,21 @@ function TopHome() {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
-
-    // Remove any remaining fade classes
-    modal.classList.remove('show');
-    modal.style.display = 'none';
-
-    navigate('/Select');
   };
 
   return (
     <>
       <div className="homeMain" id="homepage">
 
+
         <PubImageHeader
-          sectionImg={sectionimg2}
+          sectionImg={sectionimage}
           pubLinkLabel="CHOOSE ANOTHER PUB"
 
-          pubLink="/longhopHome"
+          pubLink="/"
         />
         <div className="section bookingcontainer">
-          <img src={logo1} alt="logo" />
+          <img className='logo' src={logo} alt="logo" />
           <div className="logo-large">Booking</div>
           <div className="titlehome">Plan, Modify, Or Cancel Your Reservation</div>
           <div
@@ -68,30 +74,30 @@ function TopHome() {
           </div>
 
           <div className="bookingttype">
-              <Link to="/TopModify" className="modifylink">
-            <div className="book-text">
-              <img src={modifyimg} alt="modify-image" />
+            <Link to="/longhopModify" className="modifylink">
+              <div className="book-text">
+                <img src={modifyimg} alt="modify-image" />
                 Modify A Booking
-            </div>
-            <img src={tabimg} alt="tab-img" />
-              </Link>
+              </div>
+              <img src={tabimg} alt="tab-img" />
+            </Link>
           </div>
 
           <div className="bookingttype changeborder">
-          <Link to="/TopCancel" className="modifylink">
-            <div className="book-text" id="cancelid">
-              <img src={cancelimg} alt="cancel-img" />
-              Cancel A Booking
-            </div>
-            <img src={tabimg} alt="tab-img" />
+            <Link to="/longhopCancel" className="modifylink">
+              <div className="book-text" id="cancelid">
+                <img src={cancelimg} alt="cancel-img" />
+                Cancel A Booking
+              </div>
+              <img src={tabimg} alt="tab-img" />
             </Link>
           </div>
-          <Link to="/longhopHome" className="anotherpub2">
+          <Link to="/" className="anotherpub2">
             CHOOSE ANOTHER PUB
           </Link>
           <div>
             <Link href="#" className="Existlink">
-            Exit and cancel Booking
+              Exit and cancel Booking
             </Link>
           </div>
           {/* Modal */}
@@ -107,27 +113,28 @@ function TopHome() {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title" id="exampleModalToggleLabel">
-                    <img src={alertimg} alt="alert_img" />
+                    <FiInfo />
+
                   </h5>
                   <button
                     type="button"
                     className="btn-close"
+                    onClick={handleModalClose}
                     data-bs-dismiss="modal"
                     aria-label="Close"
                   ></button>
                 </div>
                 <div className="modal-body">
                   <h2 className="logo-large">Please Note:</h2>
-                  <p>Our max table size is 10 people. Cat & Wickets pubs are
-                  cashless — card or contactless payments only.</p>
+                  <p>Our max table size is 10 people. </p>
+                  <p>
+                    Cat & Wickets pubs are
+                    cashless — card or contactless payments only.</p>
                 </div>
-                <div className="modal-footer">
-                  <button
-                    onClick={handleConfirmClick}
-                    className="btn btn-primary confirmbtn w-100"
-                  >
+                <div className="modal-footer ">
+                  <Link to="/select" className="btn btn-primary confirmbtn w-100" onClick={handleModalClose}>
                     CONFIRM
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -138,4 +145,5 @@ function TopHome() {
     </>
   );
 }
-export default TopHome;
+export default LongHopHome;
+

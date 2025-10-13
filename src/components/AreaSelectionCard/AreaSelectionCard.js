@@ -13,6 +13,7 @@ const AreaSelectionCard = ({
   className,
 }) => {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const isRestaurant = promotion.Name.toLowerCase().includes("restaurant");
 
   const handleInfoClick = (e) => {
@@ -20,15 +21,30 @@ const AreaSelectionCard = ({
     setIsInfoOpen(!isInfoOpen);
   };
 
+  const handleImageError = () => {
+    console.log(`Image failed to load for promotion: ${promotion.Name}, URL: ${restaurantImage}`);
+    setImageError(true);
+  };
+
+  // Use restaurantImage if available, otherwise use defaultImage, or show placeholder
+  const imageSrc = restaurantImage || defaultImage;
+
   return (
     <div className={`${styles.areasection} ${className || ''}`} key={promotion.Id}>
       <div className={`${styles.area_1and2} ${isSelected ? styles.selected : ""}`}>
         <div className={styles.restArea}>
-          <img
-            src={restaurantImage}
-            alt={promotion.Name}
-            className={styles.Newbrimg}
-          />
+          {imageSrc && !imageError ? (
+            <img
+              src={imageSrc}
+              alt={promotion.Name}
+              className={styles.Newbrimg}
+              onError={handleImageError}
+            />
+          ) : (
+            <div className={styles.imagePlaceholder}>
+              <span className={styles.placeholderText}>No Image</span>
+            </div>
+          )}
           <p className={styles.Areatextmain}>
             <h3>
               {promotion.Name.includes("(dog friendly)") ? (

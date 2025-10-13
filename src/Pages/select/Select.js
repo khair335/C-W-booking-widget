@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import chooseimg from "../../images/Left Container The Cat and Wickets.png";
 import topandrunlogo from "../../images/Logo (1).png";
 import logo from "../../images/Griffin Black.png";
+import longhoplogo from "../../images/The Long Hop - text.png";
 import { Link } from "react-router-dom";
 import styles from "./Select.module.css";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
@@ -60,6 +61,21 @@ export default function Select() {
           <CustomButton
             label="SELECT"
             to="/griffin"
+            bgColor="#C39A7B"
+            color="#FFFCF7"
+          />
+        </div>
+        <div className={styles.select_typee}>
+          <img className={styles.logos} src={longhoplogo} alt="Logo_The Long Hop" />
+          <p className={styles.texttoprun}>
+          The Long Hop, Manor Dr, Burton-on-Trent DE14 3RW
+          </p>
+          <a href="tel:+4401283 392800" className={styles.numbrtag}>
+            +4401283 392800
+          </a>
+          <CustomButton
+            label="SELECT"
+            to="/longhop"
             bgColor="#C39A7B"
             color="#FFFCF7"
           />

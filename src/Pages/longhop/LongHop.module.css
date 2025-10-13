@@ -1,0 +1,632 @@
+.griffinnMain {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #FFFCF7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2%;
+
+}
+
+.Data_imag {
+    width: 100%;
+    height: 85vh;
+    box-shadow: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+.datetilte {
+    font-size: 40px;
+}
+
+.Dataa_type {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-family: Inter, sans-serif;
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.logo_large {
+    font-family: "Lora", serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    text-transform: capitalize;
+    margin: 0;
+
+
+}
+
+#Data_type1 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 80%;
+    align-items: flex-start;
+}
+
+.titlewithicon {
+    background-color: #F5E5CF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.10);
+    height: 30px;
+    width: auto;
+    font-size: small;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+    gap: 8px;
+}
+
+.logodata {
+    align-self: flex-start;
+    width: 120px;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+/* .choosemain{
+    display:flex;
+} */
+.DataimgMain {
+    width: 45%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+}
+
+.changeMain {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.changetab {
+    width: calc(100% / 4 - 24px);
+    height: 12px;
+    border-radius: 10px;
+    border: solid 2px #E5BA96;
+}
+
+.fixed {
+    background-color: #C39A7B;
+}
+
+.Datamain {
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.selecteopt {
+    width: 80%;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    color: #333;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    height: 3rem;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
+    background: #fff;
+}
+
+.selecteopt:focus {
+    border-color: #000;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+.selecteopt:hover:not(:disabled) {
+    border-color: #000;
+}
+
+.selecteopt:disabled {
+    background: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.text-danger {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    background: #fff;
+    border-radius: 4px;
+    border-left: 3px solid #dc3545;
+    width: 80%;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.logos {
+    width: 85px;
+}
+
+.tbletext {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: capitalize;
+    color: #1C1C1C;
+    width: 100%;
+    padding-top: 8px;
+    text-align: left;
+}
+
+.privacyPolicySection {
+    width: 100%;
+    margin-top: 16px;
+    text-align: left;
+}
+
+.privacyPolicyText {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 140%;
+    color: #1C1C1C;
+    margin: 0;
+}
+
+.privacyPolicyLink {
+    background: none;
+    border: none;
+    color: #C39A7B;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    transition: color 0.2s ease;
+}
+
+.privacyPolicyLink:hover {
+    color: #A67C52;
+    text-decoration: none;
+}
+
+.privacyPolicyLink:focus {
+    outline: 2px solid #C39A7B;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.loadingText {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C826A;
+    text-align: center;
+    margin: 0;
+    padding: 8px 0;
+}
+
+.DatabtnMain3 {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    padding: 0;
+}
+
+.griffinbuttn3 {
+    width: 48%;
+    height: 60px;
+    background-color: #000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.griffinbuttn3:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.imgdata {
+    display: none;
+}
+
+.changeMainmob {
+    display: none;
+}
+
+.input_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    width: 100%;
+
+}
+
+.info_chip_container {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.chose_m_link {
+    display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+    .chose_m_link {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .DataimgMain {
+        display: none;
+    }
+
+    .Datamain {
+        width: calc(100% - 20px);
+        height: auto;
+    }
+
+    .imgdata {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .datetilte {
+        font-size: 25px;
+    }
+
+    #Data_type1 {
+        gap: 10px;
+        width: 80%;
+    }
+
+    .Datamain {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .griffinnMain {
+        padding-top: 50px;
+    }
+
+    .selecteopt {
+        width: 80%;
+        border: 1px solid grey;
+        border-radius: 5px;
+        color: gray;
+        font-family: Inter, sans-serif;
+        font-weight: 300 !important;
+        font-size: 20px;
+        height: 45px;
+    }
+
+    .griffinMainmob {
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .changetabg {
+        width: 22%;
+        height: 8px;
+        border-radius: 10px;
+        border: solid 1px #C39A7B;
+    }
+
+    .griffinbuttn3 {
+        height: 40px;
+    }
+
+    .tbletext {
+        font-size: 20px;
+    }
+
+    .anotherpub2 {
+        display: flex;
+        text-decoration: underline;
+        font-size: 17px;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .SelectMain {
+        min-height: 100vh;
+        padding-top: 50px;
+    }
+
+    .Dataa_type {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .time_slot_container {
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+    }
+
+    .Dataa_type {
+        padding: 0.5rem;
+    }
+}
+
+.loading_message {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-size: 1.1rem;
+    background: #f8f8f8;
+    border-radius: 8px;
+    margin: 1rem 0;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.time_slot_container {
+    width: 100%;
+    max-width: 800px;
+    margin: 1rem auto;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    max-height: 22vh;
+    overflow-y: auto;
+}
+
+.time_slot_container.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Additional classes for Long Hop */
+.date_container {
+    margin-bottom: 20px;
+}
+
+.date_picker_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.time_container {
+    margin-bottom: 20px;
+}
+
+.time_picker_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.loadingContainer {
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.timeSlots {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.timeSlot {
+    padding: 12px 16px;
+    border: 2px solid #C39A7B;
+    background-color: white;
+    color: #C39A7B;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.timeSlot:hover {
+    background-color: #C39A7B;
+    color: white;
+}
+
+.timeSlotSelected {
+    background-color: #C39A7B;
+    color: white;
+}
+
+.noSlotsContainer {
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.placeholderContainer {
+    text-align: center;
+    color: #999;
+    font-size: 16px;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.guest_container {
+    margin-bottom: 20px;
+}
+
+.guest_picker_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.guestControls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.guestControl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.guestControl label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.errorText {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.errorContainer {
+    text-align: center;
+    color: #e74c3c;
+    font-size: 16px;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #ffeaea;
+    border-radius: 8px;
+    border: 1px solid #e74c3c;
+}
+
+.next_container {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.privacy_container {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.privacyLink {
+    background: none;
+    border: none;
+    color: #C39A7B;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+.privacyLink:hover {
+    color: #a67c5a;
+}
+
+/* Additional Griffin-style classes */
+.timeSlot {
+    padding: 12px 16px;
+    border: 2px solid #C39A7B;
+    background-color: white;
+    color: #C39A7B;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin: 5px;
+}
+
+.timeSlot:hover {
+    background-color: #C39A7B;
+    color: white;
+}
+
+.timeSlotSelected {
+    background-color: #C39A7B;
+    color: white;
+}
+
+.text-danger {
+    color: #e74c3c;
+    font-size: 14px;
+    margin: 10px 0;
+    text-align: center;
+}

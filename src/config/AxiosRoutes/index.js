@@ -68,9 +68,11 @@ axiosInstance.interceptors.request.use(
       if (originalUrl.includes('/api/Jwt/v2/Authenticate')) {
         config.url = '/api/auth';
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilitySearch') || 
-                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilitySearch')) {
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilitySearch') ||
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheLongHop/AvailabilitySearch')) {
         // Ensure serverless function receives the correct restaurant name
-        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
+        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 
+                              originalUrl.includes('TheLongHop') ? 'TheLongHop' : 'TheGriffinInn';
         config.url = '/api/availability';
         
         // Handle both JSON and form-encoded data
@@ -96,9 +98,11 @@ axiosInstance.interceptors.request.use(
           });
         }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/AvailabilityForDateRangeV2') || 
-                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilityForDateRangeV2')) {
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/AvailabilityForDateRangeV2') ||
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheLongHop/AvailabilityForDateRangeV2')) {
         // Ensure serverless function receives the correct restaurant name
-        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
+        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 
+                              originalUrl.includes('TheLongHop') ? 'TheLongHop' : 'TheGriffinInn';
         config.url = '/api/availability-range';
         
         // Handle both JSON and form-encoded data
@@ -124,12 +128,14 @@ axiosInstance.interceptors.request.use(
           });
         }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Promotion') || 
-                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Promotion')) {
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Promotion') ||
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheLongHop/Promotion')) {
         try {
           // Parse the URL - need to provide a base URL for relative paths
           const url = new URL(originalUrl, 'http://localhost');
           const promotionIds = url.searchParams.getAll('promotionIds');
-          const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
+          const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 
+                                originalUrl.includes('TheLongHop') ? 'TheLongHop' : 'TheGriffinInn';
           
           // Build the new URL with all promotion IDs
           if (promotionIds.length > 0) {
@@ -152,9 +158,11 @@ axiosInstance.interceptors.request.use(
           config.url = originalUrl;
         }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken') || 
-                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/BookingWithStripeToken')) {
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/BookingWithStripeToken') ||
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheLongHop/BookingWithStripeToken')) {
         // Ensure serverless function receives the correct restaurant name
-        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
+        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 
+                              originalUrl.includes('TheLongHop') ? 'TheLongHop' : 'TheGriffinInn';
         config.url = '/api/booking';
         
         // Handle both JSON and form-encoded data
@@ -180,10 +188,12 @@ axiosInstance.interceptors.request.use(
           });
         }
       } else if (originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheTapRun/Booking/') || 
-                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Booking/')) {
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheGriffinInn/Booking/') ||
+                 originalUrl.includes('/api/ConsumerApi/v1/Restaurant/TheLongHop/Booking/')) {
         // Extract the booking reference from the URL
         const bookingReference = originalUrl.split('/').pop();
-        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 'TheGriffinInn';
+        const restaurantName = originalUrl.includes('TheTapRun') ? 'TheTapRun' : 
+                              originalUrl.includes('TheLongHop') ? 'TheLongHop' : 'TheGriffinInn';
         config.url = `/api/booking-details?bookingReference=${bookingReference}&restaurantName=${restaurantName}`;
       } else {
         // For other URLs in production, use as-is

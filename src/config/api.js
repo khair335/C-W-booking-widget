@@ -3,21 +3,25 @@ const API_CONFIG = {
   sandbox: {
     restaurantIds: {
       tapAndRun: 'CatWicketsTest',
-      griffin: 'CatWicketsTest'
+      griffin: 'CatWicketsTest',
+      longHop: 'CatWicketsTest'  // NEW - using same test ID for sandbox
     },
     promotionIds: {
       tapAndRun: ['2809', '2810'], // Temporary IDs, to be updated
-      griffin: ['2809', '2810']    // Temporary IDs, to be updated
+      griffin: ['2809', '2810'],    // Temporary IDs, to be updated
+      longHop: ['2809', '2810']     // NEW - using same test IDs for sandbox
     }
   },
   production: {
     restaurantIds: {
       tapAndRun: 'TheTapRun',
-      griffin: 'TheGriffinInn'
+      griffin: 'TheGriffinInn',
+      longHop: 'TheLongHop'  // NEW
     },
     promotionIds: {
       tapAndRun: [], // To be updated with production IDs
-      griffin: []    // To be updated with production IDs
+      griffin: [],    // To be updated with production IDs
+      longHop: []     // NEW - to be updated with production IDs
     }
   }
 };
@@ -41,6 +45,9 @@ export const getPromotionIds = (pub) => {
 export const getRestaurantName = (pubType) => {
   if (pubType === 'top') {
     return getApiConfig().restaurantIds.tapAndRun;
+  }
+  if (pubType === 'longHop') {
+    return getApiConfig().restaurantIds.longHop;
   }
   return getApiConfig().restaurantIds.griffin;
 };

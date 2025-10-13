@@ -1,24 +1,17 @@
 import React, { useState } from "react";
-import logo from "../../images/T&R White.png";
-import sectionimg2 from "../../images/Tap & Run_MainImage 1.png";
-import styles from "./TopModify.module.css";
+import logo from "../../images/The Long Hop - text.png";
+import sectionimage from "../../images/TheLongHop_MainiMAGE.jpg";
+import styles from "./LongHopModify.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
-import CustomInput from '../../components/ui/CustomInput/CustomInput';
-import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
+import CustomButton from '../../components/ui/CustomButton/CustomButton';
+import CustomInput from '../../components/ui/CustomInput/CustomInput';
+import { addSuccessBookingData, resetBooking, updateBasicInfo, updateCustomerDetails, updateSelectedPromotion, updateSpecialRequests } from '../../store/bookingSlice';
 import { getBooking } from '../../services/bookingService';
 import { useDispatch } from 'react-redux';
-import {
-  updateBasicInfo,
-  updateCustomerDetails,
-  updateSpecialRequests,
-  updateSelectedPromotion,
-  addSuccessBookingData,
-  resetBooking // Import this to reset state before setting new data
-} from '../../store/bookingSlice';
 
-export default function Modify() {
+export default function LongHopModify() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [bookingNumber, setBookingNumber] = useState("");
@@ -35,8 +28,8 @@ export default function Modify() {
     setError(null);
 
     try {
-      const bookingData = await getBooking(bookingNumber, 'top');
-      console.log("API Response:", bookingData); // Log the full response
+      const bookingData = await getBooking(bookingNumber, 'longHop');
+      console.log("Long Hop Modify - API Response:", bookingData);
 
       if (!bookingData) {
         throw new Error("No booking data received");
@@ -68,7 +61,7 @@ export default function Modify() {
         adults: bookingData.PartySize || 0,
         children: 0,
         returnBy: returnBy,
-        pubType: 'top',
+        pubType: 'longHop',
         availablePromotionIds: bookingData.availablePromotionIds || []
       }));
 
@@ -112,15 +105,15 @@ export default function Modify() {
         duration: bookingData.Duration || 0
       }));
 
-      // Navigate to Tap & Run edit page
-      navigate("/TopEdit", {
+      // Navigate to edit page
+      navigate("/longhopEdit", {
         state: {
           bookingNumber,
           bookingData
         }
       });
     } catch (err) {
-      console.error("Error in handleNextClick:", err);
+      console.error("Error in Long Hop Modify handleNextClick:", err);
       setError(err.message || "Failed to fetch booking details. Please try again.");
     } finally {
       setIsLoading(false);
@@ -131,16 +124,16 @@ export default function Modify() {
     <div className={styles.BookedMain} id="choose">
       <PubImageHeader
         pubLogo={logo}
-        sectionImg={sectionimg2}
+        sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={1}
         stepLength={4}
-        pubLink="/Select"
+        pubLink="/select"
       />
       <div className={styles.ModifyMain}>
         <div className={styles.modify_container}>
           
-          {/* Booking Number Input Section - Tap & Run */}
+          {/* Booking Number Input Section - Long Hop */}
           <div className={styles.Data_type}>
             <img src={logo} alt="logo" />
           </div>
@@ -160,13 +153,9 @@ export default function Modify() {
               required
               label="Booking Number"
               value={bookingNumber}
-              onChange={(e) => {
-                setBookingNumber(e.target.value);
-                setError(null); // Clear error when user types
-              }}
+              onChange={(e) => setBookingNumber(e.target.value)}
               style={{ flex: '0 0 180px' }}
               helperText='E.G. XXXX-XXXX-XXXX'
-              error={!!error}
             />
           </div>
 
@@ -174,9 +163,9 @@ export default function Modify() {
             <CustomButton
               onClick={handleNextClick}
               label={isLoading ? 'Loading...' : 'Edit A Booking'}
-              disabled={!bookingNumber || isLoading}
-              bgColor={bookingNumber && !isLoading ? "#3D3D3D" : "#ccc"}
-              color={bookingNumber && !isLoading ? "#fff" : "#000"}
+              disabled={!bookingNumber}
+              bgColor={bookingNumber ? "#3D3D3D" : "#ccc"}
+              color={bookingNumber ? "#fff" : "#000"}
             />
           </div>
 
@@ -201,7 +190,7 @@ export default function Modify() {
           </p>
           
           <div className={styles.Data_type}>
-            <Link to="/" className='exist__link'>
+            <Link to="/longhopHome" className='exist__link'>
               Cancel Editing and exit
             </Link>
           </div>
@@ -210,3 +199,4 @@ export default function Modify() {
     </div>
   );
 }
+
