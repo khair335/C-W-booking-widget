@@ -2,13 +2,13 @@ import React from "react";
 import logo from "../../images/The Long Hop - text.png";
 import sectionimage from "../../images/TheLongHop_MainiMAGE.jpg";
 import styles from "./LongHopCancelled.module.css";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 
 export default function LongHopCancelled() {
   return (
     <div className="CancelledMain" id="choose">
-       <PubImageHeader
+       <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"

@@ -10,7 +10,7 @@ import logo from "../../images/The Long Hop - text.png";
 import alertimg from "../../images/alert-circle.png";
 import { FiInfo } from "react-icons/fi";
 import { Modal } from 'bootstrap';
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 
 function LongHopHome() {
   useEffect(() => {
@@ -51,11 +51,11 @@ function LongHopHome() {
       <div className="homeMain" id="homepage">
 
 
-        <PubImageHeader
+        <PubImageHeaderLongHop
           sectionImg={sectionimage}
           pubLinkLabel="CHOOSE ANOTHER PUB"
 
-          pubLink="/"
+          pubLink="/Select"
         />
         <div className="section bookingcontainer">
           <img className='logo' src={logo} alt="logo" />
@@ -92,7 +92,7 @@ function LongHopHome() {
               <img src={tabimg} alt="tab-img" />
             </Link>
           </div>
-          <Link to="/" className="anotherpub2">
+          <Link to="/Select" className="anotherpub2">
             CHOOSE ANOTHER PUB
           </Link>
           <div>

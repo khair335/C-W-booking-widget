@@ -13,7 +13,7 @@ import resturanticon from "../../images/table_restaurant.png";
 import tabimg from "../../images/Menu Icon Mobile (1).png";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./LongHopArea.module.css";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import AreaSelectionCard from '../../components/AreaSelectionCard/AreaSelectionCard';
 import Indicator from '../../components/Indicator/Indicator';
@@ -102,7 +102,7 @@ export default function LongHopArea() {
 
   return (
     <div className={styles.AreaaMain} id="choose">
-      <PubImageHeader
+      <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"

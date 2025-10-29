@@ -13,7 +13,7 @@ import reacticon from "../../images/Chips Icons Mobile (2).png";
 import styles from "./LongHop.module.css";
 import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import DropDown from '../../components/ui/DropDown/DropDown';
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import Indicator from '../../components/Indicator/Indicator';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
@@ -361,7 +361,7 @@ export default function LongHop() {
   if (!isAuthenticated && !isAuthenticating) {
     return (
       <div className={styles.griffinnMain}>
-        <PubImageHeader
+        <PubImageHeaderLongHop
           pubLogo={logo}
           sectionImg={sectionimage}
           pubLinkLabel="CHOOSE ANOTHER PUB"
@@ -379,7 +379,7 @@ export default function LongHop() {
 
   return (
     <div className={styles.griffinnMain} id="choose">
-      <PubImageHeader
+      <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
@@ -509,7 +509,7 @@ export default function LongHop() {
               CHOOSE ANOTHER PUB
             </Link>
           </div> */}
-          <Link to="/longhopHome" className="exist__link">
+          <Link to="/Select" className="exist__link">
             Exit And Cancel Booking
           </Link>
         </div>

@@ -10,7 +10,7 @@ import reacticon from "../../images/Chips Icons Mobile (2).png";
 import resturanticon from "../../images/table_restaurant.png";
 import TextField from "@mui/material/TextField";
 import styles from "./LongHopDetails.module.css";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import CustomInput from '../../components/ui/CustomInput/CustomInput';
 import DatePicker from '../../components/ui/DatePicker/DatePicker';
@@ -176,7 +176,7 @@ export default function LongHopDetails() {
 
   return (
     <div className={styles.DetailsMain} id="choose">
-      <PubImageHeader
+      <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"

@@ -11,7 +11,7 @@ import resturanticon from "../../images/table_restaurant.png";
 import styles from "./LongHopConfirm.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
@@ -161,7 +161,7 @@ export default function LongHopConfirm() {
   return (
     <div className={styles.ConfirmMain} id="choose">
 
-      <PubImageHeader
+      <PubImageHeaderLongHop
         // pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"

@@ -9,7 +9,7 @@ import resturanticon from "../../images/table_restaurant.png";
 import TextField from "@mui/material/TextField";
 import styles from "./LongHopReDetail.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import CustomInput from '../../components/ui/CustomInput/CustomInput';
 import DatePicker from '../../components/ui/DatePicker/DatePicker';
@@ -156,7 +156,7 @@ export default function LongHopReDetail() {
   return (
     <div className={`${styles.DetailsMain} ${styles.topDetailMain}`} id="choose">
 
-      <PubImageHeader
+      <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"

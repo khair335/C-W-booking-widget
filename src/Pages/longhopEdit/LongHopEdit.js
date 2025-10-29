@@ -9,7 +9,7 @@ import membericon from "../../images/Chips Icons Mobile (3).png";
 import reacticon from "../../images/Chips Icons Mobile (2).png";
 import styles from "./LongHopEdit.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import DropDown from '../../components/ui/DropDown/DropDown';
@@ -287,7 +287,7 @@ export default function LongHopEdit() {
 
   return (
       <div className={styles.griffinnMain} id="choose">
-      <PubImageHeader
+      <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"

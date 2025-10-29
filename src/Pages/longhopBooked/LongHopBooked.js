@@ -3,7 +3,7 @@ import logo from "../../images/The Long Hop - text.png";
 import sectionimage from "../../images/TheLongHop_MainiMAGE.jpg";
 import styles from "./LongHopBooked.module.css";
 import { Link } from "react-router-dom";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { useSelector } from "react-redux";
 import CancelModal from '../../components/CancelModal/CancelModal';
@@ -21,7 +21,7 @@ export default function LongHopBooked() {
     <div className={styles.BookeddMain} id="choose">
 
 
-      <PubImageHeader
+      <PubImageHeaderLongHop
 
         sectionImg={sectionimage}
 

@@ -4,7 +4,7 @@ import sectionimage from "../../images/TheLongHop_MainiMAGE.jpg";
 import TextField from "@mui/material/TextField";
 import styles from "./LongHopLost.module.css";
 import { Link } from "react-router-dom";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import CustomInput from '../../components/ui/CustomInput/CustomInput';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
@@ -15,7 +15,7 @@ export default function LongHopLost() {
     <div className={styles.LostMain} id="choose">
 
 
-      <PubImageHeader
+      <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         step={1}

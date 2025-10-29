@@ -55,7 +55,7 @@ function Home() {
           sectionImg={sectionimage}
           pubLinkLabel="CHOOSE ANOTHER PUB"
 
-          pubLink="/TopHome"
+          pubLink="/Select"
         />
         <div className="section bookingcontainer">
           <img className='logo' src={logo} alt="logo" />
@@ -92,7 +92,7 @@ function Home() {
               <img src={tabimg} alt="tab-img" />
             </Link>
           </div>
-          <Link to="/TopHome" className="anotherpub2">
+          <Link to="/Select" className="anotherpub2">
             CHOOSE ANOTHER PUB
           </Link>
           <div>

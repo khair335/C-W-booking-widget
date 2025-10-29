@@ -3,7 +3,7 @@ import logo from "../../images/The Long Hop - text.png";
 import sectionimage from "../../images/TheLongHop_MainiMAGE.jpg";
 import styles from "./LongHopModify.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import CustomInput from '../../components/ui/CustomInput/CustomInput';
@@ -122,7 +122,7 @@ export default function LongHopModify() {
 
   return (
     <div className={styles.BookedMain} id="choose">
-      <PubImageHeader
+      <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"

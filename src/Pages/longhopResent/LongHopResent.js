@@ -4,7 +4,7 @@ import sectionimage from "../../images/TheLongHop_MainiMAGE.jpg";
 import TextField from "@mui/material/TextField";
 import styles from "./LongHopResent.module.css";
 import { Link } from "react-router-dom";
-import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
+import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 import CustomInput from '../../components/ui/CustomInput/CustomInput';
 import DropDown from '../../components/ui/DropDown/DropDown';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
@@ -16,7 +16,7 @@ export default function LongHopResent() {
   return (
     <div className={styles.ReSentMain} id="choose">
 
-      <PubImageHeader
+      <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
         step={2}
