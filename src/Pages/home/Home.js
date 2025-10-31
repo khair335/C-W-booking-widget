@@ -132,7 +132,7 @@ function Home() {
                     cashless — card or contactless payments only.</p>
                 </div>
                 <div className="modal-footer ">
-                  <Link to="/Select" className="btn btn-primary confirmbtn w-100" onClick={handleModalClose}>
+                  <Link to="/griffin" className="btn btn-primary confirmbtn w-100" onClick={handleModalClose}>
                     CONFIRM
                   </Link>
                 </div>
