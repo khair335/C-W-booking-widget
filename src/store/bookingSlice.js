@@ -28,6 +28,9 @@ const initialState = {
   // Special requests
   specialRequests: '',
 
+  // Selected drink
+  selectedDrink: null,
+
   // Current step
   currentStep: 1,
 
@@ -84,6 +87,9 @@ const bookingSlice = createSlice({
     updateSpecialRequests: (state, action) => {
       state.specialRequests = action.payload;
     },
+    updateSelectedDrink: (state, action) => {
+      state.selectedDrink = action.payload;
+    },
     updateCurrentStep: (state, action) => {
       state.currentStep = action.payload;
     },
@@ -109,6 +115,7 @@ export const {
   updateSelectedPromotion,
   updateCustomerDetails,
   updateSpecialRequests,
+  updateSelectedDrink,
   updateCurrentStep,
   updateSelectedPub,
   resetBooking,

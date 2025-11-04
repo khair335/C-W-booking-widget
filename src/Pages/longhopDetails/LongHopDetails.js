@@ -19,6 +19,7 @@ import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
 import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests } from '../../store/bookingSlice';
 import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
+import DrinksModal from '../../components/DrinksModal/DrinksModal';
 
 export default function LongHopDetails() {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ export default function LongHopDetails() {
 
   // Local state
   const [globalError, setGlobalError] = useState('');
+  const [isDrinksModalOpen, setIsDrinksModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     SpecialRequests: specialRequests || '',
     PromotionId: 0,
@@ -92,11 +94,34 @@ export default function LongHopDetails() {
   useEffect(() => {
     // Only add children prefix if there are children
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
+    
+    // Preserve drink selection if it exists in Redux
+    const drinkMatch = specialRequests?.match(/Pre-ordered: [^-]+\([^)]+\)/);
+    const drinkInfo = drinkMatch ? drinkMatch[0] : '';
+    
+    // Preserve any user-added requests (not children, not drink)
+    let userRequests = specialRequests || '';
+    userRequests = userRequests.replace(/^Includes \d+ children(?: - )?/, '');
+    userRequests = userRequests.replace(/Pre-ordered: [^-]+\([^)]+\)(?: - )?/, '');
+    
+    // Build the complete special requests string
+    let completeRequests = childrenPrefix;
+    if (drinkInfo) {
+      completeRequests = completeRequests ? `${completeRequests} - ${drinkInfo}` : drinkInfo;
+    }
+    if (userRequests) {
+      completeRequests = completeRequests ? `${completeRequests} - ${userRequests}` : userRequests;
+    }
+    
     setFormData(prev => ({
       ...prev,
-      SpecialRequests: childrenPrefix
+      SpecialRequests: completeRequests
     }));
-    dispatch(updateSpecialRequests(childrenPrefix));
+    
+    // Only update Redux if this is the initial load or children changed
+    if (!formData.SpecialRequests) {
+      dispatch(updateSpecialRequests(completeRequests));
+    }
   }, [children, dispatch]);
 
   const handleChange = (field, value) => {
@@ -137,13 +162,25 @@ export default function LongHopDetails() {
     const value = e.target.value;
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
 
-    // Remove the children prefix if it exists
-    const userInput = value.replace(/^Includes \d+ children(?: - )?/, '');
+    // Extract drink info if it exists
+    const drinkMatch = value.match(/Pre-ordered: [^-]+\([^)]+\)/);
+    const drinkInfo = drinkMatch ? drinkMatch[0] : '';
 
-    // Only add the prefix if there are children
-    const formattedRequest = children > 0
-      ? `${childrenPrefix}${userInput ? ` - ${userInput}` : ''}`
-      : userInput;
+    // Remove the children prefix and drink info to get just user input
+    let userInput = value.replace(/^Includes \d+ children(?: - )?/, '');
+    userInput = userInput.replace(/Pre-ordered: [^-]+\([^)]+\)(?: - )?/, '');
+
+    // Build the complete request maintaining order: children - drink - user requests
+    let formattedRequest = '';
+    if (childrenPrefix) {
+      formattedRequest = childrenPrefix;
+    }
+    if (drinkInfo) {
+      formattedRequest = formattedRequest ? `${formattedRequest} - ${drinkInfo}` : drinkInfo;
+    }
+    if (userInput) {
+      formattedRequest = formattedRequest ? `${formattedRequest} - ${userInput}` : userInput;
+    }
 
     setFormData(prev => ({
       ...prev,
@@ -170,6 +207,16 @@ export default function LongHopDetails() {
     }
 
     setGlobalError('');
+    // Show drinks modal instead of navigating
+    setIsDrinksModalOpen(true);
+  };
+
+  const handleDrinksModalClose = () => {
+    setIsDrinksModalOpen(false);
+  };
+
+  const handleDrinksModalContinue = () => {
+    setIsDrinksModalOpen(false);
     dispatch(updateCurrentStep(4));
     navigate("/longhopconfirm");
   };
@@ -341,6 +388,12 @@ export default function LongHopDetails() {
           </Link>
         </div>
       </div>
+      
+      <DrinksModal
+        isOpen={isDrinksModalOpen}
+        onClose={handleDrinksModalClose}
+        onContinue={handleDrinksModalContinue}
+      />
     </div>
   );
 }

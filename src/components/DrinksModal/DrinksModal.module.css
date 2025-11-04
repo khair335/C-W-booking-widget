@@ -1,0 +1,196 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modalContent {
+  background: #FFFCF7;
+  border-radius: 12px;
+  padding: 40px 30px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 36px;
+  cursor: pointer;
+  color: #3d3d3d;
+  line-height: 1;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.closeButton:hover {
+  color: #000;
+}
+
+.modalHeader {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.modalTitle {
+  font-family: 'Roboto', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 15px 0;
+}
+
+.modalSubtitle {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #3d3d3d;
+  margin: 0;
+}
+
+.drinksContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.drinkCard {
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.3s ease;
+}
+
+.drinkCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.drinkInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drinkName {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+}
+
+.drinkPrice {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+}
+
+.drinkButton {
+  padding: 12px 24px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.drinkButton:hover {
+  background-color: #3d3d3d;
+}
+
+.skipButton {
+  width: 100%;
+  padding: 14px 28px;
+  background-color: transparent;
+  color: #3d3d3d;
+  border: 2px solid #3d3d3d;
+  border-radius: 4px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.skipButton:hover {
+  background-color: #3d3d3d;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 30px 20px;
+    max-height: 95vh;
+  }
+
+  .modalTitle {
+    font-size: 24px;
+  }
+
+  .modalSubtitle {
+    font-size: 16px;
+  }
+
+  .drinkCard {
+    padding: 15px;
+  }
+
+  .drinkName,
+  .drinkPrice {
+    font-size: 16px;
+  }
+
+  .drinkButton {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .skipButton {
+    font-size: 14px;
+    padding: 12px 24px;
+  }
+}
+
