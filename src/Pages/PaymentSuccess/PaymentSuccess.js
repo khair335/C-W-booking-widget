@@ -59,21 +59,25 @@ const PaymentSuccess = () => {
     
     if (bookingData) {
       const parsed = JSON.parse(bookingData);
-      const restaurant = parsed.restaurant;
+      const restaurant = parsed.restaurant || parsed.pubType;
+
+      console.log('Restaurant/PubType from localStorage:', restaurant);
 
       // Redirect back to appropriate Details page based on restaurant
       if (restaurant === 'griffin') {
-        navigate('/griffin/details');
+        navigate('/Details'); // Griffin uses /Details route
       } else if (restaurant === 'longhop') {
-        navigate('/longhop/details');
-      } else if (restaurant === 'tapandrun') {
-        navigate('/tap-and-run/details');
+        navigate('/longhopdetails'); // Long Hop uses /longhopdetails route
+      } else if (restaurant === 'top' || restaurant === 'tapandrun') {
+        navigate('/TopDetails'); // Tap & Run uses /TopDetails route
       } else {
         // Fallback - try to guess from current data
-        navigate('/details');
+        console.log('Unknown restaurant, using fallback /Details');
+        navigate('/Details');
       }
     } else {
       // No booking data found, go to home
+      console.log('No booking data found, going home');
       navigate('/');
     }
   };
