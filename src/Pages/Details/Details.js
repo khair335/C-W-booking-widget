@@ -93,52 +93,77 @@ console.log("specialRequests_004",specialRequests)
     }
   }, [customerDetails]);
 
-  // Restore booking data after payment redirect
+  // Restore booking data after payment redirect - SIMPLIFIED
   useEffect(() => {
-    const restored = restoreBookingAfterPayment(customerDetails, specialRequests, children);
+    // Check localStorage directly
+    const savedData = localStorage.getItem('pendingBookingData');
+    const drinkPurchased = localStorage.getItem('drinkPurchased');
     
-    if (restored.shouldUpdate && restored.restoredData) {
-      console.log('✅ Restoring booking data after payment...');
-      console.log('📋 Restored Data:', restored.restoredData);
-      console.log('📋 Restored Special Requests:', restored.specialRequests);
+    if (!savedData) {
+      console.log('No saved booking data');
+      return;
+    }
+    
+    const bookingData = JSON.parse(savedData);
+    console.log('✅ Found saved booking data:', bookingData);
+    
+    // Set flag immediately to prevent overwrites
+    setDataRestored(true);
+    
+    // Restore ALL Redux state
+    dispatch(updateBasicInfo({
+      date: bookingData.date,
+      time: bookingData.time,
+      adults: parseInt(bookingData.adults) || 0,
+      children: parseInt(bookingData.children) || 0,
+      returnBy: bookingData.returnBy,
+      pubType: bookingData.pubType || bookingData.restaurant
+    }));
+    
+    // Restore customer details
+    dispatch(updateCustomerDetails({
+      FirstName: bookingData.firstName || '',
+      Surname: bookingData.surname || '',
+      Email: bookingData.email || '',
+      Mobile: bookingData.phone || '',
+      MobileCountryCode: bookingData.mobileCountryCode || '+44',
+      Birthday: bookingData.birthday || ''
+    }));
+    
+    // Build special requests with drink info if payment was completed
+    let finalSpecialRequests = bookingData.specialRequests || '';
+    
+    if (drinkPurchased === 'true') {
+      const drinkName = localStorage.getItem('drinkName');
+      const drinkAmount = localStorage.getItem('drinkAmount');
+      const paymentSessionId = localStorage.getItem('paymentSessionId');
       
-      // Set flag to prevent other useEffects from overwriting
-      setDataRestored(true);
-      
-      // IMPORTANT: Restore basic booking info to Redux (date, time, adults, children)
-      // This prevents second useEffect from rebuilding with wrong values
-      if (restored.restoredData.date || restored.restoredData.adults || restored.restoredData.children) {
-        console.log('🔄 Restoring basic info to Redux:', {
-          date: restored.restoredData.date,
-          time: restored.restoredData.time,
-          adults: restored.restoredData.adults,
-          children: restored.restoredData.children
-        });
+      if (drinkName && drinkAmount) {
+        const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Payment ID: ${paymentSessionId || 'N/A'})`;
         
-        dispatch(updateBasicInfo({
-          date: restored.restoredData.date,
-          time: restored.restoredData.time,
-          adults: parseInt(restored.restoredData.adults) || 0,
-          children: parseInt(restored.restoredData.children) || 0,
-          returnBy: restored.restoredData.returnBy,
-          pubType: restored.restoredData.pubType || restored.restoredData.restaurant
-        }));
-      }
-      
-      // Update Redux with restored customer details
-      if (restored.customerDetails) {
-        dispatch(updateCustomerDetails(restored.customerDetails));
-      }
-      
-      // Update Redux and form with special requests (including drink)
-      if (restored.specialRequests) {
-        dispatch(updateSpecialRequests(restored.specialRequests));
-        setFormData(prev => ({
-          ...prev,
-          SpecialRequests: restored.specialRequests
-        }));
+        if (finalSpecialRequests) {
+          finalSpecialRequests = `${finalSpecialRequests} - ${drinkInfo}`;
+        } else {
+          finalSpecialRequests = drinkInfo;
+        }
+        
+        // Clear drink flags after use
+        localStorage.removeItem('drinkPurchased');
+        localStorage.removeItem('drinkName');
+        localStorage.removeItem('drinkAmount');
+        localStorage.removeItem('paymentSessionId');
       }
     }
+    
+    console.log('📋 Final Special Requests:', finalSpecialRequests);
+    
+    // Update Redux and form
+    dispatch(updateSpecialRequests(finalSpecialRequests));
+    setFormData(prev => ({
+      ...prev,
+      SpecialRequests: finalSpecialRequests
+    }));
+    
   }, []); // Run only once on mount
 
   // Update the useEffect that sets special requests
