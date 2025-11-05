@@ -73,6 +73,27 @@ export default function Details() {
     }
   }, [customerDetails]);
 
+  // Sync specialRequests from Redux to form (but skip during restoration)
+  useEffect(() => {
+    // Check if we're about to restore from localStorage - if so, skip this sync
+    const pendingBookingData = localStorage.getItem('pendingBookingData');
+    if (pendingBookingData && !dataRestored) {
+      console.log('⏭️  Skipping sync - restoration will handle it');
+      return;
+    }
+    
+    console.log('📥 Syncing specialRequests from Redux to form:', specialRequests);
+    console.log('📥 Current formData.SpecialRequests:', formData.SpecialRequests);
+    
+    // Only update if different to avoid unnecessary rerenders
+    if (specialRequests !== formData.SpecialRequests) {
+      setFormData(prev => ({
+        ...prev,
+        SpecialRequests: specialRequests || ''
+      }));
+    }
+  }, [specialRequests, dataRestored, formData.SpecialRequests]);
+
   // Restore booking data after payment redirect - SIMPLIFIED
   useEffect(() => {
     const savedData = localStorage.getItem('pendingBookingData');
@@ -103,8 +124,16 @@ export default function Details() {
       Birthday: bookingData.birthday || ''
     }));
     
-    let finalSpecialRequests = bookingData.specialRequests || '';
+    // Build special requests with children prefix + drink info + other requests
+    const restoredChildren = parseInt(bookingData.children) || 0;
+    let finalSpecialRequests = '';
     
+    // Add children prefix if there are children
+    if (restoredChildren > 0) {
+      finalSpecialRequests = `Includes ${restoredChildren} children`;
+    }
+    
+    // Add drink info if payment was completed
     if (drinkPurchased === 'true') {
       const drinkName = localStorage.getItem('drinkName');
       const drinkAmount = localStorage.getItem('drinkAmount');
@@ -113,42 +142,71 @@ export default function Details() {
       if (drinkName && drinkAmount) {
         const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Payment ID: ${paymentSessionId || 'N/A'})`;
         finalSpecialRequests = finalSpecialRequests ? `${finalSpecialRequests} - ${drinkInfo}` : drinkInfo;
-        
-        localStorage.removeItem('drinkPurchased');
-        localStorage.removeItem('drinkName');
-        localStorage.removeItem('drinkAmount');
-        localStorage.removeItem('paymentSessionId');
       }
     }
     
-    console.log('📋 Final Special Requests:', finalSpecialRequests);
+    // Add any other special requests from saved data (excluding children prefix and drink info)
+    let savedRequests = bookingData.specialRequests || '';
+    savedRequests = savedRequests.replace(/^Includes \d+ children(?: - )?/, '');
+    savedRequests = savedRequests.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
+    if (savedRequests) {
+      finalSpecialRequests = finalSpecialRequests ? `${finalSpecialRequests} - ${savedRequests}` : savedRequests;
+    }
+    
+    console.log('📋 Final Special Requests (with children prefix):', finalSpecialRequests);
     
     dispatch(updateSpecialRequests(finalSpecialRequests));
     setFormData(prev => ({
       ...prev,
       SpecialRequests: finalSpecialRequests
     }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update the useEffect that sets special requests
   useEffect(() => {
-    // Skip if data was restored from payment flow to prevent overwriting
-    if (dataRestored) {
+    // If specialRequests is empty but we have children, we need to rebuild
+    const needsChildrenPrefix = children > 0 && (!specialRequests || !specialRequests.includes('Includes'));
+    
+    if (needsChildrenPrefix) {
+      console.log('🔨 REBUILDING: specialRequests is empty but children exist, building...');
+      // Fall through to rebuild
+    } else if (dataRestored) {
       console.log('⏭️  Skipping special requests rebuild - data was restored from payment');
       return;
+    } else if (specialRequests && !specialRequests.match(/^Includes \d+ children$/)) {
+      console.log('⏭️  Skipping rebuild - specialRequests already has content from Redux');
+      return;
+    } else {
+      console.log('⚙️  Continuing to rebuild special requests');
     }
 
     // Only add children prefix if there are children
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
     
-    // Preserve drink selection if it exists in Redux
-    const drinkMatch = specialRequests?.match(/Pre-ordered: [^-]+\([^)]+\)/);
-    const drinkInfo = drinkMatch ? drinkMatch[0] : '';
+    // Check for drink info in Redux first
+    let drinkMatch = specialRequests?.match(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)/);
+    let drinkInfo = drinkMatch ? drinkMatch[0] : '';
+    
+    // If not in Redux, check localStorage for drink data
+    if (!drinkInfo) {
+      const drinkPurchased = localStorage.getItem('drinkPurchased');
+      if (drinkPurchased === 'true') {
+        const drinkName = localStorage.getItem('drinkName');
+        const drinkAmount = localStorage.getItem('drinkAmount');
+        const paymentSessionId = localStorage.getItem('paymentSessionId');
+        
+        if (drinkName && drinkAmount) {
+          drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Payment ID: ${paymentSessionId || 'N/A'})`;
+          console.log('🍷 Found drink data in localStorage:', drinkInfo);
+        }
+      }
+    }
     
     // Preserve any user-added requests (not children, not drink)
     let userRequests = specialRequests || '';
     userRequests = userRequests.replace(/^Includes \d+ children(?: - )?/, '');
-    userRequests = userRequests.replace(/Pre-ordered: [^-]+\([^)]+\)(?: - )?/, '');
+    userRequests = userRequests.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
     
     // Build the complete special requests string
     let completeRequests = childrenPrefix;
@@ -164,10 +222,8 @@ export default function Details() {
       SpecialRequests: completeRequests
     }));
     
-    // Only update Redux if this is the initial load or children changed
-    if (!formData.SpecialRequests) {
-      dispatch(updateSpecialRequests(completeRequests));
-    }
+    // Update Redux to persist the rebuilt specialRequests
+    dispatch(updateSpecialRequests(completeRequests));
   }, [children, dispatch, dataRestored]);
 
   // Format date for display
@@ -245,13 +301,13 @@ export default function Details() {
     const value = e.target.value;
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
 
-    // Extract drink info if it exists
-    const drinkMatch = value.match(/Pre-ordered: [^-]+\([^)]+\)/);
+    // Extract drink info if it exists (match full format: Pre-ordered: Drink - £10.00 (Payment ID: xyz))
+    const drinkMatch = value.match(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)/);
     const drinkInfo = drinkMatch ? drinkMatch[0] : '';
 
     // Remove the children prefix and drink info to get just user input
     let userInput = value.replace(/^Includes \d+ children(?: - )?/, '');
-    userInput = userInput.replace(/Pre-ordered: [^-]+\([^)]+\)(?: - )?/, '');
+    userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
 
     // Build the complete request maintaining order: children - drink - user requests
     let formattedRequest = '';
@@ -481,3 +537,5 @@ export default function Details() {
     </div>
   );
 }
+
+

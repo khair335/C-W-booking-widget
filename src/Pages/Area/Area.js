@@ -40,6 +40,12 @@ export default function Area() {
 
   const handleNextClick = () => {
     if (!isFormValid) return;
+    localStorage.removeItem("paymentSessionId")
+    localStorage.removeItem("pendingBookingData")
+    localStorage.removeItem("awaitingPayment")
+    localStorage.removeItem("drinkAmount")
+    localStorage.removeItem("drinkName")
+    localStorage.removeItem("drinkPurchased")
     dispatch(updateCurrentStep(3));
     navigate("/Details");
   };

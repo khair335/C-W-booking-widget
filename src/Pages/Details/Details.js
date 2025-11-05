@@ -38,7 +38,8 @@ export default function Details() {
     customerDetails,
     specialRequests
   } = bookingState;
-console.log("specialRequests_004",specialRequests)
+console.log("🎯 COMPONENT MOUNT - specialRequests from Redux:", specialRequests);
+console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
   // Format date for display
   const displayDate = React.useMemo(() => {
     if (!date) return "Select Date";
@@ -60,6 +61,8 @@ console.log("specialRequests_004",specialRequests)
   const [globalError, setGlobalError] = useState('');
   const [isDrinksModalOpen, setIsDrinksModalOpen] = useState(false);
   const [dataRestored, setDataRestored] = useState(false); // Flag to track if data was restored
+  
+  console.log("🎯 COMPONENT STATE - dataRestored initial:", dataRestored);
   const [formData, setFormData] = useState({
     SpecialRequests: specialRequests || '',
     PromotionId: 0,
@@ -93,14 +96,40 @@ console.log("specialRequests_004",specialRequests)
     }
   }, [customerDetails]);
 
+  // Sync specialRequests from Redux to form (but skip during restoration)
+  useEffect(() => {
+    // Check if we're about to restore from localStorage - if so, skip this sync
+    const pendingBookingData = localStorage.getItem('pendingBookingData');
+    if (pendingBookingData && !dataRestored) {
+      console.log('⏭️  Skipping sync - restoration will handle it');
+      return;
+    }
+    
+    console.log('📥 Syncing specialRequests from Redux to forms:', specialRequests);
+    console.log('📥 Current formData.SpecialRequests:', formData.SpecialRequests);
+    
+    // Only update if different to avoid unnecessary rerenders
+    if (specialRequests !== formData.SpecialRequests) {
+      setFormData(prev => ({
+        ...prev,
+        SpecialRequests: specialRequests || ''
+      }));
+    }
+  }, [specialRequests, dataRestored, formData.SpecialRequests]);
+
   // Restore booking data after payment redirect - SIMPLIFIED
   useEffect(() => {
+    console.log('🚀 RESTORATION useEffect is RUNNING');
+    
     // Check localStorage directly
     const savedData = localStorage.getItem('pendingBookingData');
     const drinkPurchased = localStorage.getItem('drinkPurchased');
     
+    console.log('🚀 RESTORATION: pendingBookingData exists?', !!savedData);
+    console.log('🚀 RESTORATION: drinkPurchased value:', drinkPurchased);
+    
     if (!savedData) {
-      console.log('No saved booking data');
+      console.log('❌ No saved booking data - restoration skipped');
       return;
     }
     
@@ -130,61 +159,110 @@ console.log("specialRequests_004",specialRequests)
       Birthday: bookingData.birthday || ''
     }));
     
-    // Build special requests with drink info if payment was completed
-    let finalSpecialRequests = bookingData.specialRequests || '';
+    // Build special requests with children prefix + drink info + other requests
+    const restoredChildren = parseInt(bookingData.children) || 0;
+    console.log('🔧 RESTORATION: Restored children:', restoredChildren);
+    console.log('🔧 RESTORATION: drinkPurchased:', drinkPurchased);
+    console.log('🔧 RESTORATION: bookingData.specialRequests:', bookingData.specialRequests);
     
+    let finalSpecialRequests = '';
+    
+    // Add children prefix if there are children
+    if (restoredChildren > 0) {
+      finalSpecialRequests = `Includes ${restoredChildren} children`;
+      console.log('🔧 RESTORATION: Added children prefix:', finalSpecialRequests);
+    }
+    
+    // Add drink info if payment was completed
     if (drinkPurchased === 'true') {
       const drinkName = localStorage.getItem('drinkName');
       const drinkAmount = localStorage.getItem('drinkAmount');
       const paymentSessionId = localStorage.getItem('paymentSessionId');
       
+      console.log('🔧 RESTORATION: Drink data:', { drinkName, drinkAmount, paymentSessionId });
+      
       if (drinkName && drinkAmount) {
         const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Payment ID: ${paymentSessionId || 'N/A'})`;
-        
-        if (finalSpecialRequests) {
-          finalSpecialRequests = `${finalSpecialRequests} - ${drinkInfo}`;
-        } else {
-          finalSpecialRequests = drinkInfo;
-        }
-        
-        // Clear drink flags after use
-        localStorage.removeItem('drinkPurchased');
-        localStorage.removeItem('drinkName');
-        localStorage.removeItem('drinkAmount');
-        localStorage.removeItem('paymentSessionId');
+        finalSpecialRequests = finalSpecialRequests ? `${finalSpecialRequests} - ${drinkInfo}` : drinkInfo;
+        console.log('🔧 RESTORATION: After adding drink:', finalSpecialRequests);
       }
     }
     
-    console.log('📋 Final Special Requests:', finalSpecialRequests);
+    // Add any other special requests from saved data (excluding children prefix and drink info)
+    let savedRequests = bookingData.specialRequests || '';
+    savedRequests = savedRequests.replace(/^Includes \d+ children(?: - )?/, '');
+    savedRequests = savedRequests.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
+    if (savedRequests) {
+      finalSpecialRequests = finalSpecialRequests ? `${finalSpecialRequests} - ${savedRequests}` : savedRequests;
+      console.log('🔧 RESTORATION: After adding saved requests:', finalSpecialRequests);
+    }
+    
+    console.log('📋 FINAL Special Requests being dispatched to Redux:', finalSpecialRequests);
     
     // Update Redux and form
     dispatch(updateSpecialRequests(finalSpecialRequests));
+    console.log('✅ Dispatched updateSpecialRequests to Redux');
+    
     setFormData(prev => ({
       ...prev,
       SpecialRequests: finalSpecialRequests
     }));
+    console.log('✅ Updated formData.SpecialRequests to:', finalSpecialRequests);
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run only once on mount
 
   // Update the useEffect that sets special requests
   useEffect(() => {
-    // Skip if data was restored from payment flow to prevent overwriting
-    if (dataRestored) {
+    console.log('🔄 Second useEffect running with:', { dataRestored, children, specialRequests });
+    
+    // If specialRequests is empty but we have children, we need to rebuild
+    // This handles the case where Redux-persist restored other data but specialRequests is empty
+    const needsChildrenPrefix = children > 0 && (!specialRequests || !specialRequests.includes('Includes'));
+    
+    if (needsChildrenPrefix) {
+      console.log('🔨 REBUILDING: specialRequests is empty but children exist, building...');
+      // Fall through to rebuild
+    } else if (dataRestored) {
       console.log('⏭️  Skipping special requests rebuild - data was restored from payment');
       return;
+    } else if (specialRequests && !specialRequests.match(/^Includes \d+ children$/)) {
+      // Skip if specialRequests already has content from Redux rehydration
+      console.log('⏭️  Skipping rebuild - specialRequests already has content from Redux');
+      return;
+    } else {
+      console.log('⚙️  Continuing to rebuild special requests');
     }
+
+    console.log('⚙️  Rebuilding special requests from Redux state');
 
     // Only add children prefix if there are children
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
+    console.log('👶 Children from Redux:', children, '→ Prefix:', childrenPrefix || '(none)');
     
-    // Preserve drink selection if it exists in Redux
-    const drinkMatch = specialRequests?.match(/Pre-ordered: [^-]+\([^)]+\)/);
-    const drinkInfo = drinkMatch ? drinkMatch[0] : '';
+    // Check for drink info in Redux first
+    let drinkMatch = specialRequests?.match(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)/);
+    let drinkInfo = drinkMatch ? drinkMatch[0] : '';
+    
+    // If not in Redux, check localStorage for drink data
+    if (!drinkInfo) {
+      const drinkPurchased = localStorage.getItem('drinkPurchased');
+      if (drinkPurchased === 'true') {
+        const drinkName = localStorage.getItem('drinkName');
+        const drinkAmount = localStorage.getItem('drinkAmount');
+        const paymentSessionId = localStorage.getItem('paymentSessionId');
+        
+        if (drinkName && drinkAmount) {
+          drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Payment ID: ${paymentSessionId || 'N/A'})`;
+          console.log('🍷 Found drink data in localStorage:', drinkInfo);
+        }
+      }
+    }
     
     // Preserve any user-added requests (not children, not drink)
     let userRequests = specialRequests || '';
     userRequests = userRequests.replace(/^Includes \d+ children(?: - )?/, '');
-    userRequests = userRequests.replace(/Pre-ordered: [^-]+\([^)]+\)(?: - )?/, '');
+    userRequests = userRequests.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
     
     // Build the complete special requests string
     let completeRequests = childrenPrefix;
@@ -195,15 +273,17 @@ console.log("specialRequests_004",specialRequests)
       completeRequests = completeRequests ? `${completeRequests} - ${userRequests}` : userRequests;
     }
     
+    console.log('🔨 Built Special Requests:', completeRequests);
+    console.log('📝 Setting form SpecialRequests to:', completeRequests);
+    
     setFormData(prev => ({
       ...prev,
       SpecialRequests: completeRequests
     }));
     
-    // Only update Redux if this is the initial load or children changed
-    if (!formData.SpecialRequests) {
-      dispatch(updateSpecialRequests(completeRequests));
-    }
+    // Update Redux to persist the rebuilt specialRequests
+    dispatch(updateSpecialRequests(completeRequests));
+    console.log('✅ Dispatched rebuilt specialRequests to Redux');
   }, [children, dispatch, dataRestored]);
 
   const handleChange = (field, value) => {
@@ -244,13 +324,13 @@ console.log("specialRequests_004",specialRequests)
     const value = e.target.value;
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
 
-    // Extract drink info if it exists
-    const drinkMatch = value.match(/Pre-ordered: [^-]+\([^)]+\)/);
+    // Extract drink info if it exists (match full format: Pre-ordered: Drink - £10.00 (Payment ID: xyz))
+    const drinkMatch = value.match(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)/);
     const drinkInfo = drinkMatch ? drinkMatch[0] : '';
 
     // Remove the children prefix and drink info to get just user input
     let userInput = value.replace(/^Includes \d+ children(?: - )?/, '');
-    userInput = userInput.replace(/Pre-ordered: [^-]+\([^)]+\)(?: - )?/, '');
+    userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
 
     // Build the complete request maintaining order: children - drink - user requests
     let formattedRequest = '';
