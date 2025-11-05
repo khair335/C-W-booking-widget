@@ -21,6 +21,7 @@ import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests } from 
 import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 import DrinksModal from '../../components/DrinksModal/DrinksModal';
 import { restoreBookingAfterPayment, clearAllBookingData } from '../../utils/paymentRestoration';
+import '../../utils/diagnosticHelper'; // Make diagnostic tools available in console
 
 export default function Details() {
   const navigate = useNavigate();
