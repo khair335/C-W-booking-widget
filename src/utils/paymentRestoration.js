@@ -55,11 +55,16 @@ export const getDrinkPaymentInfo = () => {
 export const buildSpecialRequestsWithDrink = (existingRequests, drinkInfo, children = 0) => {
   if (!drinkInfo) return existingRequests;
 
+  console.log('🔧 Building Special Requests:', { existingRequests, drinkInfo, children });
+
   // Build drink info text
   const drinkText = `Pre-ordered: ${drinkInfo.drinkName} - £${drinkInfo.drinkAmount.toFixed(2)}`;
 
   // Handle children prefix if needed
   const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
+
+  console.log('📝 Drink text:', drinkText);
+  console.log('👶 Children prefix:', childrenPrefix || '(none)');
 
   let combinedRequests = '';
 
@@ -68,22 +73,28 @@ export const buildSpecialRequestsWithDrink = (existingRequests, drinkInfo, child
     // Remove old children prefix if it exists
     const cleanedRequests = existingRequests.replace(/^Includes \d+ children(?: - )?/, '');
     combinedRequests = `${childrenPrefix} - ${drinkText}${cleanedRequests ? ` - ${cleanedRequests}` : ''}`;
+    console.log('✅ Case 1: Children + Existing requests');
   } else if (childrenPrefix) {
     // Has children but no existing requests
     combinedRequests = `${childrenPrefix} - ${drinkText}`;
+    console.log('✅ Case 2: Children only');
   } else if (existingRequests) {
     // No children but has existing requests
     // Check if drink info already exists in requests
     if (!existingRequests.includes('Pre-ordered:')) {
       combinedRequests = `${drinkText}\n${existingRequests}`;
+      console.log('✅ Case 3: Existing requests only');
     } else {
       combinedRequests = existingRequests;
+      console.log('⚠️  Case 4: Drink already in requests, skipping');
     }
   } else {
     // No children and no existing requests
     combinedRequests = drinkText;
+    console.log('✅ Case 5: Drink only');
   }
 
+  console.log('✨ Final Special Requests:', combinedRequests);
   return combinedRequests;
 };
 
@@ -138,6 +149,9 @@ export const restoreBookingAfterPayment = (currentCustomerDetails, currentSpecia
   let customerDetails = currentCustomerDetails;
   let specialRequests = currentSpecialRequests;
 
+  // Use children from restored data if available
+  const childrenCount = restoredData?.children || children;
+
   // Restore customer details if available
   if (restoredData) {
     customerDetails = {
@@ -154,7 +168,8 @@ export const restoreBookingAfterPayment = (currentCustomerDetails, currentSpecia
 
   // Add drink info to special requests if payment was completed
   if (drinkInfo) {
-    specialRequests = buildSpecialRequestsWithDrink(specialRequests, drinkInfo, children);
+    // Use the children count from restored data, not from current Redux state
+    specialRequests = buildSpecialRequestsWithDrink(specialRequests, drinkInfo, childrenCount);
     clearDrinkPaymentFlags();
     shouldUpdate = true;
   }
