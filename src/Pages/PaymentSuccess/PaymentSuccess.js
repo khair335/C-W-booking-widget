@@ -35,18 +35,21 @@ const PaymentSuccess = () => {
           // 3. Payment verified! Store drink info in localStorage
           console.log('💾 Storing drink info to localStorage:', {
             drinkName: response.data.drink,
-            drinkAmount: response.data.amount
+            drinkAmount: response.data.amount,
+            sessionId: response.data.session_id
           });
           
           localStorage.setItem('drinkPurchased', 'true');
           localStorage.setItem('drinkName', response.data.drink);
           localStorage.setItem('drinkAmount', response.data.amount.toString());
+          localStorage.setItem('paymentSessionId', response.data.session_id || sessionId);
 
           // Verify it was stored
           console.log('✅ Verified localStorage after storing:', {
             drinkPurchased: localStorage.getItem('drinkPurchased'),
             drinkName: localStorage.getItem('drinkName'),
-            drinkAmount: localStorage.getItem('drinkAmount')
+            drinkAmount: localStorage.getItem('drinkAmount'),
+            paymentSessionId: localStorage.getItem('paymentSessionId')
           });
 
           setDrinkInfo(response.data);

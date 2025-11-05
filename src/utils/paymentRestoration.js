@@ -31,19 +31,22 @@ export const getDrinkPaymentInfo = () => {
     const drinkPurchased = localStorage.getItem('drinkPurchased');
     const drinkName = localStorage.getItem('drinkName');
     const drinkAmount = localStorage.getItem('drinkAmount');
+    const paymentSessionId = localStorage.getItem('paymentSessionId');
     
     console.log('🔑 localStorage keys:', {
       drinkPurchased,
       drinkName,
-      drinkAmount
+      drinkAmount,
+      paymentSessionId
     });
     
     if (drinkPurchased === 'true') {
       if (drinkName && drinkAmount) {
-        console.log('✅ Drink payment confirmed:', drinkName, drinkAmount);
+        console.log('✅ Drink payment confirmed:', drinkName, drinkAmount, paymentSessionId);
         return {
           drinkName,
-          drinkAmount: parseFloat(drinkAmount)
+          drinkAmount: parseFloat(drinkAmount),
+          paymentSessionId: paymentSessionId || 'N/A'
         };
       } else {
         console.log('⚠️  Drink purchased but missing name or amount');
@@ -60,7 +63,7 @@ export const getDrinkPaymentInfo = () => {
 /**
  * Build special requests text with drink info
  * @param {string} existingRequests - Existing special requests
- * @param {Object} drinkInfo - { drinkName, drinkAmount }
+ * @param {Object} drinkInfo - { drinkName, drinkAmount, paymentSessionId }
  * @param {number} children - Number of children
  * @returns {string} Combined special requests
  */
@@ -69,14 +72,15 @@ export const buildSpecialRequestsWithDrink = (existingRequests, drinkInfo, child
 
   console.log('🔧 Building Special Requests:', { existingRequests, drinkInfo, children });
 
-  // Build drink info text
-  const drinkText = `Pre-ordered: ${drinkInfo.drinkName} - £${drinkInfo.drinkAmount.toFixed(2)}`;
+  // Build drink info text with payment transaction ID
+  const drinkText = `Pre-ordered: ${drinkInfo.drinkName} - £${drinkInfo.drinkAmount.toFixed(2)} (Payment ID: ${drinkInfo.paymentSessionId})`;
 
   // Handle children prefix if needed
   const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
 
   console.log('📝 Drink text:', drinkText);
   console.log('👶 Children prefix:', childrenPrefix || '(none)');
+  console.log('💳 Payment ID:', drinkInfo.paymentSessionId);
 
   let combinedRequests = '';
 
@@ -118,6 +122,7 @@ export const clearDrinkPaymentFlags = () => {
     localStorage.removeItem('drinkPurchased');
     localStorage.removeItem('drinkName');
     localStorage.removeItem('drinkAmount');
+    localStorage.removeItem('paymentSessionId');
     console.log('✓ Cleared drink payment flags');
   } catch (error) {
     console.error('Error clearing drink payment flags:', error);
@@ -136,6 +141,7 @@ export const clearAllBookingData = () => {
     localStorage.removeItem('drinkPurchased');
     localStorage.removeItem('drinkName');
     localStorage.removeItem('drinkAmount');
+    localStorage.removeItem('paymentSessionId');
     console.log('✓ Cleared all booking data from localStorage');
   } catch (error) {
     console.error('Error clearing booking data:', error);
@@ -155,7 +161,7 @@ export const restoreBookingAfterPayment = (currentCustomerDetails, currentSpecia
   
   // Check for restored booking data
   const restoredData = restoreBookingData();
-  console.log('📦 Restored Data:', restoredData);
+  console.log('📦 Restored Data:_001', restoredData.specialRequests);
   
   // Check for drink payment
   const drinkInfo = getDrinkPaymentInfo();
