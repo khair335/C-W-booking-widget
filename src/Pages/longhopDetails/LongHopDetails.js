@@ -17,7 +17,7 @@ import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
-import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests } from '../../store/bookingSlice';
+import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests, updateBasicInfo } from '../../store/bookingSlice';
 import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 import DrinksModal from '../../components/DrinksModal/DrinksModal';
 import { restoreBookingAfterPayment, clearAllBookingData } from '../../utils/paymentRestoration';
@@ -96,12 +96,33 @@ export default function LongHopDetails() {
   useEffect(() => {
     const restored = restoreBookingAfterPayment(customerDetails, specialRequests, children);
     
-    if (restored.shouldUpdate) {
+    if (restored.shouldUpdate && restored.restoredData) {
       console.log('✅ Restoring booking data after payment...');
+      console.log('📋 Restored Data:', restored.restoredData);
       console.log('📋 Restored Special Requests:', restored.specialRequests);
       
       // Set flag to prevent other useEffects from overwriting
       setDataRestored(true);
+      
+      // IMPORTANT: Restore basic booking info to Redux (date, time, adults, children)
+      // This prevents second useEffect from rebuilding with wrong values
+      if (restored.restoredData.date || restored.restoredData.adults || restored.restoredData.children) {
+        console.log('🔄 Restoring basic info to Redux:', {
+          date: restored.restoredData.date,
+          time: restored.restoredData.time,
+          adults: restored.restoredData.adults,
+          children: restored.restoredData.children
+        });
+        
+        dispatch(updateBasicInfo({
+          date: restored.restoredData.date,
+          time: restored.restoredData.time,
+          adults: parseInt(restored.restoredData.adults) || 0,
+          children: parseInt(restored.restoredData.children) || 0,
+          returnBy: restored.restoredData.returnBy,
+          pubType: restored.restoredData.pubType || restored.restoredData.restaurant
+        }));
+      }
       
       // Update Redux with restored customer details
       if (restored.customerDetails) {
