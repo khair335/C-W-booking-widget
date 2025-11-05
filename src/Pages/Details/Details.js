@@ -37,7 +37,7 @@ export default function Details() {
     customerDetails,
     specialRequests
   } = bookingState;
-
+console.log("specialRequests_004",specialRequests)
   // Format date for display
   const displayDate = React.useMemo(() => {
     if (!date) return "Select Date";
