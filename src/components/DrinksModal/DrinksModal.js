@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './DrinksModal.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateSelectedDrink, updateSpecialRequests } from '../../store/bookingSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 const drinks = [
   {
@@ -21,47 +22,104 @@ const drinks = [
     name: 'Chapel Down English Sparkling',
     price: '£55.00',
     stripeLink: 'https://buy.stripe.com/4gM00j5kO6Usfcg3Mrg7e04'
+  },
+  {
+    id: 4,
+    name: 'CW-BOOKING Test Item',
+    price: 'Test',
+    stripeLink: 'https://buy.stripe.com/test_bJe3cu58Q5fz8iy5PBeQM00'
   }
 ];
 
 export default function DrinksModal({ isOpen, onClose, onContinue }) {
   const dispatch = useDispatch();
   const bookingState = useSelector((state) => state.booking);
-  const { specialRequests, children } = bookingState;
+  const { 
+    specialRequests, 
+    children,
+    date,
+    time,
+    adults,
+    returnBy,
+    selectedPromotion,
+    customerDetails,
+    selectedPub,
+    pubType
+  } = bookingState;
+
+  const [bookingReference, setBookingReference] = useState(null);
+
+  // Generate booking reference when modal opens
+  useEffect(() => {
+    if (isOpen && !bookingReference) {
+      const newBookingRef = uuidv4();
+      setBookingReference(newBookingRef);
+      console.log('Generated booking reference:', newBookingRef);
+    }
+  }, [isOpen, bookingReference]);
+
+  const saveBookingDataToLocalStorage = (selectedDrink) => {
+    // Prepare complete booking data
+    const bookingData = {
+      // Form data from Redux
+      date,
+      time,
+      adults,
+      children,
+      returnBy,
+      selectedArea: selectedPromotion?.name || selectedPromotion?.promotionName || 'Main Area',
+      selectedPromotion,
+      
+      // Customer details
+      firstName: customerDetails.FirstName,
+      surname: customerDetails.Surname,
+      name: `${customerDetails.FirstName} ${customerDetails.Surname}`.trim(),
+      email: customerDetails.Email,
+      phone: customerDetails.Mobile,
+      mobileCountryCode: customerDetails.MobileCountryCode,
+      birthday: customerDetails.Birthday,
+      
+      // Special requests
+      specialRequests,
+      
+      // Restaurant info
+      restaurant: pubType || selectedPub || 'unknown',
+      selectedPub,
+      pubType,
+      
+      // Tracking data
+      bookingReference,
+      selectedDrink: selectedDrink.name,
+      selectedDrinkPrice: selectedDrink.price,
+      awaitingPayment: true,
+      timestamp: Date.now()
+    };
+
+    console.log('Saving booking data to localStorage:', bookingData);
+
+    // Save to localStorage
+    try {
+      localStorage.setItem('pendingBookingData', JSON.stringify(bookingData));
+      localStorage.setItem('bookingReference', bookingReference);
+      localStorage.setItem('awaitingPayment', 'true');
+      console.log('✓ Booking data saved to localStorage');
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
+    }
+  };
 
   const handleDrinkSelection = (drink) => {
-    // Store the selected drink
+    console.log('Drink selected:', drink.name);
+
+    // 1. Store the selected drink in Redux
     dispatch(updateSelectedDrink(drink));
 
-    // Update special requests with drink info
-    const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
-    const drinkInfo = `Pre-ordered: ${drink.name} (${drink.price})`;
-    
-    let updatedRequests = '';
-    if (childrenPrefix && specialRequests && specialRequests !== childrenPrefix) {
-      // Has children and user has added additional requests
-      const userRequests = specialRequests.replace(/^Includes \d+ children(?: - )?/, '');
-      updatedRequests = `${childrenPrefix} - ${drinkInfo}${userRequests ? ` - ${userRequests}` : ''}`;
-    } else if (childrenPrefix) {
-      // Has children but no additional requests
-      updatedRequests = `${childrenPrefix} - ${drinkInfo}`;
-    } else if (specialRequests) {
-      // No children but has special requests
-      updatedRequests = `${drinkInfo} - ${specialRequests}`;
-    } else {
-      // No children and no special requests
-      updatedRequests = drinkInfo;
-    }
+    // 2. Save ALL booking data to localStorage BEFORE redirecting
+    saveBookingDataToLocalStorage(drink);
 
-    dispatch(updateSpecialRequests(updatedRequests));
-
-    // Open Stripe link in new tab
-    window.open(drink.stripeLink, '_blank');
-
-    // Continue to next page after a short delay
-    setTimeout(() => {
-      onContinue();
-    }, 1000);
+    // 3. Redirect to Stripe payment link (not opening new tab - user leaves site)
+    console.log('Redirecting to Stripe:', drink.stripeLink);
+    window.location.href = drink.stripeLink;
   };
 
   const handleSkip = () => {

@@ -1,0 +1,222 @@
+.payment-success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.payment-success-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Icons */
+.success-icon,
+.error-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.success-icon {
+  background: #10b981;
+  color: white;
+  animation: scaleIn 0.5s ease-out 0.2s both;
+}
+
+.error-icon {
+  background: #ef4444;
+  color: white;
+  animation: scaleIn 0.5s ease-out 0.2s both;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Spinner */
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Typography */
+.payment-success-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1f2937;
+}
+
+.payment-success-card p {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.success-message {
+  color: #059669;
+}
+
+.error-message {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* Drink Info */
+.drink-info {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 24px 0;
+  text-align: left;
+}
+
+.drink-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drink-detail:last-child {
+  border-bottom: none;
+}
+
+.drink-detail .label {
+  font-weight: 600;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.drink-detail .value {
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 16px;
+}
+
+/* Buttons */
+.btn-continue,
+.btn-primary,
+.btn-secondary {
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 8px;
+}
+
+.btn-continue,
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  width: 100%;
+  max-width: 300px;
+}
+
+.btn-continue:hover,
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Note */
+.note {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-top: 16px;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .payment-success-card {
+    padding: 30px 20px;
+  }
+
+  .payment-success-card h2 {
+    font-size: 24px;
+  }
+
+  .success-icon,
+  .error-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn-continue,
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
+

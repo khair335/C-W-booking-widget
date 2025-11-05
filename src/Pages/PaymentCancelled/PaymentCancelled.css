@@ -1,0 +1,131 @@
+.payment-cancelled-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  padding: 20px;
+}
+
+.payment-cancelled-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.warning-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #f59e0b;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 48px;
+  font-weight: bold;
+  animation: scaleIn 0.5s ease-out 0.2s both;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.payment-cancelled-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #1f2937;
+}
+
+.message {
+  font-size: 18px;
+  color: #d97706;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.sub-message {
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+@media (max-width: 640px) {
+  .payment-cancelled-card {
+    padding: 30px 20px;
+  }
+
+  .payment-cancelled-card h2 {
+    font-size: 24px;
+  }
+
+  .warning-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+  }
+}
+
+

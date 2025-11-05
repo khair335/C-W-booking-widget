@@ -21,6 +21,7 @@ import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests } from '../../store/bookingSlice';
 import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 import DrinksModal from '../../components/DrinksModal/DrinksModal';
+import { restoreBookingAfterPayment, clearAllBookingData } from '../../utils/paymentRestoration';
 
 export default function Details() {
   const navigate = useNavigate();
@@ -70,6 +71,29 @@ export default function Details() {
       }));
     }
   }, [customerDetails]);
+
+  // Restore booking data after payment redirect
+  useEffect(() => {
+    const restored = restoreBookingAfterPayment(customerDetails, specialRequests, children);
+    
+    if (restored.shouldUpdate) {
+      console.log('Restoring booking data after payment...');
+      
+      // Update Redux with restored customer details
+      if (restored.customerDetails) {
+        dispatch(updateCustomerDetails(restored.customerDetails));
+      }
+      
+      // Update Redux and form with special requests (including drink)
+      if (restored.specialRequests) {
+        dispatch(updateSpecialRequests(restored.specialRequests));
+        setFormData(prev => ({
+          ...prev,
+          SpecialRequests: restored.specialRequests
+        }));
+      }
+    }
+  }, []); // Run only once on mount
 
   // Update the useEffect that sets special requests
   useEffect(() => {
