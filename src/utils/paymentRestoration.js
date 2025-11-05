@@ -26,21 +26,33 @@ export const restoreBookingData = () => {
  */
 export const getDrinkPaymentInfo = () => {
   try {
+    console.log('🔍 Checking drink payment info...');
+    
     const drinkPurchased = localStorage.getItem('drinkPurchased');
+    const drinkName = localStorage.getItem('drinkName');
+    const drinkAmount = localStorage.getItem('drinkAmount');
+    
+    console.log('🔑 localStorage keys:', {
+      drinkPurchased,
+      drinkName,
+      drinkAmount
+    });
+    
     if (drinkPurchased === 'true') {
-      const drinkName = localStorage.getItem('drinkName');
-      const drinkAmount = localStorage.getItem('drinkAmount');
-      
       if (drinkName && drinkAmount) {
-        console.log('✓ Drink payment confirmed:', drinkName, drinkAmount);
+        console.log('✅ Drink payment confirmed:', drinkName, drinkAmount);
         return {
           drinkName,
           drinkAmount: parseFloat(drinkAmount)
         };
+      } else {
+        console.log('⚠️  Drink purchased but missing name or amount');
       }
+    } else {
+      console.log('ℹ️  No drink purchased (drinkPurchased !== "true")');
     }
   } catch (error) {
-    console.error('Error getting drink payment info:', error);
+    console.error('❌ Error getting drink payment info:', error);
   }
   return null;
 };
@@ -139,18 +151,23 @@ export const clearAllBookingData = () => {
  * @returns {Object} { customerDetails, specialRequests, shouldUpdate }
  */
 export const restoreBookingAfterPayment = (currentCustomerDetails, currentSpecialRequests, children = 0) => {
+  console.log('🔄 Starting restoration process...');
+  
   // Check for restored booking data
   const restoredData = restoreBookingData();
+  console.log('📦 Restored Data:', restoredData);
   
   // Check for drink payment
   const drinkInfo = getDrinkPaymentInfo();
+  console.log('🍺 Drink Info:', drinkInfo);
 
   let shouldUpdate = false;
   let customerDetails = currentCustomerDetails;
   let specialRequests = currentSpecialRequests;
 
-  // Use children from restored data if available
-  const childrenCount = restoredData?.children || children;
+  // Use children from restored data if available (convert to number)
+  const childrenCount = restoredData?.children ? parseInt(restoredData.children, 10) : children;
+  console.log('👶 Children Count:', { original: restoredData?.children, converted: childrenCount, current: children });
 
   // Restore customer details if available
   if (restoredData) {

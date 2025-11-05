@@ -33,9 +33,21 @@ const PaymentSuccess = () => {
 
         if (response.data.success && response.data.paid) {
           // 3. Payment verified! Store drink info in localStorage
+          console.log('💾 Storing drink info to localStorage:', {
+            drinkName: response.data.drink,
+            drinkAmount: response.data.amount
+          });
+          
           localStorage.setItem('drinkPurchased', 'true');
           localStorage.setItem('drinkName', response.data.drink);
           localStorage.setItem('drinkAmount', response.data.amount.toString());
+
+          // Verify it was stored
+          console.log('✅ Verified localStorage after storing:', {
+            drinkPurchased: localStorage.getItem('drinkPurchased'),
+            drinkName: localStorage.getItem('drinkName'),
+            drinkAmount: localStorage.getItem('drinkAmount')
+          });
 
           setDrinkInfo(response.data);
           setLoading(false);
@@ -59,25 +71,29 @@ const PaymentSuccess = () => {
     
     if (bookingData) {
       const parsed = JSON.parse(bookingData);
-      const restaurant = parsed.restaurant || parsed.pubType;
+      const restaurant = (parsed.restaurant || parsed.pubType || '').toLowerCase();
 
-      console.log('Restaurant/PubType from localStorage:', restaurant);
+      console.log('🏠 Restaurant from localStorage:', parsed.restaurant || parsed.pubType);
+      console.log('🔽 Normalized (lowercase):', restaurant);
 
-      // Redirect back to appropriate Details page based on restaurant
+      // Redirect back to appropriate Details page based on restaurant (case-insensitive)
       if (restaurant === 'griffin') {
+        console.log('→ Navigating to /Details (Griffin)');
         navigate('/Details'); // Griffin uses /Details route
       } else if (restaurant === 'longhop') {
+        console.log('→ Navigating to /longhopdetails (Long Hop)');
         navigate('/longhopdetails'); // Long Hop uses /longhopdetails route
       } else if (restaurant === 'top' || restaurant === 'tapandrun') {
+        console.log('→ Navigating to /TopDetails (Tap & Run)');
         navigate('/TopDetails'); // Tap & Run uses /TopDetails route
       } else {
         // Fallback - try to guess from current data
-        console.log('Unknown restaurant, using fallback /Details');
+        console.log('⚠️  Unknown restaurant:', restaurant, '- using fallback /Details');
         navigate('/Details');
       }
     } else {
       // No booking data found, go to home
-      console.log('No booking data found, going home');
+      console.log('❌ No booking data found, going home');
       navigate('/');
     }
   };
