@@ -161,7 +161,7 @@ export const restoreBookingAfterPayment = (currentCustomerDetails, currentSpecia
   
   // Check for restored booking data
   const restoredData = restoreBookingData();
-  console.log('📦 Restored Data:_001', restoredData.specialRequests);
+  console.log('📦 Restored Data:', restoredData);
   
   // Check for drink payment
   const drinkInfo = getDrinkPaymentInfo();
