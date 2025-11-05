@@ -58,6 +58,7 @@ export default function Details() {
   // Local state
   const [globalError, setGlobalError] = useState('');
   const [isDrinksModalOpen, setIsDrinksModalOpen] = useState(false);
+  const [dataRestored, setDataRestored] = useState(false); // Flag to track if data was restored
   const [formData, setFormData] = useState({
     SpecialRequests: specialRequests || '',
     PromotionId: 0,
@@ -96,7 +97,11 @@ export default function Details() {
     const restored = restoreBookingAfterPayment(customerDetails, specialRequests, children);
     
     if (restored.shouldUpdate) {
-      console.log('Restoring booking data after payment...');
+      console.log('✅ Restoring booking data after payment...');
+      console.log('📋 Restored Special Requests:', restored.specialRequests);
+      
+      // Set flag to prevent other useEffects from overwriting
+      setDataRestored(true);
       
       // Update Redux with restored customer details
       if (restored.customerDetails) {
@@ -116,6 +121,12 @@ export default function Details() {
 
   // Update the useEffect that sets special requests
   useEffect(() => {
+    // Skip if data was restored from payment flow to prevent overwriting
+    if (dataRestored) {
+      console.log('⏭️  Skipping special requests rebuild - data was restored from payment');
+      return;
+    }
+
     // Only add children prefix if there are children
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
     
@@ -146,7 +157,7 @@ export default function Details() {
     if (!formData.SpecialRequests) {
       dispatch(updateSpecialRequests(completeRequests));
     }
-  }, [children, dispatch]);
+  }, [children, dispatch, dataRestored]);
 
   const handleChange = (field, value) => {
     const updatedCustomer = {
