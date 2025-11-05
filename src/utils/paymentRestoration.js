@@ -157,7 +157,7 @@ export const clearAllBookingData = () => {
  * @returns {Object} { customerDetails, specialRequests, shouldUpdate }
  */
 export const restoreBookingAfterPayment = (currentCustomerDetails, currentSpecialRequests, children = 0) => {
-  console.log('🔄 Starting restoration process...');
+  console.log('🔄 Starting restoration process..');
   
   // Check for restored booking data
   const restoredData = restoreBookingData();
@@ -188,13 +188,14 @@ export const restoreBookingAfterPayment = (currentCustomerDetails, currentSpecia
     specialRequests = restoredData.specialRequests || '';
     shouldUpdate = true;
   }
-
+  console.log("specialRequests_001",specialRequests)
   // Add drink info to special requests if payment was completed
   if (drinkInfo) {
     // Use the children count from restored data, not from current Redux state
     specialRequests = buildSpecialRequestsWithDrink(specialRequests, drinkInfo, childrenCount);
     clearDrinkPaymentFlags();
     shouldUpdate = true;
+    console.log("specialRequests_002",specialRequests,drinkInfo)
   }
 
   return {
