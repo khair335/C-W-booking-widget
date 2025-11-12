@@ -28,7 +28,7 @@ export default function Area() {
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  const { date, time, adults, children, returnBy, selectedPromotion, availablePromotionIds, pubType } = bookingState;
+  const { date, time, adults, children, selectedPromotion, availablePromotionIds, pubType } = bookingState;
   console.log('availablePromotionIds',availablePromotionIds);
 
   // Local state
