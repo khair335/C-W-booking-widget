@@ -252,7 +252,7 @@ export default function Confirm() {
           </section>
 
           <div className={styles.tableReturnInfo}>
-            Your table is required to be returned by {bookingState.returnBy || "XX:XX PM"}
+            On busy days we respectfully require your table back by {bookingState.returnBy || "XX:XX"} but if you would like to stay longer and enjoy our beautiful pub then please let your serve know and we will try to accommodate you somewhere for post meal drinks.
           </div>
         </div>
 

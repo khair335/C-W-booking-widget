@@ -60,7 +60,6 @@ function LongHopHome() {
         <div className="section bookingcontainer">
           <img className='logo' src={logo} alt="logo" />
           <div className="logo-large">Booking</div>
-          <div className="titlehome">Plan, Modify, Or Cancel Your Reservation</div>
           <div
             className="bookingttype"
             data-bs-target="#exampleModalToggle"

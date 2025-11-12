@@ -38,20 +38,13 @@ export default function Booked() {
           <img className={styles.confirm_logo} src={logo1} alt="logo" />
         </div>
         <div className={styles.booked_info}>
-          <h5>Reference : {successBookingData?.Booking?.Reference}</h5>
-          <h5>RestaurantName : {successBookingData?.Booking?.RestaurantName}</h5>
+          <h5>Booking Reference: {successBookingData?.Booking?.Reference}</h5>
           <br />
           <br />
           <h5>
             Main Road, Upper Broughton, Melton Mowbray
             LE14 3BG, United Kingdom
-
-
-
           </h5>
-          <a href="tel:+441664820407" className={styles.numbrtag}>
-            +441664820407
-          </a>
         </div>
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
 
@@ -61,24 +54,6 @@ export default function Booked() {
             to="/"
 
           />
-          <CustomButton
-            label="Back To the table"
-            to="/TopHome"
-            color="#FFFFFF"
-            bgColor="#C39A7B"
-          />
-        </div>
-        <div className={`${styles.Data_type} mt-5`}>
-          <button
-            to="#"
-            className='exist__link  bg-transparent border-0'
-            onClick={(e) => {
-              e.preventDefault();
-              setShowCancelModal(true);
-            }}
-          >
-            Exit And Cancel Booking
-          </button>
         </div>
       </div>
 

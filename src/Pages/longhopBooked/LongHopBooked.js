@@ -35,23 +35,13 @@ export default function LongHopBooked() {
           <img src={logo} alt="logo" />
         </div>
         <div className={styles.booked_info} >
-          <h5>Reference : {successBookingData?.Booking?.Reference}</h5>
-          <h5>RestaurantName : {successBookingData?.Booking?.RestaurantName}</h5>
+          <h5>Booking Reference: {successBookingData?.Booking?.Reference}</h5>
 
           <br />
           <br />
           <h5>
-            The Long Hop
             The Long Hop, Manor Dr, Burton-on-Trent DE14 3RW
-
-
-
-
           </h5>
-          <a href="tel:+4401283 392800" className={styles.numbrtag}>
-            +44 01283 392800
-
-          </a>
 
         </div>
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
@@ -60,24 +50,6 @@ export default function LongHopBooked() {
             to="/"
 
           />
-          <CustomButton
-            label="Back To the table"
-            to="/longhopHome"
-            color="#FFFFFF"
-            bgColor="#C39A7B"
-          />
-        </div>
-        <div className={`${styles.Data_type} mt-5`}>
-          <button
-            to="#"
-            className='exist__link  bg-transparent border-0'
-            onClick={(e) => {
-              e.preventDefault();
-              setShowCancelModal(true);
-            }}
-          >
-            Exit And Cancel Booking
-          </button>
         </div>
       </div>
       {showCancelModal && (

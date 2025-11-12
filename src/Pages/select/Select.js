@@ -39,9 +39,6 @@ export default function Select() {
             Main Road, Upper Broughton, Melton Mowbray <br /> LE14 3BG, United
             Kingdom
           </p>
-          <a href="tel:+441664820407" className={styles.numbrtag}>
-            +441664820407
-          </a>
           <CustomButton
             label="SELECT"
             to="/topandrun"
@@ -55,9 +52,6 @@ export default function Select() {
           <p className={styles.texttoprun}>
             174 Main St, Swithland, Leicester LE12 8TJ, United <br /> Kingdom
           </p>
-          <a href="tel:+441509890535" className={styles.numbrtag}>
-            +441509890535
-          </a>
           <CustomButton
             label="SELECT"
             to="/griffin"
@@ -70,9 +64,6 @@ export default function Select() {
           <p className={styles.texttoprun}>
           The Long Hop, Manor Dr, Burton-on-Trent DE14 3RW
           </p>
-          <a href="tel:+4401283 392800" className={styles.numbrtag}>
-            +4401283 392800
-          </a>
           <CustomButton
             label="SELECT"
             to="/longhop"

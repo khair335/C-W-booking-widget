@@ -223,7 +223,7 @@ export default function LongHopConfirm() {
           </section>
 
           <div className={styles.tableReturnInfo}>
-            Your table is required to be returned by 8:45 PM
+            On busy days we respectfully require your table back by 8:45 PM but if you would like to stay longer and enjoy our beautiful pub then please let your serve know and we will try to accommodate you somewhere for post meal drinks.
           </div>
         </div>
 

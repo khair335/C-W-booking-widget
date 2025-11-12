@@ -54,7 +54,6 @@ function TopHome() {
         <div className="section bookingcontainer">
           <img src={logo1} alt="logo" />
           <div className="logo-large">Booking</div>
-          <div className="titlehome">Plan, Modify, Or Cancel Your Reservation</div>
           <div
             className="bookingttype"
             data-bs-target="#exampleModalToggle"

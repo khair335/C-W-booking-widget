@@ -193,9 +193,6 @@ export default function LongHopConfirmed() {
             </div>
           </section>
 
-          <div className={styles.tableReturnInfo}>
-            Your table is required to be returned by 8:45 PM
-          </div>
         </div>
 
         <div className={styles.confirmCheckbox}>
@@ -226,7 +223,7 @@ export default function LongHopConfirmed() {
 
 
           <CustomButton
-            label={isSubmitting ? "Booking..." : "Book a table"}
+            label={isSubmitting ? "Booking..." : "Confirm changes"}
             onClick={handleBooking}
             disabled={isSubmitting}
           />

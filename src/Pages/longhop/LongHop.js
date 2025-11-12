@@ -412,7 +412,7 @@ export default function LongHop() {
             }))}
             value={selectedAdults}
             onChange={handleAdultsChange}
-            placeholder="Select Adults Number"
+            placeholder="Number of adults"
           />
 
           <DropDown
@@ -423,7 +423,7 @@ export default function LongHop() {
             }))}
             value={selectedChildren}
             onChange={handleChildrenChange}
-            placeholder="Select Children Number"
+            placeholder="Number of children"
           />
 
           {isLoadingAvailability && (
@@ -475,7 +475,6 @@ export default function LongHop() {
           />
         </div>
         <p className={styles.tbletext}>
-            Your table is required to be returned by {leaveTime || "XX:XX PM"}
           </p>
 
         {/* <p className={styles.tbletext}>

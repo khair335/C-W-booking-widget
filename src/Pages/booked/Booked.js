@@ -33,23 +33,14 @@ export default function Booked() {
           <img src={logo} alt="logo" />
         </div>
         <div className={styles.booked_info} >
-          <h5>Reference : {successBookingData?.Booking?.Reference}</h5>
-          <h5>RestaurantName : {successBookingData?.Booking?.RestaurantName}</h5>
+          <h5>Booking Reference: {successBookingData?.Booking?.Reference}</h5>
 
           <br />
           <br />
           <h5>
             174 Main St, Swithland, Leicester LE12 8TJ, United
             Kingdom
-
-
-
-
           </h5>
-          <a href="tel:+441509890535" className={styles.numbrtag}>
-            +441509890535
-
-          </a>
 
         </div>
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
@@ -58,24 +49,6 @@ export default function Booked() {
             to="/"
 
           />
-          <CustomButton
-            label="Back To the table"
-            to="/"
-            color="#FFFFFF"
-            bgColor="#C39A7B"
-          />
-        </div>
-        <div className={`${styles.Data_type} mt-5`}>
-          <button
-            to="#"
-            className='exist__link  bg-transparent border-0'
-            onClick={(e) => {
-              e.preventDefault();
-              setShowCancelModal(true);
-            }}
-          >
-            Exit And Cancel Booking
-          </button>
         </div>
       </div>
       {showCancelModal && (

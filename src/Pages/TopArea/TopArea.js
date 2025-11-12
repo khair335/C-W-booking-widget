@@ -175,9 +175,6 @@ console.log('availablePromotionIds',availablePromotionIds);
         </div>
 
         <div className={styles.Area_type}>
-          <p className={styles.tabletext}>
-            Your table is required to be returned by {returnBy || "XX:XX PM"}
-          </p>
         </div>
 
         <div className={`${styles.Area_type} ${styles.DatabtnMain}`}>

@@ -343,7 +343,7 @@ export default function LongHopEdit() {
                 }))}
                 value={selectedAdults}
                 onChange={handleAdultsChange}
-                placeholder="Select Adults Number"
+                placeholder="Number of adults"
               />
 
               <p className={styles.eg}>Edit Adult Number</p>
@@ -357,7 +357,7 @@ export default function LongHopEdit() {
                 }))}
                 value={selectedChildren}
                 onChange={handleChildrenChange}
-                placeholder="Select Children Number"
+                placeholder="Number of children"
               />
 
               <p className={styles.eg}>Edit Children Number</p>
@@ -392,7 +392,6 @@ export default function LongHopEdit() {
 
 
             <p className={styles.tabletextedit}>
-              Your table is required to be returned by {leaveTime || "XX:XX PM"}
             </p>
           </div>
           <div className={`${styles.Data_type} ${styles.EditbtnMain}`}>
