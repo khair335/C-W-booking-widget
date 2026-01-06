@@ -8,6 +8,7 @@ import { loadStripe } from '@stripe/stripe-js';
 function AppContent() {
   const { authError, retryAuth, isAuthenticated, isAuthenticating } = useAuth();
 
+  
   if (authError) {
     return (
       <div style={{
