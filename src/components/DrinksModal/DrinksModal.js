@@ -155,7 +155,8 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
                 className={styles.drinkButton}
                 onClick={() => handleDrinkSelection(drink)}
               >
-                PRE-ORDER NOW
+               
+               ADD TO BOOKING
               </button>
             </div>
           ))}

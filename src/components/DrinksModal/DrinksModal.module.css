@@ -66,18 +66,18 @@
 }
 
 .modalTitle {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Lora", serif;
   font-size: 32px;
   font-weight: 700;
-  color: #000;
+  color: #1c1c1c;
   margin: 0 0 15px 0;
 }
 
 .modalSubtitle {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Lora", serif;
   font-size: 18px;
   font-weight: 400;
-  color: #3d3d3d;
+  color: #1c1c11;
   margin: 0;
 }
 
@@ -90,8 +90,8 @@
 
 .drinkCard {
   background: #fff;
-  border: 2px solid #000;
-  border-radius: 8px;
+  border: 1px solid #8C826A;
+  border-radius: 4px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -111,26 +111,27 @@
 }
 
 .drinkName {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Lora", serif;
   font-size: 18px;
   font-weight: 600;
   color: #000;
 }
 
 .drinkPrice {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Lora", serif;
   font-size: 18px;
   font-weight: 700;
-  color: #000;
+  color: #1C1C1C;
 }
 
 .drinkButton {
   padding: 12px 24px;
-  background-color: #000;
+
   color: #fff;
   border: none;
   border-radius: 4px;
-  font-family: 'Roboto', sans-serif;
+  background: #C39A7B;
+  font-family: "Avenir", sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -146,9 +147,9 @@
   padding: 14px 28px;
   background-color: transparent;
   color: #3d3d3d;
-  border: 2px solid #3d3d3d;
+  border: 1px solid #8C826A;
   border-radius: 4px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Avenir", sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -156,8 +157,9 @@
 }
 
 .skipButton:hover {
-  background-color: #3d3d3d;
+  background-color: #C39A7B;
   color: #fff;
+  border: 1px solid #C39A7B;
 }
 
 @media (max-width: 768px) {
