@@ -1,7 +1,7 @@
 const { HttpsProxyAgent } = require('https-proxy-agent');
 
 // Centralized Fixie proxy configuration for serverless functions
-const FIXIE_PROXY_URL = process.env.FIXIE_URL || 'http://fixie:w3Z3TVYS77Lk7YV@criterium.usefixie.com:80';
+const FIXIE_PROXY_URL = process.env.FIXIE_URL || 'http://fixie:XB2fUUFi15A0qlB@ventoux.usefixie.com:80';
 
 // Create and export an agent configured with Fixie proxy
 function getProxyAgent() {
