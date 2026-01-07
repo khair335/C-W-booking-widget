@@ -328,7 +328,13 @@ export default function LongHopDetails() {
     }
 
     setGlobalError('');
-    // Show drinks modal instead of navigating
+    const drinkPurchased = localStorage.getItem('drinkPurchased');
+    if (drinkPurchased === 'true') {
+      setIsDrinksModalOpen(false);
+      dispatch(updateCurrentStep(4));
+      navigate("/longhopconfirm");
+      return;
+    }
     setIsDrinksModalOpen(true);
   };
 
@@ -518,5 +524,4 @@ export default function LongHopDetails() {
     </div>
   );
 }
-
 

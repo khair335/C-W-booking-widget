@@ -369,7 +369,13 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
     }
 
     setGlobalError('');
-    // Show drinks modal instead of navigating
+    const drinkPurchased = localStorage.getItem('drinkPurchased');
+    if (drinkPurchased === 'true') {
+      setIsDrinksModalOpen(false);
+      dispatch(updateCurrentStep(4));
+      navigate("/Confirm");
+      return;
+    }
     setIsDrinksModalOpen(true);
   };
 

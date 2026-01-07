@@ -346,7 +346,13 @@ export default function Details() {
     }
 
     setGlobalError('');
-    // Show drinks modal instead of navigating
+    const drinkPurchased = localStorage.getItem('drinkPurchased');
+    if (drinkPurchased === 'true') {
+      setIsDrinksModalOpen(false);
+      dispatch(updateCurrentStep(4));
+      navigate("/TopConfirm");
+      return;
+    }
     setIsDrinksModalOpen(true);
   };
 
@@ -537,5 +543,4 @@ export default function Details() {
     </div>
   );
 }
-
 

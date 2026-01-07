@@ -67,7 +67,9 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
       adults,
       children,
       returnBy,
-      selectedArea: selectedPromotion?.name || selectedPromotion?.promotionName || 'Main Area',
+      selectedArea: selectedPromotion?.Name || 'Main Area',
+      PromotionId: selectedPromotion?.Id || null,
+      PromotionName: selectedPromotion?.Name || null,
       selectedPromotion,
       
       // Customer details
@@ -169,4 +171,3 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
     </div>
   );
 }
-
