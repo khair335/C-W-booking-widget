@@ -26,7 +26,7 @@ const PaymentSuccess = () => {
 
         // 2. Call backend to verify payment
         const response = await axios.get(
-          `https://cw-backend-inky.vercel.app/api/verify-payment?session_id=${sessionId}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/verify-payment?session_id=${sessionId}`
         );
 
         console.log('Payment verification response:', response.data);
@@ -42,7 +42,8 @@ const PaymentSuccess = () => {
           localStorage.setItem('drinkPurchased', 'true');
           localStorage.setItem('drinkName', response.data.drink);
           localStorage.setItem('drinkAmount', response.data.amount.toString());
-          localStorage.setItem('paymentSessionId', response.data.session_id || sessionId);
+          // Do not persist session_id; clear if previously present
+          localStorage.removeItem('paymentSessionId');
 
           // Verify it was stored
           console.log('✅ Verified localStorage after storing:', {

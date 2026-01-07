@@ -167,7 +167,7 @@ export default function LongHopDetails() {
       const paymentSessionId = localStorage.getItem('paymentSessionId');
       
       if (drinkName && drinkAmount) {
-        const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Payment ID: ${paymentSessionId || 'N/A'})`;
+        const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)}`;
         finalSpecialRequests = finalSpecialRequests ? `${finalSpecialRequests} - ${drinkInfo}` : drinkInfo;
       }
     }
@@ -176,6 +176,7 @@ export default function LongHopDetails() {
     let savedRequests = bookingData.specialRequests || '';
     savedRequests = savedRequests.replace(/^Includes \d+ children(?: - )?/, '');
     savedRequests = savedRequests.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
+    savedRequests = savedRequests.replace(/Pre-ordered: .+? - £[\d.]+(?: - )?/, '');
     if (savedRequests) {
       finalSpecialRequests = finalSpecialRequests ? `${finalSpecialRequests} - ${savedRequests}` : savedRequests;
     }
@@ -212,7 +213,7 @@ export default function LongHopDetails() {
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
     
     // Check for drink info in Redux first
-    let drinkMatch = specialRequests?.match(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)/);
+    let drinkMatch = specialRequests?.match(/Pre-ordered: .+? - £[\d.]+/);
     let drinkInfo = drinkMatch ? drinkMatch[0] : '';
     
     // If not in Redux, check localStorage for drink data
@@ -224,7 +225,7 @@ export default function LongHopDetails() {
         const paymentSessionId = localStorage.getItem('paymentSessionId');
         
         if (drinkName && drinkAmount) {
-          drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Payment ID: ${paymentSessionId || 'N/A'})`;
+          drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)}`;
           console.log('🍷 Found drink data in localStorage:', drinkInfo);
         }
       }
@@ -234,6 +235,7 @@ export default function LongHopDetails() {
     let userRequests = specialRequests || '';
     userRequests = userRequests.replace(/^Includes \d+ children(?: - )?/, '');
     userRequests = userRequests.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
+    userRequests = userRequests.replace(/Pre-ordered: .+? - £[\d.]+(?: - )?/, '');
     
     // Build the complete special requests string
     let completeRequests = childrenPrefix;
@@ -291,13 +293,14 @@ export default function LongHopDetails() {
     const value = e.target.value;
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
 
-    // Extract drink info if it exists (match full format: Pre-ordered: Drink - £10.00 (Payment ID: xyz))
-    const drinkMatch = value.match(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)/);
+    // Extract drink info if it exists (match format: Pre-ordered: Drink - £10.00)
+    const drinkMatch = value.match(/Pre-ordered: .+? - £[\d.]+/);
     const drinkInfo = drinkMatch ? drinkMatch[0] : '';
 
     // Remove the children prefix and drink info to get just user input
     let userInput = value.replace(/^Includes \d+ children(?: - )?/, '');
     userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
+    userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+(?: - )?/, '');
 
     // Build the complete request maintaining order: children - drink - user requests
     let formattedRequest = '';

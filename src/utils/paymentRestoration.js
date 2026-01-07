@@ -72,22 +72,25 @@ export const buildSpecialRequestsWithDrink = (existingRequests, drinkInfo, child
 
   console.log('🔧 Building Special Requests:', { existingRequests, drinkInfo, children });
 
-  // Build drink info text with payment transaction ID
-  const drinkText = `Pre-ordered: ${drinkInfo.drinkName} - £${drinkInfo.drinkAmount.toFixed(2)} (Payment ID: ${drinkInfo.paymentSessionId})`;
+  // Build drink info text without session/payment ID
+  const drinkText = `Pre-ordered: ${drinkInfo.drinkName} - £${drinkInfo.drinkAmount.toFixed(2)}`;
 
   // Handle children prefix if needed
   const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
 
   console.log('📝 Drink text:', drinkText);
   console.log('👶 Children prefix:', childrenPrefix || '(none)');
-  console.log('💳 Payment ID:', drinkInfo.paymentSessionId);
+  // No Payment ID in special requests
 
   let combinedRequests = '';
 
   if (childrenPrefix && existingRequests) {
     // Has children and existing requests
     // Remove old children prefix if it exists
-    const cleanedRequests = existingRequests.replace(/^Includes \d+ children(?: - )?/, '');
+    const cleanedRequests = existingRequests
+      .replace(/^Includes \d+ children(?: - )?/, '')
+      .replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '')
+      .replace(/Pre-ordered: .+? - £[\d.]+(?: - )?/, '');
     combinedRequests = `${childrenPrefix} - ${drinkText}${cleanedRequests ? ` - ${cleanedRequests}` : ''}`;
     console.log('✅ Case 1: Children + Existing requests');
   } else if (childrenPrefix) {
@@ -205,5 +208,4 @@ export const restoreBookingAfterPayment = (currentCustomerDetails, currentSpecia
     restoredData
   };
 };
-
 
