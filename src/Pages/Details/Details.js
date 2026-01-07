@@ -17,7 +17,7 @@ import DatePicker from '../../components/ui/DatePicker/DatePicker';
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import Indicator from '../../components/Indicator/Indicator';
-import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests, updateBasicInfo } from '../../store/bookingSlice';
+import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests, updateBasicInfo, updateSelectedPromotion } from '../../store/bookingSlice';
 import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 import DrinksModal from '../../components/DrinksModal/DrinksModal';
 import { restoreBookingAfterPayment, clearAllBookingData } from '../../utils/paymentRestoration';
@@ -158,6 +158,15 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
       MobileCountryCode: bookingData.mobileCountryCode || '+44',
       Birthday: bookingData.birthday || ''
     }));
+    
+    // Restore selected promotion
+    const promotionPayload = bookingData.selectedPromotion
+      || ((bookingData.PromotionId || bookingData.PromotionName)
+          ? { Id: bookingData.PromotionId || null, Name: bookingData.PromotionName || null }
+          : null);
+    if (promotionPayload) {
+      dispatch(updateSelectedPromotion(promotionPayload));
+    }
     
     // Build special requests with children prefix + drink info + other requests
     const restoredChildren = parseInt(bookingData.children) || 0;

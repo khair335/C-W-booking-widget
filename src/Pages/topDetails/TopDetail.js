@@ -18,7 +18,7 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
-import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests, updateBasicInfo } from '../../store/bookingSlice';
+import { updateCustomerDetails, updateCurrentStep, updateSpecialRequests, updateBasicInfo, updateSelectedPromotion } from '../../store/bookingSlice';
 import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 import DrinksModal from '../../components/DrinksModal/DrinksModal';
 import { restoreBookingAfterPayment, clearAllBookingData } from '../../utils/paymentRestoration';
@@ -123,6 +123,14 @@ export default function Details() {
       MobileCountryCode: bookingData.mobileCountryCode || '+44',
       Birthday: bookingData.birthday || ''
     }));
+    
+    const promotionPayload = bookingData.selectedPromotion
+      || ((bookingData.PromotionId || bookingData.PromotionName)
+          ? { Id: bookingData.PromotionId || null, Name: bookingData.PromotionName || null }
+          : null);
+    if (promotionPayload) {
+      dispatch(updateSelectedPromotion(promotionPayload));
+    }
     
     // Build special requests with children prefix + drink info + other requests
     const restoredChildren = parseInt(bookingData.children) || 0;
@@ -543,4 +551,3 @@ export default function Details() {
     </div>
   );
 }
-
