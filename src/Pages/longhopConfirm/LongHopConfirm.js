@@ -15,10 +15,11 @@ import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubIma
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
-import { addSuccessBookingData, updateCustomerDetails } from '../../store/bookingSlice';
+import { addSuccessBookingData, updateCustomerDetails, resetBooking } from '../../store/bookingSlice';
 import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import Toast from '../../components/Toast/Toast';
 import PrivacyPolicyModal from '../../components/PrivacyPolicyModal';
+import { clearAllBookingData } from '../../utils/paymentRestoration';
 
 export default function LongHopConfirm() {
   const navigate = useNavigate();
@@ -107,6 +108,8 @@ export default function LongHopConfirm() {
           break;
         case 'Success':
           // Direct success - navigate to booked page
+          clearAllBookingData();
+          dispatch(resetBooking());
           dispatch(addSuccessBookingData(response.data));
           navigate('/longhopbooked');
           break;
@@ -123,6 +126,8 @@ export default function LongHopConfirm() {
   };
 
   const handlePaymentSuccess = (responseData) => {
+    clearAllBookingData();
+    dispatch(resetBooking());
     dispatch(addSuccessBookingData(responseData));
     setShowPaymentModal(false);
 

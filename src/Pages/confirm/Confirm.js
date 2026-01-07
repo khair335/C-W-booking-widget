@@ -15,10 +15,11 @@ import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
-import { addSuccessBookingData, updateCustomerDetails } from '../../store/bookingSlice';
+import { addSuccessBookingData, updateCustomerDetails, resetBooking } from '../../store/bookingSlice';
 import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import Toast from '../../components/Toast/Toast';
 import PrivacyPolicyModal from '../../components/PrivacyPolicyModal';
+import { clearAllBookingData } from '../../utils/paymentRestoration';
 
 export default function Confirm() {
   const navigate = useNavigate();
@@ -111,6 +112,8 @@ export default function Confirm() {
             break;
           case 'Success':
             // Direct success - navigate to booked page
+            clearAllBookingData();
+            dispatch(resetBooking());
             dispatch(addSuccessBookingData(response.data));
             navigate('/Booked');
             break;
@@ -128,6 +131,8 @@ export default function Confirm() {
   };
 
   const handlePaymentSuccess = (responseData) => {
+    clearAllBookingData();
+    dispatch(resetBooking());
     dispatch(addSuccessBookingData(responseData));
     setShowPaymentModal(false);
 
