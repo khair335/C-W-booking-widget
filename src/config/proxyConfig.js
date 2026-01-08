@@ -6,7 +6,7 @@
 // Fixie proxy configuration
 const FIXIE_CONFIG = {
   // Fixie proxy URL from your configuration
-  proxyUrl: 'http://fixie:CLI4vlSvIq9h3ez@criterium.usefixie.com:80',
+  proxyUrl: 'http://fixie:2pCgmoJRwa8erbn@criterium.usefixie.com:80',
   
   // Target API base URL (ResDiary API)
   targetApiUrl: 'https://api.resdiary.com',

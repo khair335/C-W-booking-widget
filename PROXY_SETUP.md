@@ -7,7 +7,7 @@ This application now uses a centralized proxy configuration system that integrat
 ### 1. `src/config/proxyConfig.js`
 This is the main configuration file that manages proxy settings for different environments:
 
-- **Development**: Uses Fixie proxy to route requests through `http://fixie:CLI4vlSvIq9h3ez@criterium.usefixie.com:80`
+- **Development**: Uses Fixie proxy to route requests through `http://fixie:2pCgmoJRwa8erbn@criterium.usefixie.com:80`
 - **Production**: Uses Vercel serverless functions (no proxy needed)
 - **Test**: Uses Fixie proxy for testing
 
@@ -52,7 +52,7 @@ const response = await getRequest('/api/ConsumerApi/v1/Restaurant/TheTapRun/Avai
 
 ## Proxy Details
 
-- **Proxy URL**: `http://fixie:CLI4vlSvIq9h3ez@criterium.usefixie.com:80`
+- **Proxy URL**: `http://fixie:2pCgmoJRwa8erbn@criterium.usefixie.com:80`
 - **Outbound IPs**: 52.5.155.132, 52.87.82.133
 - **Target API**: `https://api.resdiary.com`
 - **Plan**: Tricycle (500 requests/month, 100MB data transfer)
