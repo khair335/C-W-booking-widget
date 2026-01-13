@@ -11,13 +11,13 @@ export const loginAndStoreToken = async () => {
     // Log the environment (remove in production)
     console.log('Login attempt:', {
       environment: process.env.NODE_ENV,
-      baseUrl: process.env.REACT_APP_API_BASE_URL
+      baseUrl: process.env.REACT_APP_BACKEND_URL
     });
 
     console.log('Making login request to backend...');
 
     // Call our backend auth endpoint
-    const backendUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
     const response = await axios.post(`${backendUrl}/api/auth`, {}, {
       headers: {
         'Content-Type': 'application/json'
