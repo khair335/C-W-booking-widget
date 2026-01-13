@@ -18,7 +18,7 @@ export const loginAndStoreToken = async () => {
 
     const credentials = {
       username: process.env.REACT_APP_API_USERNAME || "resdiaryapi@thecatandwickets.com",
-      password: process.env.REACT_APP_API_PASSWORD || "CeRo_[AU+5JwLG-Cj$y?lX{!=WDx=X"
+      password: process.env.REACT_APP_API_PASSWORD || "l(XFW^Y#l^qUPDwXA^-wsq=CU@L.0!"
     };
 
     console.log('Making login request...');
