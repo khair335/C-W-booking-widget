@@ -1,4 +1,4 @@
-import { loginRequest } from '../AxiosRoutes/index';
+import axios from 'axios';
 
 export const loginAndStoreToken = async () => {
   try {
@@ -8,36 +8,38 @@ export const loginAndStoreToken = async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('token_expiry');
 
-    // Log the environment and credentials being used (remove in production)
+    // Log the environment (remove in production)
     console.log('Login attempt:', {
       environment: process.env.NODE_ENV,
-      baseUrl: process.env.REACT_APP_API_BASE_URL,
-      username: process.env.REACT_APP_API_USERNAME ? '***' : 'using default',
-      hasPassword: !!process.env.REACT_APP_API_PASSWORD
+      baseUrl: process.env.REACT_APP_API_BASE_URL
     });
 
-    const credentials = {
-      username: process.env.REACT_APP_API_USERNAME || "resdiaryapi@thecatandwickets.com",
-      password: process.env.REACT_APP_API_PASSWORD || "l(XFW^Y#l^qUPDwXA^-wsq=CU@L.0!"
-    };
+    console.log('Making login request to backend...');
 
-    console.log('Making login request...');
-    const response = await loginRequest('/api/Jwt/v2/Authenticate', credentials);
-    console.log('Login response received:', {
-      hasToken: !!response?.Token,
-      hasExpiry: !!response?.TokenExpiryUtc
+    // Call our backend auth endpoint
+    const backendUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+    const response = await axios.post(`${backendUrl}/api/auth`, {}, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
 
-    if (!response?.Token) {
-      console.error('Invalid login response:', response);
+    console.log('Backend login response received:', {
+      success: response.data?.success,
+      hasToken: !!response.data?.token,
+      hasExpiry: !!response.data?.tokenExpiryUtc
+    });
+
+    if (!response.data?.success || !response.data?.token) {
+      console.error('Invalid backend login response:', response.data);
       throw new Error('Invalid login response: No token received');
     }
 
-    const { Token, TokenExpiryUtc } = response;
+    const { token, tokenExpiryUtc } = response.data;
 
     // Store token and expiry
-    localStorage.setItem('token', Token);
-    localStorage.setItem('token_expiry', TokenExpiryUtc);
+    localStorage.setItem('token', token);
+    localStorage.setItem('token_expiry', tokenExpiryUtc);
 
     // Verify storage
     const storedToken = localStorage.getItem('token');
@@ -54,8 +56,8 @@ export const loginAndStoreToken = async () => {
     }
 
     // Log successful login (remove in production)
-    console.log('Successfully authenticated with ResDiary API');
-    return Token;
+    console.log('Successfully authenticated with ResDiary API via backend');
+    return token;
   } catch (error) {
     console.error('Login failed:', {
       message: error.message,
@@ -71,19 +73,28 @@ export const loginAndStoreToken = async () => {
       throw new Error('Network error. Please check your internet connection and try again.');
     }
 
+    // Handle backend error responses
+    if (error.response.data?.error) {
+      throw new Error(error.response.data.error);
+    }
+
     switch (error.response.status) {
       case 400:
-        throw new Error('Invalid credentials. Please check your API username and password.');
+        throw new Error('Invalid credentials. Please check server configuration.');
       case 401:
         throw new Error('Authentication failed. Please try again.');
       case 403:
-        throw new Error('Access denied. Please check your API permissions.');
+        throw new Error('Access denied. Please check server permissions.');
       case 404:
-        throw new Error('API endpoint not found. Please check the API configuration.');
+        throw new Error('Authentication service not found. Please check server configuration.');
       case 500:
-        throw new Error('Server error. Please try again later.');
+        throw new Error('Server configuration error. Please contact support.');
+      case 502:
+        throw new Error('External service error. Please try again later.');
+      case 503:
+        throw new Error('Service temporarily unavailable. Please try again later.');
       default:
-        throw new Error(error.response?.data?.message || 'Authentication failed. Please try again.');
+        throw new Error(error.response?.data?.error || 'Authentication failed. Please try again.');
     }
   }
 };
