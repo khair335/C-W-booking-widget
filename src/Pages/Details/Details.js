@@ -187,11 +187,11 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
       const drinkName = localStorage.getItem('drinkName');
       const drinkAmount = localStorage.getItem('drinkAmount');
       const paymentSessionId = localStorage.getItem('paymentSessionId');
-      
+
       console.log('🔧 RESTORATION: Drink data:', { drinkName, drinkAmount, paymentSessionId });
-      
+
       if (drinkName && drinkAmount) {
-        const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)}`;
+        const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Session ID: ${paymentSessionId || 'N/A'})`;
         finalSpecialRequests = finalSpecialRequests ? `${finalSpecialRequests} - ${drinkInfo}` : drinkInfo;
         console.log('🔧 RESTORATION: After adding drink:', finalSpecialRequests);
       }
@@ -263,7 +263,7 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
         const paymentSessionId = localStorage.getItem('paymentSessionId');
         
         if (drinkName && drinkAmount) {
-          drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)}`;
+          drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Session ID: ${paymentSessionId || 'N/A'})`;
           console.log('🍷 Found drink data in localStorage:', drinkInfo);
         }
       }
