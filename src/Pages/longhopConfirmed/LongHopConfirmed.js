@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getCurrentRestaurant } from '../../utils/restaurantUtils';
 import { putRequest } from "../../config/AxiosRoutes/index"
 import logo from "../../images/The Long Hop - text.png";
@@ -15,7 +15,7 @@ import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCustomerDetails } from '../../store/bookingSlice';
+import { updateCustomerDetails, updateBasicInfo } from '../../store/bookingSlice';
 import PrivacyPolicyModal from '../../components/PrivacyPolicyModal';
 
 export default function LongHopConfirmed() {
@@ -34,6 +34,36 @@ export default function LongHopConfirmed() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
+
+  // Try to restore missing data from localStorage if Redux state is incomplete
+  useEffect(() => {
+    const hasBasicData = date && time && (adults !== undefined) && (children !== undefined);
+
+    if (!hasBasicData) {
+      console.log('LongHop Confirmed page - Missing basic data, attempting to restore from localStorage');
+
+      try {
+        const pendingBookingData = localStorage.getItem('pendingBookingData');
+        if (pendingBookingData) {
+          const bookingData = JSON.parse(pendingBookingData);
+          console.log('Restoring data from localStorage:', bookingData);
+
+          // Restore basic booking info if missing
+          if (!date || !time || adults === undefined || children === undefined) {
+            dispatch(updateBasicInfo({
+              date: bookingData.date || date,
+              time: bookingData.time || time,
+              adults: bookingData.adults !== undefined ? bookingData.adults : adults,
+              children: bookingData.children !== undefined ? bookingData.children : children,
+              pubType: bookingData.pubType || bookingData.restaurant
+            }));
+          }
+        }
+      } catch (error) {
+        console.error('Error restoring data from localStorage:', error);
+      }
+    }
+  }, [date, time, adults, children, dispatch]);
   
   const handleBooking = async () => {
     setIsSubmitting(true);
@@ -151,7 +181,11 @@ export default function LongHopConfirmed() {
 
           <InfoChip icon={dateicon} label={date || "Select Date"} alt="date_icon" />
           <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
-          <InfoChip icon={membericon} label={(adults + children) || "Select Party Size"} alt="member_icon" />
+          <InfoChip
+            icon={membericon}
+            label={(parseInt(adults || 0) + parseInt(children || 0)) || "Select Party Size"}
+            alt="member_icon"
+          />
           <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
 
@@ -189,8 +223,79 @@ export default function LongHopConfirmed() {
           <section className={styles.commentSection}>
             <h4 className={styles.comt}>Comment</h4>
             <div className={styles.commentsdata}>
-              {specialRequests || "No Comment"}
+              {(() => {
+                if (!specialRequests) return "No Comment";
+                if (!specialRequests.includes('Pre-ordered:')) return specialRequests;
+
+                // Check if it has the separator format
+                if (specialRequests.includes(' - Pre-ordered:')) {
+                  const commentPart = specialRequests.split(' - Pre-ordered:')[0].trim();
+                  return commentPart || "No additional comments";
+                } else if (specialRequests.startsWith('Pre-ordered:')) {
+                  // Only Pre-ordered content, no comments
+                  return "No additional comments";
+                }
+
+                return specialRequests;
+              })()}
             </div>
+            {specialRequests && specialRequests.includes('Pre-ordered:') && (() => {
+              console.log('LongHop Confirmed page - specialRequests:', specialRequests);
+
+              // Extract drink info from the Pre-ordered section
+              let preOrderedPart;
+              if (specialRequests.includes(' - Pre-ordered:')) {
+                // Format: "Includes X children - Pre-ordered: ..."
+                preOrderedPart = specialRequests.split(' - Pre-ordered:')[1];
+              } else if (specialRequests.startsWith('Pre-ordered:')) {
+                // Format: "Pre-ordered: ..." (drink info only)
+                preOrderedPart = specialRequests.substring('Pre-ordered:'.length).trim();
+              }
+              console.log('preOrderedPart:', preOrderedPart);
+
+              if (preOrderedPart) {
+                // Handle both formats:
+                // "CW-BOOKING - £36.00 (Session ID: cs_test_...)" OR
+                // "CW-BOOKING - £36.00 - (Session ID: cs_test_...)"
+                let drinkMatch = preOrderedPart.match(/^(.+?)\s*-\s*([^\s]+)\s*\(Session ID:\s*([^)]+)\)$/);
+                if (!drinkMatch) {
+                  // Try with extra dash before Session ID
+                  drinkMatch = preOrderedPart.match(/^(.+?)\s*-\s*([^\s]+)\s*-\s*\(Session ID:\s*([^)]+)\)$/);
+                }
+                console.log('drinkMatch:', drinkMatch);
+
+                if (drinkMatch) {
+                  const [, drinkName, drinkPrice, sessionId] = drinkMatch;
+                  console.log('Parsed - Name:', drinkName, 'Price:', drinkPrice, 'Session:', sessionId);
+
+                  return (
+                    <div className={styles.drinkOrderSection}>
+                      <h5 className={styles.drinkOrderTitle}>Pre-ordered Drink</h5>
+                      <div className={styles.drinkOrderInfo}>
+                        <div className={styles.drinkName}>{drinkName.trim()}</div>
+                        <div className={styles.drinkPrice}>{drinkPrice}</div>
+                        <button
+                          className={styles.cancelDrinkBtn}
+                          onClick={() => {
+                            // Save current booking data before navigating to cancel page
+                            const currentBookingData = {
+                              date, time, adults, children, selectedPromotion, customerDetails, specialRequests, successBookingData, pubType
+                            };
+                            localStorage.setItem('bookingDataBeforeCancel', JSON.stringify(currentBookingData));
+
+                            // Navigate to cancel page with session ID and source
+                            navigate(`/cancel-pre-order-drink?session_id=${sessionId}&source=longhopconfirmed`);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+              }
+              return null;
+            })()}
           </section>
 
         </div>

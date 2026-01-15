@@ -61,7 +61,8 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
   const [globalError, setGlobalError] = useState('');
   const [isDrinksModalOpen, setIsDrinksModalOpen] = useState(false);
   const [dataRestored, setDataRestored] = useState(false); // Flag to track if data was restored
-  
+  const [actualSpecialRequests, setActualSpecialRequests] = useState(specialRequests || ''); // Store actual value for submission
+
   console.log("🎯 COMPONENT STATE - dataRestored initial:", dataRestored);
   const [formData, setFormData] = useState({
     SpecialRequests: specialRequests || '',
@@ -104,18 +105,28 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
       console.log('⏭️  Skipping sync - restoration will handle it');
       return;
     }
-    
+
     console.log('📥 Syncing specialRequests from Redux to forms:', specialRequests);
     console.log('📥 Current formData.SpecialRequests:', formData.SpecialRequests);
-    
+
+    // Store the actual value for submission
+    if (specialRequests !== actualSpecialRequests) {
+      setActualSpecialRequests(specialRequests || '');
+    }
+
+    // Hide Session ID from display but keep it in the actual value for submission
+    const displayValue = specialRequests
+      ? specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '')
+      : '';
+
     // Only update if different to avoid unnecessary rerenders
-    if (specialRequests !== formData.SpecialRequests) {
+    if (displayValue !== formData.SpecialRequests) {
       setFormData(prev => ({
         ...prev,
-        SpecialRequests: specialRequests || ''
+        SpecialRequests: displayValue
       }));
     }
-  }, [specialRequests, dataRestored, formData.SpecialRequests]);
+  }, [specialRequests, dataRestored, formData.SpecialRequests, actualSpecialRequests]);
 
   // Restore booking data after payment redirect - SIMPLIFIED
   useEffect(() => {
@@ -187,11 +198,11 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
       const drinkName = localStorage.getItem('drinkName');
       const drinkAmount = localStorage.getItem('drinkAmount');
       const paymentSessionId = localStorage.getItem('paymentSessionId');
-      
+
       console.log('🔧 RESTORATION: Drink data:', { drinkName, drinkAmount, paymentSessionId });
-      
+
       if (drinkName && drinkAmount) {
-        const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)}`;
+        const drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Session ID: ${paymentSessionId || 'N/A'})`;
         finalSpecialRequests = finalSpecialRequests ? `${finalSpecialRequests} - ${drinkInfo}` : drinkInfo;
         console.log('🔧 RESTORATION: After adding drink:', finalSpecialRequests);
       }
@@ -263,7 +274,7 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
         const paymentSessionId = localStorage.getItem('paymentSessionId');
         
         if (drinkName && drinkAmount) {
-          drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)}`;
+          drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Session ID: ${paymentSessionId || 'N/A'})`;
           console.log('🍷 Found drink data in localStorage:', drinkInfo);
         }
       }
@@ -332,17 +343,41 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
 
   // Update the handleSpecialRequestChange function
   const handleSpecialRequestChange = (e) => {
-    const value = e.target.value;
+    const displayValue = e.target.value;
     const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
 
+    // Start with the actual special requests (which has the real Session ID)
+    let actualValue = actualSpecialRequests || '';
+
+    // If the display value has been modified, we need to update the actual value
+    if (displayValue !== formData.SpecialRequests) {
+      // Since we completely remove Session ID from display, we need to add it back
+      let updatedValue = displayValue;
+
+      // If the actual value has a Pre-ordered drink with Session ID, add it back
+      if (actualValue.includes('Pre-ordered') && actualValue.includes('Session ID')) {
+        const sessionIdMatch = actualValue.match(/\(Session ID: [^)]+\)/);
+        if (sessionIdMatch && !updatedValue.includes('Session ID')) {
+          // Find the Pre-ordered part in the updated value and add Session ID
+          const preOrderedMatch = updatedValue.match(/(Pre-ordered: .+? - £[\d.]+(?:\.\d{2})?)/);
+          if (preOrderedMatch) {
+            updatedValue = updatedValue.replace(preOrderedMatch[1], preOrderedMatch[1] + ' ' + sessionIdMatch[0]);
+          }
+        }
+      }
+
+      actualValue = updatedValue;
+    }
+
     // Extract drink info if it exists (match format: Pre-ordered: Drink - £10.00)
-    const drinkMatch = value.match(/Pre-ordered: .+? - £[\d.]+/);
+    const drinkMatch = actualValue.match(/Pre-ordered: .+? - £[\d.]+/);
     const drinkInfo = drinkMatch ? drinkMatch[0] : '';
 
     // Remove the children prefix and drink info to get just user input
-    let userInput = value.replace(/^Includes \d+ children(?: - )?/, '');
-    userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+ \(Payment ID: [^)]+\)(?: - )?/, '');
+    let userInput = actualValue.replace(/^Includes \d+ children(?: - )?/, '');
+    userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+(?:\.\d{2})? \(Session ID: [^)]+\)(?: - )?/, '');
     userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+(?: - )?/, '');
+    userInput = userInput.trim();
 
     // Build the complete request maintaining order: children - drink - user requests
     let formattedRequest = '';
@@ -350,16 +385,26 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
       formattedRequest = childrenPrefix;
     }
     if (drinkInfo) {
-      formattedRequest = formattedRequest ? `${formattedRequest} - ${drinkInfo}` : drinkInfo;
+      // Add Session ID back to drink info
+      const sessionIdMatch = actualValue.match(/\(Session ID: [^)]+\)/);
+      const drinkWithSession = sessionIdMatch ? `${drinkInfo} ${sessionIdMatch[0]}` : drinkInfo;
+      formattedRequest = formattedRequest ? `${formattedRequest} - ${drinkWithSession}` : drinkWithSession;
     }
     if (userInput) {
       formattedRequest = formattedRequest ? `${formattedRequest} - ${userInput}` : userInput;
     }
 
+    // Update both display and actual values
+    const displayValueUpdated = formattedRequest
+      ? formattedRequest.replace(/\s*\(Session ID: [^)]+\)/g, '')
+      : '';
+
     setFormData(prev => ({
       ...prev,
-      SpecialRequests: formattedRequest
+      SpecialRequests: displayValueUpdated
     }));
+
+    setActualSpecialRequests(formattedRequest);
     dispatch(updateSpecialRequests(formattedRequest));
   };
 

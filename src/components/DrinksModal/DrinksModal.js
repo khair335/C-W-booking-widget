@@ -27,7 +27,7 @@ const drinks = [
     id: 4,
     name: 'CW-BOOKING Test Item',
     price: 'Test',
-    stripeLink: 'https://buy.stripe.com/test_bJe14neVo6UsggkbeTg7e00'
+    stripeLink: 'https://buy.stripe.com/test_bJe3cu58Q5fz8iy5PBeQM00'
   }
 ];
 

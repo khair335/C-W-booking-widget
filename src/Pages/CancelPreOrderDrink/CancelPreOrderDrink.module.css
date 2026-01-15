@@ -1,0 +1,223 @@
+.cancelContainer {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #FFFCF7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  font-family: 'Avenir', sans-serif;
+}
+
+.cancelCard {
+  background: white;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+.title {
+  color: #1C1C1C;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Avenir', sans-serif;
+  letter-spacing: 1px;
+}
+
+.loadingSpinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #FFFCF7;
+  border-top: 4px solid #FD6F53;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.message {
+  color: #1C1C1C;
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 20px 0;
+  font-family: 'Avenir', sans-serif;
+  font-weight: 400;
+}
+
+.drinkInfo {
+  background: #FFFCF7;
+  border: 1px solid #C39A7B;
+  border-radius: 8px;
+  padding: 25px;
+  margin: 25px 0;
+  text-align: left;
+}
+
+.drinkInfo h3 {
+  margin: 0 0 15px 0;
+  color: #1C1C1C;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Avenir', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.drinkInfo p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #1C1C1C;
+  font-family: 'Avenir', sans-serif;
+  font-weight: 500;
+}
+
+.warningSection {
+  background: #FFF8F5;
+  border: 1px solid #FD6F53;
+  border-radius: 8px;
+  padding: 25px;
+  margin: 25px 0;
+}
+
+.warningIcon {
+  font-size: 36px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.warningText {
+  color: #1C1C1C;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 16px;
+  font-family: 'Avenir', sans-serif;
+}
+
+.warningText strong {
+  color: #FD6F53;
+  font-weight: 700;
+}
+
+.errorIcon, .successIcon {
+  font-size: 48px;
+  margin: 25px 0;
+}
+
+.errorMessage {
+  color: #FD6F53;
+  font-weight: 600;
+  margin: 25px 0;
+  font-size: 18px;
+  font-family: 'Avenir', sans-serif;
+}
+
+.cancelDetails {
+  margin: 35px 0;
+}
+
+.refundInfo {
+  background: #FFFCF7;
+  border: 1px solid #C39A7B;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 25px 0;
+  text-align: left;
+}
+
+.refundInfo p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #1C1C1C;
+  font-family: 'Avenir', sans-serif;
+  font-weight: 500;
+}
+
+.refundInfo strong {
+  color: #1C1C1C;
+  font-weight: 700;
+}
+
+.note {
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+  margin-top: 20px;
+  font-family: 'Avenir', sans-serif;
+  font-weight: 400;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 35px;
+  flex-wrap: wrap;
+}
+
+.buttonGroup button {
+  min-width: 160px;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Avenir', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.buttonGroup button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .cancelContainer {
+    padding: 30px 15px;
+  }
+
+  .cancelCard {
+    padding: 30px 20px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .message {
+    font-size: 16px;
+  }
+
+  .drinkInfo, .warningSection, .refundInfo {
+    padding: 20px;
+  }
+
+  .drinkInfo h3 {
+    font-size: 18px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .buttonGroup button {
+    width: 100%;
+    min-width: unset;
+    padding: 18px 20px;
+    font-size: 15px;
+  }
+}

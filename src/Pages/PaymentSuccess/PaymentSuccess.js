@@ -42,8 +42,8 @@ const PaymentSuccess = () => {
           localStorage.setItem('drinkPurchased', 'true');
           localStorage.setItem('drinkName', response.data.drink);
           localStorage.setItem('drinkAmount', response.data.amount.toString());
-          // Do not persist session_id; clear if previously present
-          localStorage.removeItem('paymentSessionId');
+          // Store session_id for inclusion in Special Requests
+          localStorage.setItem('paymentSessionId', sessionId);
 
           // Verify it was stored
           console.log('✅ Verified localStorage after storing:', {
