@@ -228,7 +228,9 @@ export default function Confirm() {
           <section className={styles.commentSection}>
             <h4 className={styles.comt}>Comment</h4>
             <div className={styles.commentsdata}>
-              {specialRequests || "No Comment"}
+              {specialRequests
+                ? specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '')
+                : "No Comment"}
             </div>
           </section>
 
