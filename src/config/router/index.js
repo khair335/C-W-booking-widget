@@ -59,6 +59,7 @@ import TopResent from "../../Pages/topResent/TopResent";
 import TopCancelled from "../../Pages/TopCancelled/TopCancelled"
 import PaymentSuccess from '../../Pages/PaymentSuccess/PaymentSuccess';
 import PaymentCancelled from '../../Pages/PaymentCancelled/PaymentCancelled';
+import CancelPreOrderDrink from '../../Pages/CancelPreOrderDrink/CancelPreOrderDrink';
 let Router = () => {
     return (
         <BrowserRouter>
@@ -117,7 +118,7 @@ let Router = () => {
                 <Route path="/TopCancelled" element={<TopCancelled />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-cancelled" element={<PaymentCancelled />} />
-                
+                <Route path="/cancel-pre-order-drink" element={<CancelPreOrderDrink />} />
                 {/* 404 - Catch all unmatched routes */}
                 <Route path="*" element={<NotFound />} />
 

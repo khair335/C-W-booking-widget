@@ -589,3 +589,74 @@
         font-size: 20px;
     }
 }
+
+/* Drink Order Section Styles */
+.drinkOrderSection {
+    margin-top: 16px;
+    width: 100%;
+}
+
+.drinkOrderTitle {
+    font-family: Lora, sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    text-transform: capitalize;
+    color: #1C1C1C;
+    margin-bottom: 16px;
+}
+
+.drinkOrderInfo {
+    box-shadow: 0px 4px 4px 0px #391A114D, 0px 8px 12px 6px #391A1126;
+    background-color: #F5E5CF;
+    border: 1px solid #8C826A;
+    border-radius: 4px;
+    width: 80%;
+    padding: 16px;
+    margin-top: -5px;
+    font-family: Work Sans, sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    text-transform: capitalize;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.drinkName {
+    font-weight: 400;
+    color: #1C1C1C;
+    flex: 1;
+    text-align: left;
+}
+
+.drinkPrice {
+    font-weight: 600;
+    color: #1C1C1C;
+}
+
+.cancelDrinkBtn {
+    background-color: #C39A7B;
+    color: #FFFCF7;
+    border: 1px solid #8C826A;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-family: Work Sans;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0px 2px 4px 0px #391A114D;
+}
+
+.cancelDrinkBtn:hover {
+    background-color: #B08968;
+}
