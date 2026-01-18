@@ -27,7 +27,7 @@ export default function TopEdit() {
 
   // Get state from Redux
   const bookingState = useSelector((state) => state.booking);
-  const { date, time, adults, children, pubType } = bookingState;
+  const { date, time, adults, children, pubType, specialRequests } = bookingState;
   console.log("bookingState", bookingState);
   // Local state for UI
   const [timeSlots, setTimeSlots] = useState([]);

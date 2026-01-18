@@ -10,12 +10,13 @@ import resturanticon from "../../images/table_restaurant.png";
 import styles from "./Confirmed.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CustomCheckbox from '../../components/ui/CustomCheckbox/CustomCheckbox';
+import CustomTextarea from '../../components/ui/CustomTextarea/CustomTextarea';
 import PubImageHeader from '../../components/PubImageHeader/PubImageHeader';
 import InfoChip from '../../components/InfoChip/InfoChip';
 import Indicator from '../../components/Indicator/Indicator';
 import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCustomerDetails, updateBasicInfo } from '../../store/bookingSlice';
+import { updateCustomerDetails, updateBasicInfo, updateSpecialRequests } from '../../store/bookingSlice';
 import PrivacyPolicyModal from '../../components/PrivacyPolicyModal';
 
 export default function Confirmed() {
@@ -45,6 +46,21 @@ export default function Confirmed() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
+  const [comment, setComment] = useState((() => {
+    if (!specialRequests) return "";
+    if (!specialRequests.includes('Pre-ordered:')) return specialRequests;
+
+    // Check if it has the separator format
+    if (specialRequests.includes(' - Pre-ordered:')) {
+      const commentPart = specialRequests.split(' - Pre-ordered:')[0].trim();
+      return commentPart;
+    } else if (specialRequests.startsWith('Pre-ordered:')) {
+      // Only Pre-ordered content, no comments
+      return "";
+    }
+
+    return specialRequests;
+  })());
 
   // Try to restore missing data from localStorage if Redux state is incomplete
   useEffect(() => {
@@ -75,6 +91,42 @@ export default function Confirmed() {
       }
     }
   }, [date, time, adults, children, dispatch]);
+
+  // Sync comment state with Redux specialRequests
+  useEffect(() => {
+    setComment(specialRequests || "");
+  }, [specialRequests]);
+
+  const handleCommentChange = (e) => {
+    const newComment = e.target.value;
+    setComment(newComment);
+
+    // Update specialRequests by replacing the comment part or adding it
+    let updatedSpecialRequests = newComment;
+
+    if (specialRequests && specialRequests.includes('Pre-ordered:')) {
+      // Extract the drink part
+      let drinkPart = '';
+      if (specialRequests.includes(' - Pre-ordered:')) {
+        drinkPart = specialRequests.split(' - Pre-ordered:')[1];
+        if (newComment.trim()) {
+          updatedSpecialRequests = `${newComment} - Pre-ordered:${drinkPart}`;
+        } else {
+          updatedSpecialRequests = `Pre-ordered:${drinkPart}`;
+        }
+      } else if (specialRequests.startsWith('Pre-ordered:')) {
+        drinkPart = specialRequests;
+        if (newComment.trim()) {
+          updatedSpecialRequests = `${newComment} - ${drinkPart}`;
+        } else {
+          updatedSpecialRequests = drinkPart;
+        }
+      }
+    }
+
+    dispatch(updateSpecialRequests(updatedSpecialRequests));
+  };
+
   const handleBooking = async () => {
     setIsSubmitting(true);
     setError('');
@@ -233,21 +285,15 @@ export default function Confirmed() {
           <section className={styles.commentSection}>
             <h4 className={styles.comt}>Comment</h4>
             <div className={styles.commentsdata}>
-              {(() => {
-                if (!specialRequests) return "No Comment";
-                if (!specialRequests.includes('Pre-ordered:')) return specialRequests;
-
-                // Check if it has the separator format
-                if (specialRequests.includes(' - Pre-ordered:')) {
-                  const commentPart = specialRequests.split(' - Pre-ordered:')[0].trim();
-                  return commentPart || "No additional comments";
-                } else if (specialRequests.startsWith('Pre-ordered:')) {
-                  // Only Pre-ordered content, no comments
-                  return "No additional comments";
-                }
-
-                return specialRequests;
-              })()}
+              <CustomTextarea
+                label=""
+                value={comment}
+                onChange={handleCommentChange}
+                placeholder="Add any special requests or comments"
+                rows={3}
+                minRows={3}
+                maxRows={5}
+              />
             </div>
             {specialRequests && specialRequests.includes('Pre-ordered:') && (() => {
               console.log('Confirmed page - specialRequests:', specialRequests);
