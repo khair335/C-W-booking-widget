@@ -114,10 +114,15 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
       setActualSpecialRequests(specialRequests || '');
     }
 
-    // Hide Session ID from display but keep it in the actual value for submission
-    const displayValue = specialRequests
-      ? specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '')
-      : '';
+    // Extract user comments for display (hide only session IDs, preserve user-typed content and drink info)
+    let displayValue = '';
+    if (specialRequests) {
+      // Remove session IDs from drink info and anywhere else
+      let temp = specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '');
+
+      // Trim any leading/trailing separators but preserve spaces in content
+      displayValue = temp.replace(/^-\s*/, '').replace(/\s*-$/, '');
+    }
 
     // Only update if different to avoid unnecessary rerenders
     if (displayValue !== formData.SpecialRequests) {
@@ -126,7 +131,8 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
         SpecialRequests: displayValue
       }));
     }
-  }, [specialRequests, dataRestored, formData.SpecialRequests, actualSpecialRequests]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataRestored, actualSpecialRequests]); // Only sync when data is restored or actual data changes, not when form data changes
 
   // Restore booking data after payment redirect - SIMPLIFIED
   useEffect(() => {
@@ -219,16 +225,21 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
     }
     
     console.log('📋 FINAL Special Requests being dispatched to Redux:', finalSpecialRequests);
-    
+
+    // Extract user comments for display (hide only session IDs, preserve user content and drink info)
+    let displayComments = finalSpecialRequests;
+    displayComments = displayComments.replace(/\s*\(Session ID: [^)]+\)/g, '');
+    displayComments = displayComments.replace(/^-\s*/, '').replace(/\s*-$/, '');
+
     // Update Redux and form
     dispatch(updateSpecialRequests(finalSpecialRequests));
     console.log('✅ Dispatched updateSpecialRequests to Redux');
-    
+
     setFormData(prev => ({
       ...prev,
-      SpecialRequests: finalSpecialRequests
+      SpecialRequests: displayComments
     }));
-    console.log('✅ Updated formData.SpecialRequests to:', finalSpecialRequests);
+    console.log('✅ Updated formData.SpecialRequests to:', displayComments);
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Run only once on mount
@@ -296,17 +307,24 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
     }
     
     console.log('🔨 Built Special Requests:', completeRequests);
-    console.log('📝 Setting form SpecialRequests to:', completeRequests);
-    
+
+    // Extract user comments for display (hide only session IDs, preserve user content and drink info)
+    let displayComments = completeRequests;
+    displayComments = displayComments.replace(/\s*\(Session ID: [^)]+\)/g, '');
+    displayComments = displayComments.replace(/^-\s*/, '').replace(/\s*-$/, '');
+
+    console.log('📝 Setting form SpecialRequests to:', displayComments);
+
     setFormData(prev => ({
       ...prev,
-      SpecialRequests: completeRequests
+      SpecialRequests: displayComments
     }));
     
     // Update Redux to persist the rebuilt specialRequests
     dispatch(updateSpecialRequests(completeRequests));
     console.log('✅ Dispatched rebuilt specialRequests to Redux');
-  }, [children, dispatch, dataRestored]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [children, dispatch, dataRestored]); // Intentionally omitted specialRequests to prevent interference with user typing
 
   const handleChange = (field, value) => {
     const updatedCustomer = {
@@ -341,71 +359,54 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
     }));
   };
 
-  // Update the handleSpecialRequestChange function
+  // Update the handleSpecialRequestChange function - PRESERVE USER INPUT
   const handleSpecialRequestChange = (e) => {
-    const displayValue = e.target.value;
-    const childrenPrefix = children > 0 ? `Includes ${children} children` : '';
+    const userComments = e.target.value;
 
-    // Start with the actual special requests (which has the real Session ID)
-    let actualValue = actualSpecialRequests || '';
+    // Build the complete special requests string for storage/submission
+    let completeRequests = '';
 
-    // If the display value has been modified, we need to update the actual value
-    if (displayValue !== formData.SpecialRequests) {
-      // Since we completely remove Session ID from display, we need to add it back
-      let updatedValue = displayValue;
+    // Check localStorage first for drink info (authoritative source)
+    let drinkInfo = '';
+    const drinkPurchased = localStorage.getItem('drinkPurchased');
+    if (drinkPurchased === 'true') {
+      const drinkName = localStorage.getItem('drinkName');
+      const drinkAmount = localStorage.getItem('drinkAmount');
+      const paymentSessionId = localStorage.getItem('paymentSessionId');
 
-      // If the actual value has a Pre-ordered drink with Session ID, add it back
-      if (actualValue.includes('Pre-ordered') && actualValue.includes('Session ID')) {
-        const sessionIdMatch = actualValue.match(/\(Session ID: [^)]+\)/);
-        if (sessionIdMatch && !updatedValue.includes('Session ID')) {
-          // Find the Pre-ordered part in the updated value and add Session ID
-          const preOrderedMatch = updatedValue.match(/(Pre-ordered: .+? - £[\d.]+(?:\.\d{2})?)/);
-          if (preOrderedMatch) {
-            updatedValue = updatedValue.replace(preOrderedMatch[1], preOrderedMatch[1] + ' ' + sessionIdMatch[0]);
-          }
-        }
+      if (drinkName && drinkAmount) {
+        drinkInfo = `Pre-ordered: ${drinkName} - £${parseFloat(drinkAmount).toFixed(2)} (Session ID: ${paymentSessionId || 'N/A'})`;
       }
-
-      actualValue = updatedValue;
     }
 
-    // Extract drink info if it exists (match format: Pre-ordered: Drink - £10.00)
-    const drinkMatch = actualValue.match(/Pre-ordered: .+? - £[\d.]+/);
-    const drinkInfo = drinkMatch ? drinkMatch[0] : '';
-
-    // Remove the children prefix and drink info to get just user input
-    let userInput = actualValue.replace(/^Includes \d+ children(?: - )?/, '');
-    userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+(?:\.\d{2})? \(Session ID: [^)]+\)(?: - )?/, '');
-    userInput = userInput.replace(/Pre-ordered: .+? - £[\d.]+(?: - )?/, '');
-    userInput = userInput.trim();
-
-    // Build the complete request maintaining order: children - drink - user requests
-    let formattedRequest = '';
-    if (childrenPrefix) {
-      formattedRequest = childrenPrefix;
-    }
+    // Add drink info if exists
     if (drinkInfo) {
-      // Add Session ID back to drink info
-      const sessionIdMatch = actualValue.match(/\(Session ID: [^)]+\)/);
-      const drinkWithSession = sessionIdMatch ? `${drinkInfo} ${sessionIdMatch[0]}` : drinkInfo;
-      formattedRequest = formattedRequest ? `${formattedRequest} - ${drinkWithSession}` : drinkWithSession;
-    }
-    if (userInput) {
-      formattedRequest = formattedRequest ? `${formattedRequest} - ${userInput}` : userInput;
+      completeRequests = drinkInfo;
     }
 
-    // Update both display and actual values
-    const displayValueUpdated = formattedRequest
-      ? formattedRequest.replace(/\s*\(Session ID: [^)]+\)/g, '')
-      : '';
+    // Add user comments if provided (clean to avoid drink info duplication)
+    if (userComments) {
+      // Remove any drink info from user comments to avoid duplication
+      // Match drink info as displayed (without session ID) or with session ID
+      let cleanedComments = userComments.replace(/Pre-ordered: .+? - £[\d.]+(?:\.\d{2})?(?:\s*\(Session ID: [^)]+\))?/g, '');
+      // Remove leading/trailing separators and extra whitespace, but preserve internal spaces
+      cleanedComments = cleanedComments.replace(/^[\s-]*/, '').replace(/[\s-]*$/, '');
+
+      if (cleanedComments) {
+        completeRequests = completeRequests ? `${completeRequests} - ${cleanedComments}` : cleanedComments;
+      }
+    }
+
+    // For display: show user comments (hide only drink info and session IDs)
+    let displayValue = userComments;
 
     setFormData(prev => ({
       ...prev,
-      SpecialRequests: displayValueUpdated
+      SpecialRequests: displayValue
     }));
 
-    setActualSpecialRequests(formattedRequest);
-    dispatch(updateSpecialRequests(formattedRequest));
+    setActualSpecialRequests(completeRequests);
+    dispatch(updateSpecialRequests(completeRequests));
   };
 
   const handleNextClick = () => {
@@ -572,7 +573,7 @@ console.log("🎯 COMPONENT MOUNT - children from Redux:", children);
               helperText="2000 of 2000 characters remaining"
               minRows={4}
               maxRows={4}
-              placeholder={children > 0 ? `Includes ${children} children` : "Enter any special requests"}
+              placeholder="Enter any special requests"
             />
           </div>
 

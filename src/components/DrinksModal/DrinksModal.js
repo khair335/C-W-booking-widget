@@ -23,12 +23,12 @@ const drinks = [
     price: '£55.00',
     stripeLink: 'https://buy.stripe.com/4gM00j5kO6Usfcg3Mrg7e04'
   },
-  {
-    id: 4,
-    name: 'CW-BOOKING Test Item',
-    price: 'Test',
-    stripeLink: 'https://buy.stripe.com/test_bJe3cu58Q5fz8iy5PBeQM00'
-  }
+  // {
+  //   id: 4,
+  //   name: 'CW-BOOKING Test Item',
+  //   price: 'Test',
+  //   stripeLink: 'https://buy.stripe.com/test_bJe3cu58Q5fz8iy5PBeQM00'
+  // }
 ];
 
 export default function DrinksModal({ isOpen, onClose, onContinue }) {
