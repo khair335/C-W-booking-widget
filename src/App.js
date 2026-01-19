@@ -11,6 +11,7 @@ function AppContent() {
   
   if (authError) {
     return (
+      
       <div style={{
         padding: '20px',
         textAlign: 'center',
