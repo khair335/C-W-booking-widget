@@ -30,7 +30,7 @@ export default function TopUpdated() {
           <img src={logo1} alt="logo" />
         </div>
         <div className={styles.booked_info} >
-          <h5>174 Main St, Swithland, Leicester LE12 8TJ, United Kingdom</h5>
+          <h5>Main Road, Upper Broughton, Melton Mowbray, LE14 3BG</h5>
           <a href="tel:+441509890535" className="numbrtag">
             +441509890535
           </a>
