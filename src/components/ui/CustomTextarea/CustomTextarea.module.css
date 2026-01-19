@@ -64,7 +64,7 @@
   line-height: 130%;
   letter-spacing: 0%;
   vertical-align: top;
-  text-transform: capitalize;
+  text-transform: none;
   resize: vertical;
   min-height: 100px;
   max-height: 120px !important;
@@ -80,7 +80,7 @@
   line-height: 130%;
   letter-spacing: 0%;
   vertical-align: middle;
-  text-transform: capitalize;
+  text-transform: none;
   color: #3D3D3D;
 }
 
@@ -98,7 +98,7 @@
   line-height: 130%;
   letter-spacing: 0%;
   vertical-align: middle;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 .textarea :global(.MuiInputLabel-root.Mui-focused) {

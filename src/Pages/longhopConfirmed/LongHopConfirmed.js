@@ -36,19 +36,35 @@ export default function LongHopConfirmed() {
   const [error, setError] = useState('');
   const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
   const [comment, setComment] = useState((() => {
+    console.log('LongHopConfirmed - Initializing comment, specialRequests:', specialRequests);
+
     if (!specialRequests) return "";
-    if (!specialRequests.includes('Pre-ordered:')) return specialRequests;
+    if (!specialRequests.includes('Pre-ordered:')) {
+      // Hide Session IDs from comments that don't have Pre-ordered content
+      const result = specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('LongHopConfirmed - No Pre-ordered, after Session ID removal:', result);
+      return result;
+    }
 
     // Check if it has the separator format
     if (specialRequests.includes(' - Pre-ordered:')) {
       const commentPart = specialRequests.split(' - Pre-ordered:')[0].trim();
-      return commentPart;
+      // Hide Session IDs from the comment part
+      const result = commentPart.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('LongHopConfirmed - With separator, comment part:', commentPart, 'after Session ID removal:', result);
+      return result;
     } else if (specialRequests.startsWith('Pre-ordered:')) {
-      // Only Pre-ordered content, no comments
-      return "";
+      // Extract drink info but hide Session ID
+      const drinkPart = specialRequests.substring('Pre-ordered:'.length).trim();
+      const result = drinkPart.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('LongHopConfirmed - Only Pre-ordered content, showing drink info without Session ID:', result);
+      return result;
     }
 
-    return specialRequests;
+    // Hide Session IDs from any remaining specialRequests content
+    const result = specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '');
+    console.log('LongHopConfirmed - Fallback, after Session ID removal:', result);
+    return result;
   })());
 
   // Try to restore missing data from localStorage if Redux state is incomplete
@@ -81,9 +97,32 @@ export default function LongHopConfirmed() {
     }
   }, [date, time, adults, children, dispatch]);
 
-  // Sync comment state with Redux specialRequests
+  // Sync comment state with Redux specialRequests (hide Session IDs)
   useEffect(() => {
-    setComment(specialRequests || "");
+    if (!specialRequests) {
+      setComment("");
+      return;
+    }
+
+    if (!specialRequests.includes('Pre-ordered:')) {
+      // Hide Session IDs from comments that don't have Pre-ordered content
+      setComment(specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, ''));
+      return;
+    }
+
+    // Check if it has the separator format
+    if (specialRequests.includes(' - Pre-ordered:')) {
+      const commentPart = specialRequests.split(' - Pre-ordered:')[0].trim();
+      // Hide Session IDs from the comment part
+      setComment(commentPart.replace(/\s*\(Session ID: [^)]+\)/g, ''));
+    } else if (specialRequests.startsWith('Pre-ordered:')) {
+      // Extract drink info but hide Session ID
+      const drinkPart = specialRequests.substring('Pre-ordered:'.length).trim();
+      setComment(drinkPart.replace(/\s*\(Session ID: [^)]+\)/g, ''));
+    } else {
+      // Hide Session IDs from any remaining specialRequests content
+      setComment(specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, ''));
+    }
   }, [specialRequests]);
 
   const handleCommentChange = (e) => {
@@ -299,19 +338,22 @@ export default function LongHopConfirmed() {
               console.log('preOrderedPart:', preOrderedPart);
 
               if (preOrderedPart) {
-                // Handle both formats:
-                // "CW-BOOKING - £36.00 (Session ID: cs_test_...)" OR
-                // "CW-BOOKING - £36.00 - (Session ID: cs_test_...)"
-                let drinkMatch = preOrderedPart.match(/^(.+?)\s*-\s*([^\s]+)\s*\(Session ID:\s*([^)]+)\)$/);
-                if (!drinkMatch) {
-                  // Try with extra dash before Session ID
-                  drinkMatch = preOrderedPart.match(/^(.+?)\s*-\s*([^\s]+)\s*-\s*\(Session ID:\s*([^)]+)\)$/);
-                }
-                console.log('drinkMatch:', drinkMatch);
+                // First, remove Session ID from the display
+                const cleanPreOrderedPart = preOrderedPart.replace(/\s*\(Session ID: [^)]+\)/g, '').trim();
+                console.log('cleanPreOrderedPart after Session ID removal:', cleanPreOrderedPart);
+
+                // Extract drink name and price from the cleaned string
+                const drinkMatch = cleanPreOrderedPart.match(/^(.+?)\s*-\s*([^\s]+)$/);
+                console.log('drinkMatch after cleaning:', drinkMatch);
 
                 if (drinkMatch) {
-                  const [, drinkName, drinkPrice, sessionId] = drinkMatch;
-                  console.log('Parsed - Name:', drinkName, 'Price:', drinkPrice, 'Session:', sessionId);
+                  const [, drinkName, drinkPrice] = drinkMatch;
+                  console.log('Parsed - Name:', drinkName, 'Price:', drinkPrice);
+
+                  // Extract session ID for cancel functionality (from original preOrderedPart)
+                  const sessionIdMatch = preOrderedPart.match(/Session ID:\s*([^)]+)/);
+                  const sessionId = sessionIdMatch ? sessionIdMatch[1] : '';
+                  console.log('Extracted sessionId for cancel:', sessionId);
 
                   return (
                     <div className={styles.drinkOrderSection}>

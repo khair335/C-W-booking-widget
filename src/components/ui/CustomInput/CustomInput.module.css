@@ -67,7 +67,7 @@
   line-height: 100%;
   letter-spacing: 0%;
   vertical-align: middle;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 /* Also update the MUI helper text styles to ensure consistency */
@@ -80,7 +80,7 @@
   line-height: 130%;
   letter-spacing: 0%;
   vertical-align: middle;
-  text-transform: capitalize;
+  text-transform: none;
   color: #3D3D3D;
 }
 
@@ -98,7 +98,7 @@
   line-height: 130%;
   letter-spacing: 0%;
   vertical-align: middle;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 .input :global(.MuiInputLabel-root.Mui-focused) {

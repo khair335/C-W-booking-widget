@@ -37,6 +37,10 @@ const CustomTextarea = ({
         disabled={disabled}
         helperText={helperText}
         variant="outlined"
+        inputProps={{
+          autoCapitalize: 'none',
+          ...props.inputProps
+        }}
         {...props}
       />
     </div>

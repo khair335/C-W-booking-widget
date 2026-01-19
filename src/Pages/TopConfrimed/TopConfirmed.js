@@ -36,19 +36,49 @@ export default function TopConfirmed() {
   const [error, setError] = useState('');
   const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
   const [comment, setComment] = useState((() => {
-    if (!specialRequests) return "";
-    if (!specialRequests.includes('Pre-ordered:')) return specialRequests;
+    console.log('🔍 TopConfirmed - Initializing comment');
+    console.log('🔍 specialRequests:', specialRequests);
+    console.log('🔍 specialRequests type:', typeof specialRequests);
+    console.log('🔍 specialRequests length:', specialRequests ? specialRequests.length : 'null/undefined');
 
-    // Check if it has the separator format
-    if (specialRequests.includes(' - Pre-ordered:')) {
-      const commentPart = specialRequests.split(' - Pre-ordered:')[0].trim();
-      return commentPart;
-    } else if (specialRequests.startsWith('Pre-ordered:')) {
-      // Only Pre-ordered content, no comments
+    if (!specialRequests) {
+      console.log('🔍 No specialRequests, returning empty string');
       return "";
     }
 
-    return specialRequests;
+    if (!specialRequests.includes('Pre-ordered:')) {
+      console.log('🔍 No Pre-ordered content found');
+      // Hide Session IDs from comments that don't have Pre-ordered content
+      const result = specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('🔍 After Session ID removal (no Pre-ordered):', result);
+      return result;
+    }
+
+    console.log('🔍 Contains Pre-ordered content');
+
+    // Check if it has the separator format
+    if (specialRequests.includes(' - Pre-ordered:')) {
+      console.log('🔍 Has separator format');
+      const commentPart = specialRequests.split(' - Pre-ordered:')[0].trim();
+      console.log('🔍 Comment part before Session ID removal:', commentPart);
+      // Hide Session IDs from the comment part
+      const result = commentPart.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('🔍 Comment part after Session ID removal:', result);
+      return result;
+    } else if (specialRequests.startsWith('Pre-ordered:')) {
+      console.log('🔍 Only Pre-ordered content, showing drink info without Session ID');
+      // Extract drink info but hide Session ID
+      const drinkPart = specialRequests.substring('Pre-ordered:'.length).trim();
+      const result = drinkPart.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('🔍 Drink info after Session ID removal:', result);
+      return result;
+    }
+
+    console.log('🔍 Fallback case');
+    // Hide Session IDs from any remaining specialRequests content
+    const result = specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '');
+    console.log('🔍 Fallback after Session ID removal:', result);
+    return result;
   })());
 
   // Try to restore missing data from localStorage if Redux state is incomplete
@@ -81,6 +111,53 @@ export default function TopConfirmed() {
     }
   }, [date, time, adults, children, dispatch]);
 
+
+  // Sync comment state with Redux specialRequests (hide Session IDs)
+  useEffect(() => {
+    console.log('🔄 TopConfirmed - useEffect syncing comment with specialRequests');
+    console.log('🔄 specialRequests:', specialRequests);
+
+    if (!specialRequests) {
+      console.log('🔄 No specialRequests, setting comment to empty');
+      setComment("");
+      return;
+    }
+
+    if (!specialRequests.includes('Pre-ordered:')) {
+      console.log('🔄 No Pre-ordered, hiding Session IDs from comment');
+      // Hide Session IDs from comments that don't have Pre-ordered content
+      const cleaned = specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('🔄 Comment after Session ID removal:', cleaned);
+      setComment(cleaned);
+      return;
+    }
+
+    console.log('🔄 Contains Pre-ordered content');
+
+    // Check if it has the separator format
+    if (specialRequests.includes(' - Pre-ordered:')) {
+      console.log('🔄 Has separator format');
+      const commentPart = specialRequests.split(' - Pre-ordered:')[0].trim();
+      console.log('🔄 Comment part before cleaning:', commentPart);
+      // Hide Session IDs from the comment part
+      const cleaned = commentPart.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('🔄 Comment part after cleaning:', cleaned);
+      setComment(cleaned);
+    } else if (specialRequests.startsWith('Pre-ordered:')) {
+      console.log('🔄 Only Pre-ordered content, showing drink info without Session ID');
+      // Extract drink info but hide Session ID
+      const drinkPart = specialRequests.substring('Pre-ordered:'.length).trim();
+      const cleaned = drinkPart.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('🔄 Drink info after Session ID removal:', cleaned);
+      setComment(cleaned);
+    } else {
+      console.log('🔄 Fallback case, hiding Session IDs');
+      // Hide Session IDs from any remaining specialRequests content
+      const cleaned = specialRequests.replace(/\s*\(Session ID: [^)]+\)/g, '');
+      console.log('🔄 Fallback comment after cleaning:', cleaned);
+      setComment(cleaned);
+    }
+  }, [specialRequests]);
 
   const handleCommentChange = (e) => {
     const newComment = e.target.value;
@@ -274,33 +351,45 @@ export default function TopConfirmed() {
               />
             </div>
             {specialRequests && specialRequests.includes('Pre-ordered:') && (() => {
-              console.log('Top Confirmed page - specialRequests:', specialRequests);
+              console.log('🍺 Top Confirmed page - DRINK SECTION');
+              console.log('🍺 specialRequests:', specialRequests);
 
               // Extract drink info from the Pre-ordered section
               let preOrderedPart;
               if (specialRequests.includes(' - Pre-ordered:')) {
+                console.log('🍺 Has separator format, extracting after separator');
                 // Format: "Includes X children - Pre-ordered: ..."
                 preOrderedPart = specialRequests.split(' - Pre-ordered:')[1];
               } else if (specialRequests.startsWith('Pre-ordered:')) {
+                console.log('🍺 Starts with Pre-ordered, extracting after prefix');
                 // Format: "Pre-ordered: ..." (drink info only)
                 preOrderedPart = specialRequests.substring('Pre-ordered:'.length).trim();
               }
-              console.log('preOrderedPart:', preOrderedPart);
+              console.log('🍺 preOrderedPart:', preOrderedPart);
+              console.log('🍺 preOrderedPart type:', typeof preOrderedPart);
+              console.log('🍺 preOrderedPart length:', preOrderedPart ? preOrderedPart.length : 'null/undefined');
 
               if (preOrderedPart) {
-                // Handle both formats:
-                // "CW-BOOKING - £36.00 (Session ID: cs_test_...)" OR
-                // "CW-BOOKING - £36.00 - (Session ID: cs_test_...)"
-                let drinkMatch = preOrderedPart.match(/^(.+?)\s*-\s*([^\s]+)\s*\(Session ID:\s*([^)]+)\)$/);
-                if (!drinkMatch) {
-                  // Try with extra dash before Session ID
-                  drinkMatch = preOrderedPart.match(/^(.+?)\s*-\s*([^\s]+)\s*-\s*\(Session ID:\s*([^)]+)\)$/);
-                }
-                console.log('drinkMatch:', drinkMatch);
+                console.log('🍺 preOrderedPart exists, processing drink info');
+
+                // First, remove Session ID from the display
+                console.log('🍺 Original preOrderedPart:', preOrderedPart);
+                const cleanPreOrderedPart = preOrderedPart.replace(/\s*\(Session ID: [^)]+\)/g, '').trim();
+                console.log('🍺 cleanPreOrderedPart after Session ID removal:', cleanPreOrderedPart);
+
+                // Extract drink name and price from the cleaned string
+                const drinkMatch = cleanPreOrderedPart.match(/^(.+?)\s*-\s*([^\s]+)$/);
+                console.log('🍺 drinkMatch regex result:', drinkMatch);
 
                 if (drinkMatch) {
-                  const [, drinkName, drinkPrice, sessionId] = drinkMatch;
-                  console.log('Parsed - Name:', drinkName, 'Price:', drinkPrice, 'Session:', sessionId);
+                  const [, drinkName, drinkPrice] = drinkMatch;
+                  console.log('🍺 Successfully parsed - Name:', drinkName, 'Price:', drinkPrice);
+
+                  // Extract session ID for cancel functionality (from original preOrderedPart)
+                  const sessionIdMatch = preOrderedPart.match(/Session ID:\s*([^)]+)/);
+                  const sessionId = sessionIdMatch ? sessionIdMatch[1] : '';
+                  console.log('🍺 Extracted sessionId for cancel:', sessionId);
+                  console.log('🍺 sessionId exists:', !!sessionId);
 
                   return (
                     <div className={styles.drinkOrderSection}>
@@ -326,7 +415,12 @@ export default function TopConfirmed() {
                       </div>
                     </div>
                   );
+                } else {
+                  console.log('🍺 drinkMatch failed - drink section will not render');
+                  console.log('🍺 cleanPreOrderedPart that failed:', cleanPreOrderedPart);
                 }
+              } else {
+                console.log('🍺 preOrderedPart is falsy - drink section will not render');
               }
               return null;
             })()}
