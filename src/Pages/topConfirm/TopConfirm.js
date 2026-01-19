@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { getCurrentRestaurant } from '../../utils/restaurantUtils';
+import { formatTimeTo12Hour } from '../../utils/dateUtils';
 import { useDispatch, useSelector } from 'react-redux';
 import { postRequest } from "../../config/AxiosRoutes/index"
 import dateicon from "../../images/Chips Icons Mobile.png";
@@ -259,7 +260,7 @@ export default function Confirm() {
           </section>
 
           <div className={styles.tableReturnInfo}>
-            On busy days we respectfully require your table back by {bookingState.returnBy || "XX:XX"} but if you would like to stay longer and enjoy our beautiful pub then please let your serve know and we will try to accommodate you somewhere for post meal drinks.
+            On busy days we respectfully require your table back by {formatTimeTo12Hour(bookingState.returnBy) || "XX:XX"} but if you would like to stay longer and enjoy our beautiful pub then please let your server know and we will try to accommodate you somewhere for post meal drinks.
           </div>
         </div>
 

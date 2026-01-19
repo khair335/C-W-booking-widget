@@ -57,3 +57,23 @@ export const isSameDate = (date1, date2) => {
 export const isToday = (date) => {
   return isSameDate(date, new Date());
 };
+
+export const formatTimeTo12Hour = (timeString) => {
+  if (!timeString || timeString === "XX:XX") return "XX:XX";
+
+  try {
+    // Handle various input formats like "13:45:00", "13:45", "1:45pm", etc.
+    const timeParts = timeString.split(':');
+    let hours = parseInt(timeParts[0]);
+    let minutes = timeParts[1] ? parseInt(timeParts[1].split(/[^\d]/)[0]) : 0;
+
+    const period = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Convert 0 to 12 for 12 AM
+
+    return `${hours}:${minutes.toString().padStart(2, '0')}${period}`;
+  } catch (error) {
+    console.error('Error formatting time:', error);
+    return timeString; // Return original string if formatting fails
+  }
+};

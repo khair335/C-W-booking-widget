@@ -235,7 +235,7 @@ export default function Confirm() {
           </section>
 
           <div className={styles.tableReturnInfo}>
-            On busy days we respectfully require your table back by 8:45 PM but if you would like to stay longer and enjoy our beautiful pub then please let your serve know and we will try to accommodate you somewhere for post meal drinks.
+            On busy days we respectfully require your table back by 8:45 PM but if you would like to stay longer and enjoy our beautiful pub then please let your server know and we will try to accommodate you somewhere for post meal drinks.
           </div>
         </div>
 
