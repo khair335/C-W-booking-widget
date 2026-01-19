@@ -111,7 +111,7 @@
     font-size: 24px;
     line-height: 100%;
     letter-spacing: 0%;
-    text-transform: capitalize;
+     
     color: #1C1C1C;
     margin-bottom: 16px;
 
@@ -184,7 +184,7 @@
     letter-spacing: 0%;
     text-align: center;
     vertical-align: middle;
-    text-transform: capitalize;
+     
     margin-bottom: 36px;
 }
 
@@ -256,7 +256,7 @@
     font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
-    text-transform: capitalize;
+     
     color: #1C1C1C;
     text-align: start;
     padding-top: 26px;
@@ -315,7 +315,7 @@
     font-size: 22px;
     line-height: 100%;
     letter-spacing: 5%;
-    text-transform: capitalize;
+     
     text-decoration: underline;
 
     color: #3D3D3D;
@@ -329,7 +329,7 @@
     font-size: 18px;
     line-height: 140%;
     letter-spacing: 0%;
-    text-transform: capitalize;
+     
     color: #1C1C1C;
     text-align: start;
     display: none;
@@ -356,7 +356,7 @@
     font-weight: 700;
     font-size: 36px;
     line-height: 100%;
-    text-transform: capitalize;
+     
     margin: 0;
     padding-bottom: 6px;
 }

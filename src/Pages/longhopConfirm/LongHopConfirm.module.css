@@ -38,7 +38,7 @@
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
-    text-transform: capitalize;
+     
     color: #1C1C1C;
     padding-top: 10px;
 }
@@ -93,7 +93,7 @@
     letter-spacing: 0%;
     text-align: center;
     vertical-align: middle;
-    text-transform: capitalize;
+     
 }
 
 .bookingInfo {
@@ -103,7 +103,7 @@
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
-    text-transform: capitalize;
+     
     color: #1C1C1C;
     padding-bottom: 10px;
     margin: 0;
@@ -147,7 +147,7 @@
     font-size: 18px;
     line-height: 140%;
     letter-spacing: 0%;
-    text-transform: capitalize;
+     
     color: #1C1C1C;
     text-align: start;
     gap: 70px;
@@ -164,7 +164,7 @@
     font-size: 22px;
     line-height: 100%;
     letter-spacing: 0%;
-    text-transform: capitalize;
+     
     color: #1C1C1C;
     margin: 0;
     word-break: break-all;
@@ -182,7 +182,7 @@
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
-    text-transform: capitalize;
+     
     color: #1C1C1C;
     margin-bottom: 16px;
 }
@@ -312,7 +312,7 @@
     line-height: 130%;
     letter-spacing: 0%;
     vertical-align: middle;
-    text-transform: capitalize;
+     
     color: #3D3D3D;
 }
 
@@ -453,7 +453,7 @@
     font-weight: 700;
     font-size: 36px;
     line-height: 100%;
-    text-transform: capitalize;
+     
     margin: 0;
     padding-bottom: 6px;
 }
