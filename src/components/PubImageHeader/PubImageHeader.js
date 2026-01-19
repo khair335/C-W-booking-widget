@@ -15,7 +15,7 @@ const PubImageHeader = (props) => {
       }
       
       {/* Indicator */}
-      {
+      {/* {
         step && <Indicator step={step} stepLength={stepLength} />
       }
 
@@ -23,7 +23,7 @@ const PubImageHeader = (props) => {
         pubLink && <Link to={pubLink} className='chose__another__link'>
         {pubLinkLabel}
       </Link>
-      }
+      } */}
 
     </div>
   );

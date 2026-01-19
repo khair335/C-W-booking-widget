@@ -64,7 +64,7 @@ let Router = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<TopandRun />} />
                 <Route path="/griffin" element={<Griffin/>} />
                 <Route path="/longhop" element={<LongHop />} />
                 <Route path="/longhoparea" element={<LongHopArea />} />
