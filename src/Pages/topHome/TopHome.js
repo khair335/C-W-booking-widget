@@ -38,7 +38,7 @@ function TopHome() {
     modal.classList.remove('show');
     modal.style.display = 'none';
 
-    navigate('/Select');
+    navigate('/topandrun');
   };
 
   return (
