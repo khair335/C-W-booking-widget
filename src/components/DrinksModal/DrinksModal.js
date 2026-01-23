@@ -49,6 +49,15 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
 
   const [bookingReference, setBookingReference] = useState(null);
 
+  // Generate booking reference when modal opens
+  useEffect(() => {
+    if (isOpen && !bookingReference) {
+      const newBookingRef = uuidv4();
+      setBookingReference(newBookingRef);
+      console.log('Generated booking reference:', newBookingRef);
+    }
+  }, [isOpen, bookingReference]);
+
   const saveBookingDataToLocalStorage = (selectedDrink) => {
     // Prepare complete booking data
     const bookingData = {
@@ -62,7 +71,7 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
       PromotionId: selectedPromotion?.Id || null,
       PromotionName: selectedPromotion?.Name || null,
       selectedPromotion,
-
+      
       // Customer details
       firstName: customerDetails.FirstName,
       surname: customerDetails.Surname,
@@ -71,15 +80,15 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
       phone: customerDetails.Mobile,
       mobileCountryCode: customerDetails.MobileCountryCode,
       birthday: customerDetails.Birthday,
-
+      
       // Special requests
       specialRequests,
-
+      
       // Restaurant info
       restaurant: pubType || selectedPub || 'unknown',
       selectedPub,
       pubType,
-
+      
       // Tracking data
       bookingReference,
       selectedDrink: selectedDrink.name,
@@ -110,73 +119,9 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
     // 2. Save ALL booking data to localStorage BEFORE redirecting
     saveBookingDataToLocalStorage(drink);
 
-    // 3. Check if we're in an iframe
-    const isInIframe = window !== window.parent;
-
-    if (isInIframe) {
-      console.log('📱 Running in iframe - requesting parent redirect');
-
-      // Send message to parent page to handle the Stripe redirect
-      const messageData = {
-        type: 'IFRAME_REDIRECT',
-        url: drink.stripeLink,
-        drinkName: drink.name,
-        drinkPrice: drink.price
-      };
-      console.log('📤 Sending redirect request to parent:', messageData);
-      window.parent.postMessage(messageData, '*'); // Use '*' for demo - in production, specify exact origin
-
-      // Close the modal immediately
-      onClose();
-    } else {
-      // Not in iframe - direct redirect (for standalone testing)
-      console.log('🔗 Not in iframe - direct redirect to Stripe:', drink.stripeLink);
-      window.location.href = drink.stripeLink;
-    }
-  };
-
-  // Generate booking reference when modal opens
-  useEffect(() => {
-    if (isOpen && !bookingReference) {
-      const newBookingRef = uuidv4();
-      setBookingReference(newBookingRef);
-      console.log('Generated booking reference:', newBookingRef);
-    }
-  }, [isOpen, bookingReference]);
-
-
-  const handleDrinkSelectionOld = (drink) => {
-    console.log('Drink selected:', drink.name);
-
-    // 1. Store the selected drink in Redux
-    dispatch(updateSelectedDrink(drink));
-
-    // 2. Save ALL booking data to localStorage BEFORE redirecting
-    saveBookingDataToLocalStorage(drink);
-
-    // 3. Check if we're in an iframe
-    const isInIframe = window !== window.parent;
-
-    if (isInIframe) {
-      console.log('📱 Running in iframe - requesting parent page redirect');
-
-      // Send message to parent page to handle the Stripe redirect
-      const messageData = {
-        type: 'IFRAME_REDIRECT',
-        url: drink.stripeLink,
-        drinkName: drink.name,
-        drinkPrice: drink.price
-      };
-      console.log('📤 Sending redirect request to parent:', messageData);
-      window.parent.postMessage(messageData, '*'); // Use '*' for demo - in production, specify exact origin
-
-      // Close the modal immediately
-      onClose();
-    } else {
-      // Not in iframe - direct redirect (for standalone testing)
-      console.log('🔗 Not in iframe - direct redirect to Stripe:', drink.stripeLink);
-      window.location.href = drink.stripeLink;
-    }
+    // 3. Redirect to Stripe payment link (not opening new tab - user leaves site)
+    console.log('Redirecting to Stripe:', drink.stripeLink);
+    window.location.href = drink.stripeLink;
   };
 
   const handleSkip = () => {

@@ -10,60 +10,14 @@ const PaymentSuccess = () => {
   const [error, setError] = useState(null);
   const [drinkInfo, setDrinkInfo] = useState(null);
 
-  console.log('🚀 PaymentSuccess component loaded');
-
-  // Function to handle continue booking logic
-  const handleContinueBooking = () => {
-    console.log('🎯 Continue booking clicked');
-
-    // Get booking data
-    const bookingData = localStorage.getItem('pendingBookingData');
-    console.log('📦 Booking data:', bookingData);
-
-    let restaurant = 'unknown';
-    if (bookingData) {
-      const parsed = JSON.parse(bookingData);
-      restaurant = (parsed.restaurant || parsed.pubType || '').toLowerCase();
-    }
-
-    // SIMPLIFIED APPROACH: Redirect the entire page
-    // Instead of iframe communication, redirect to a success URL that Squarespace can handle
-
-    console.log('🔄 Redirecting entire page to success URL');
-
-    // Create success URL with booking data
-    const baseUrl = document.referrer || window.location.origin;
-    const successParams = new URLSearchParams({
-      booking_success: 'true',
-      restaurant: restaurant,
-      drink_amount: drinkInfo?.amount || '0',
-      drink_name: drinkInfo?.drink || 'Drink',
-      session_id: searchParams.get('session_id') || 'unknown'
-    });
-
-    // Try to redirect to referrer with success params, fallback to current origin
-    let redirectUrl;
-    if (document.referrer && document.referrer.includes('http')) {
-      // Strip any existing query params from referrer and add success params
-      const referrerBase = document.referrer.split('?')[0];
-      redirectUrl = `${referrerBase}?${successParams.toString()}`;
-    } else {
-      redirectUrl = `${window.location.origin}/booking-success?${successParams.toString()}`;
-    }
-
-    console.log('🚀 Redirecting to:', redirectUrl);
-    window.top.location.href = redirectUrl;
-  };
-
   useEffect(() => {
-
     const verifyPayment = async () => {
       // 1. Get session_id from URL
       const sessionId = searchParams.get('session_id');
 
       if (!sessionId) {
-        // Don't set error immediately - might be waiting for simulation
-        setLoading(true);
+        setError('No payment session found. Please try again.');
+        setLoading(false);
         return;
       }
 
@@ -84,7 +38,7 @@ const PaymentSuccess = () => {
             drinkAmount: response.data.amount,
             sessionId: response.data.session_id
           });
-
+          
           localStorage.setItem('drinkPurchased', 'true');
           localStorage.setItem('drinkName', response.data.drink);
           localStorage.setItem('drinkAmount', response.data.amount.toString());
@@ -100,20 +54,6 @@ const PaymentSuccess = () => {
           });
 
           setDrinkInfo(response.data);
-
-          // 4. Check if we're in an iframe and notify parent
-          const isInIframe = window !== window.parent;
-          if (isInIframe) {
-            console.log('📱 Running in iframe - notifying parent of payment success');
-
-            // Send message to parent page
-            window.parent.postMessage({
-              type: 'PAYMENT_SUCCESS',
-              sessionId: sessionId,
-              drinkInfo: response.data
-            }, '*'); // Use '*' for demo - in production, specify exact origin
-          }
-
           setLoading(false);
         } else {
           setError('Payment verification failed. Please contact support.');
@@ -129,16 +69,37 @@ const PaymentSuccess = () => {
     verifyPayment();
   }, [searchParams]);
 
-  const handleContinue = (e) => {
-    console.log('🎯 Continue button clicked - calling handleContinueBooking');
-    e.preventDefault(); // Prevent any default behavior
-    e.stopPropagation(); // Stop event bubbling
+  const handleContinue = () => {
+    // Get booking data to determine which restaurant
+    const bookingData = localStorage.getItem('pendingBookingData');
+    
+    if (bookingData) {
+      const parsed = JSON.parse(bookingData);
+      const restaurant = (parsed.restaurant || parsed.pubType || '').toLowerCase();
 
-    // Always iframe mode for payment success page
-    console.log('📱 PaymentSuccess: Always iframe mode - blocking navigation');
-    handleContinueBooking();
+      console.log('🏠 Restaurant from localStorage:', parsed.restaurant || parsed.pubType);
+      console.log('🔽 Normalized (lowercase):', restaurant);
 
-    console.log('✅ handleContinue completed');
+      // Redirect back to appropriate Details page based on restaurant (case-insensitive)
+      if (restaurant === 'griffin') {
+        console.log('→ Navigating to /Details (Griffin)');
+        navigate('/Details'); // Griffin uses /Details route
+      } else if (restaurant === 'longhop') {
+        console.log('→ Navigating to /longhopdetails (Long Hop)');
+        navigate('/longhopdetails'); // Long Hop uses /longhopdetails route
+      } else if (restaurant === 'top' || restaurant === 'tapandrun') {
+        console.log('→ Navigating to /TopDetails (Tap & Run)');
+        navigate('/TopDetails'); // Tap & Run uses /TopDetails route
+      } else {
+        // Fallback - try to guess from current data
+        console.log('⚠️  Unknown restaurant:', restaurant, '- using fallback /Details');
+        navigate('/Details');
+      }
+    } else {
+      // No booking data found, go to home
+      console.log('❌ No booking data found, going home');
+      navigate('/');
+    }
   };
 
   // Loading state
@@ -206,9 +167,6 @@ const PaymentSuccess = () => {
 
         <button onClick={handleContinue} className="btn-continue">
           Continue with Booking
-          <br /><small style={{fontSize: '10px', color: '#666'}}>
-            Redirects to confirmation page
-          </small>
         </button>
 
         <p className="note">
