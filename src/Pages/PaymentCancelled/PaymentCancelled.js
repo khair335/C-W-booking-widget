@@ -1,9 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PaymentCancelled.css';
 
 const PaymentCancelled = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // For payment cancelled page, we assume it's always in an iframe context
+    // since this page is only loaded within iframes in the demo setup
+    const isInIframe = true;
+    console.log('🚫 PaymentCancelled loaded - Always treating as iframe mode');
+
+    // Listen for simulation messages from parent (for testing)
+    const handleSimulationMessage = (event) => {
+      if (event.data && event.data.type === 'SIMULATE_PAYMENT_CANCELLED') {
+        console.log('🧪 Received simulation message for payment cancelled');
+
+        // Notify parent of cancellation
+        window.parent.postMessage({
+          type: 'PAYMENT_CANCELLED'
+        }, '*');
+      }
+    };
+
+    window.addEventListener('message', handleSimulationMessage);
+
+    // Always notify parent for payment cancellations (iframe mode)
+    if (!window.location.search.includes('session_id')) {
+      // Only notify if not already handled by real payment flow
+      console.log('📱 Payment cancelled in iframe - notifying parent');
+
+      // Send message to parent page
+      window.parent.postMessage({
+        type: 'PAYMENT_CANCELLED'
+      }, '*'); // Use '*' for demo - in production, specify exact origin
+    }
+
+    return () => {
+      window.removeEventListener('message', handleSimulationMessage);
+    };
+  }, []);
 
   const handleTryAgain = () => {
     // Get booking data to determine which restaurant
