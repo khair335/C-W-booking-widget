@@ -10,75 +10,49 @@ const PaymentSuccess = () => {
   const [error, setError] = useState(null);
   const [drinkInfo, setDrinkInfo] = useState(null);
 
-  // For payment success page, we assume it's always in an iframe context
-  // since this page is only loaded within iframes in the demo setup
-  const isInIframe = true;
-  console.log('🚀 PaymentSuccess component loaded - Always treating as iframe mode');
+  console.log('🚀 PaymentSuccess component loaded');
 
-  // Function to handle continue booking logic (always iframe mode for payment success)
+  // Function to handle continue booking logic
   const handleContinueBooking = () => {
-    console.log('📱 PaymentSuccess: Always in iframe mode - notifying parent to continue booking');
+    console.log('🎯 Continue booking clicked');
 
-    // Get booking data to determine which restaurant
+    // Get booking data
     const bookingData = localStorage.getItem('pendingBookingData');
-    console.log('📦 Booking data from localStorage:', bookingData);
+    console.log('📦 Booking data:', bookingData);
 
     let restaurant = 'unknown';
     if (bookingData) {
       const parsed = JSON.parse(bookingData);
       restaurant = (parsed.restaurant || parsed.pubType || '').toLowerCase();
-      console.log('🏠 Restaurant from localStorage:', parsed.restaurant || parsed.pubType, '-> normalized:', restaurant);
     }
 
-    // Send message to parent page to continue the booking flow
-    const messageData = {
-      type: 'CONTINUE_BOOKING',
+    // SIMPLIFIED APPROACH: Redirect the entire page
+    // Instead of iframe communication, redirect to a success URL that Squarespace can handle
+
+    console.log('🔄 Redirecting entire page to success URL');
+
+    // Create success URL with booking data
+    const baseUrl = document.referrer || window.location.origin;
+    const successParams = new URLSearchParams({
+      booking_success: 'true',
       restaurant: restaurant,
-      drinkInfo: drinkInfo
-    };
-    console.log('📤 Sending message to parent:', messageData);
+      drink_amount: drinkInfo?.amount || '0',
+      drink_name: drinkInfo?.drink || 'Drink',
+      session_id: searchParams.get('session_id') || 'unknown'
+    });
 
-    try {
-      // Try multiple approaches to communicate with parent
-
-      // 1. postMessage with wildcard (may be blocked by Vercel)
-      window.parent.postMessage(messageData, '*');
-      console.log('✅ Message sent to parent with wildcard origin');
-
-      // 2. Try to detect referrer origin and send specifically
-      if (document.referrer) {
-        try {
-          const referrerOrigin = new URL(document.referrer).origin;
-          console.log('📍 Detected referrer origin:', referrerOrigin);
-          window.parent.postMessage(messageData, referrerOrigin);
-          console.log('✅ Message also sent to referrer origin');
-        } catch (e) {
-          console.log('⚠️ Could not parse referrer:', e.message);
-        }
-      }
-
-      // 3. Fallback: Try to modify iframe src to pass data via URL
-      // This works if the parent page monitors iframe location changes
-      console.log('🔄 Attempting URL-based communication fallback');
-      const currentUrl = window.location.href;
-      const separator = currentUrl.includes('?') ? '&' : '?';
-      const dataParam = `iframe_data=${encodeURIComponent(JSON.stringify(messageData))}`;
-      const newUrl = currentUrl + separator + dataParam;
-
-      // Only change URL if we can (may be blocked)
-      try {
-        window.history.replaceState(null, '', newUrl);
-        console.log('✅ URL updated with iframe data');
-      } catch (e) {
-        console.log('⚠️ Could not update URL:', e.message);
-      }
-
-    } catch (error) {
-      console.error('❌ Failed to communicate with parent:', error);
+    // Try to redirect to referrer with success params, fallback to current origin
+    let redirectUrl;
+    if (document.referrer && document.referrer.includes('http')) {
+      // Strip any existing query params from referrer and add success params
+      const referrerBase = document.referrer.split('?')[0];
+      redirectUrl = `${referrerBase}?${successParams.toString()}`;
+    } else {
+      redirectUrl = `${window.location.origin}/booking-success?${successParams.toString()}`;
     }
 
-    // Always block navigation in iframe mode
-    console.log('🛑 Blocking navigation - parent handles continuation');
+    console.log('🚀 Redirecting to:', redirectUrl);
+    window.top.location.href = redirectUrl;
   };
 
   useEffect(() => {
@@ -231,9 +205,9 @@ const PaymentSuccess = () => {
         )}
 
         <button onClick={handleContinue} className="btn-continue">
-          Continue with Booking (Iframe Mode)
+          Continue with Booking
           <br /><small style={{fontSize: '10px', color: '#666'}}>
-            Sends message to parent page
+            Redirects to confirmation page
           </small>
         </button>
 
