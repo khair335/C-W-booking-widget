@@ -39,10 +39,42 @@ const PaymentSuccess = () => {
     console.log('📤 Sending message to parent:', messageData);
 
     try {
-      window.parent.postMessage(messageData, '*'); // Use '*' for demo - in production, specify exact origin
-      console.log('✅ Message sent successfully to parent');
+      // Try multiple approaches to communicate with parent
+
+      // 1. postMessage with wildcard (may be blocked by Vercel)
+      window.parent.postMessage(messageData, '*');
+      console.log('✅ Message sent to parent with wildcard origin');
+
+      // 2. Try to detect referrer origin and send specifically
+      if (document.referrer) {
+        try {
+          const referrerOrigin = new URL(document.referrer).origin;
+          console.log('📍 Detected referrer origin:', referrerOrigin);
+          window.parent.postMessage(messageData, referrerOrigin);
+          console.log('✅ Message also sent to referrer origin');
+        } catch (e) {
+          console.log('⚠️ Could not parse referrer:', e.message);
+        }
+      }
+
+      // 3. Fallback: Try to modify iframe src to pass data via URL
+      // This works if the parent page monitors iframe location changes
+      console.log('🔄 Attempting URL-based communication fallback');
+      const currentUrl = window.location.href;
+      const separator = currentUrl.includes('?') ? '&' : '?';
+      const dataParam = `iframe_data=${encodeURIComponent(JSON.stringify(messageData))}`;
+      const newUrl = currentUrl + separator + dataParam;
+
+      // Only change URL if we can (may be blocked)
+      try {
+        window.history.replaceState(null, '', newUrl);
+        console.log('✅ URL updated with iframe data');
+      } catch (e) {
+        console.log('⚠️ Could not update URL:', e.message);
+      }
+
     } catch (error) {
-      console.error('❌ Failed to send message to parent:', error);
+      console.error('❌ Failed to communicate with parent:', error);
     }
 
     // Always block navigation in iframe mode
