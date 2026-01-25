@@ -21,6 +21,24 @@ const PaymentSuccess = () => {
         return;
       }
 
+      // 2. Check if we're NOT in an iframe (loaded directly after Stripe redirect)
+      if (window.parent === window) {
+        console.log('🚨 PaymentSuccess loaded directly (not in iframe) - redirecting to Squarespace demo');
+
+        // Get booking data to determine restaurant
+        const bookingData = localStorage.getItem('pendingBookingData');
+        if (bookingData) {
+          const parsed = JSON.parse(bookingData);
+          const restaurant = parsed.restaurant || parsed.pubType || '';
+
+          // Redirect to Squarespace demo with success parameters
+          const squarespaceUrl = `http://127.0.0.1:5500/SquarespaceDemo/index.html?preorder_success=true&session_id=${sessionId}&restaurant=${restaurant}`;
+          console.log('🔄 Redirecting to Squarespace demo:', squarespaceUrl);
+          window.location.href = squarespaceUrl;
+          return;
+        }
+      }
+
       try {
         console.log('Verifying payment session:', sessionId);
 
@@ -72,13 +90,34 @@ const PaymentSuccess = () => {
   const handleContinue = () => {
     // Get booking data to determine which restaurant
     const bookingData = localStorage.getItem('pendingBookingData');
-    
+
     if (bookingData) {
       const parsed = JSON.parse(bookingData);
       const restaurant = (parsed.restaurant || parsed.pubType || '').toLowerCase();
 
       console.log('🏠 Restaurant from localStorage:', parsed.restaurant || parsed.pubType);
       console.log('🔽 Normalized (lowercase):', restaurant);
+
+      // Check if we're in an iframe
+      if (window.parent !== window) {
+        console.log('📡 Running in iframe - sending message to parent');
+
+        // Send message to parent with booking continuation data
+        window.parent.postMessage({
+          type: 'CONTINUE_BOOKING',
+          restaurant: parsed.restaurant || parsed.pubType,
+          drinkInfo: drinkInfo ? {
+            drink: drinkInfo.drink,
+            amount: drinkInfo.amount
+          } : null,
+          sessionId: searchParams.get('session_id')
+        }, '*');
+
+        return; // Don't navigate - parent will handle iframe navigation
+      }
+
+      // Not in iframe - navigate normally
+      console.log('🏠 Not in iframe - navigating directly');
 
       // Redirect back to appropriate Details page based on restaurant (case-insensitive)
       if (restaurant === 'griffin') {

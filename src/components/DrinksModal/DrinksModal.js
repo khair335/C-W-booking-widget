@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './DrinksModal.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateSelectedDrink, updateSpecialRequests } from '../../store/bookingSlice';
+import { updateSelectedDrink } from '../../store/bookingSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 const drinks = [
@@ -28,7 +28,16 @@ const drinks = [
     name: 'CW-BOOKING Test Item',
     price: 'Test',
     stripeLink: 'https://buy.stripe.com/test_bJe3cu58Q5fz8iy5PBeQM00'
+  },
+  // Local development test links (uncomment for testing)
+  /*
+  {
+    id: 5,
+    name: 'LOCAL TEST - Prosecco',
+    price: '£36.00',
+    stripeLink: 'https://buy.stripe.com/test_1234567890?client_reference_id=test&success_url=http://127.0.0.1:5500/SquarespaceDemo/index.html?preorder_success=true&session_id=test_session&cancel_url=http://127.0.0.1:5500/SquarespaceDemo/index.html?payment_cancelled=true'
   }
+  */
 ];
 
 export default function DrinksModal({ isOpen, onClose, onContinue }) {
@@ -119,9 +128,21 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
     // 2. Save ALL booking data to localStorage BEFORE redirecting
     saveBookingDataToLocalStorage(drink);
 
-    // 3. Redirect to Stripe payment link (not opening new tab - user leaves site)
-    console.log('Redirecting to Stripe:', drink.stripeLink);
-    window.location.href = drink.stripeLink;
+    // 3. Check if we're in an iframe and communicate with parent for breakout
+    if (window.parent !== window) {
+      console.log('📡 Running in iframe - requesting parent to handle Stripe redirect');
+      // Send message to parent to handle iframe breakout
+      window.parent.postMessage({
+        type: 'IFRAME_REDIRECT',
+        url: drink.stripeLink,
+        drinkName: drink.name,
+        drinkPrice: drink.price
+      }, '*');
+    } else {
+      // Not in iframe - direct redirect
+      console.log('🏠 Not in iframe - redirecting directly to Stripe');
+      window.location.href = drink.stripeLink;
+    }
   };
 
   const handleSkip = () => {
