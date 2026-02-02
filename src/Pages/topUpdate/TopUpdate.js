@@ -27,7 +27,7 @@ export default function TopUpdated() {
           <h6 className={styles.subtext}>See You Soon At</h6>
         </div>
         <div className={`${styles.Data_type} `} >
-          <img src={logo1} alt="logo" />
+          <img className={styles.confirm_logo} src={logo1} alt="logo" />
         </div>
         <div className={styles.booked_info} >
           <h5>Main Road, Upper Broughton, Melton Mowbray, LE14 3BG</h5>

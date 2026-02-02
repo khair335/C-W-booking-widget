@@ -52,7 +52,7 @@ function TopHome() {
           pubLink="/Select"
         />
         <div className="section bookingcontainer">
-          <img src={logo1} alt="logo" />
+          <img className="confirm_logo" src={logo1} alt="logo" />
           <div className="logo-large">Booking</div>
           <div
             className="bookingttype"

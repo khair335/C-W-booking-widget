@@ -77,7 +77,7 @@ export default function TopBookingNumber() {
 
       <div className={styles.Modify_main_container} >
         <div className={`${styles.Nbooking_type} ${styles.imgdata}`}>
-          <img src={logo1} alt="logo" />
+          <img className={styles.confirm_logo} src={logo1} alt="logo" />
         </div>
         <div className={styles.Nbooking_type}>
           <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Cancel A Booking</h1>

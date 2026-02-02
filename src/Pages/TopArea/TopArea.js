@@ -122,7 +122,7 @@ console.log('availablePromotionIds',availablePromotionIds);
       />
       <div className={styles.Ara_main} id="Area--main">
         <div className={`${styles.Area_type} ${styles.imgdata}`}>
-          <img src={logo1} alt="logo" />
+          <img className={styles.confirm_logo} src={logo1} alt="logo" />
         </div>
         <div className={styles.Area_type}>
           <h1 className={`${styles.logo_large} `}>Pick Your Area</h1>

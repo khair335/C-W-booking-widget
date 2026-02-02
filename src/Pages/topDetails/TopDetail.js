@@ -434,7 +434,7 @@ export default function Details() {
       />
       <div className={styles.Dmain}>
         <div className={`${styles.Data_type} ${styles.imgdata}`}>
-          <img src={logo1} alt="logo" />
+          <img className={styles.confirm_logo} src={logo1} alt="logo" />
         </div>
         <div className={styles.Data_type}>
           <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Enter Your Details</h1>

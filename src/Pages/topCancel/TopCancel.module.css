@@ -28,7 +28,13 @@
 
 
 }
+.confirm_logo {
+    max-width: 92px;
+    width: 100%;
+    height: 100px;
+    margin: 8px auto;
 
+}
 .Cancel_type {
     display: flex;
     flex-direction: column;

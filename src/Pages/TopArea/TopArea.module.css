@@ -9,7 +9,13 @@
     padding-top: 50px;
 }
 
+.confirm_logo {
+    max-width: 92px;
+    width: 100%;
+    height: 100px;
+    margin: 8px auto;
 
+}
 
 .Data_imag {
     width: 100%;

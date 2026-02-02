@@ -22,7 +22,7 @@ export default function Cancel() {
 
       <div className={styles.Modify_main}>
         <div className={`${styles.Cancel_type} ${styles.imgdata}`}>
-          <img src={logo1} alt="logo" />
+          <img className={styles.confirm_logo} src={logo1} alt="logo" />
         </div>
         <div className={styles.Cancel_type}>
           <h1 className={`${styles.logo_large} ${styles.datetilte}`}>Cancel A Booking </h1>
