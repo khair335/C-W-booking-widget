@@ -23,12 +23,12 @@ const drinks = [
     price: '£55.00',
     stripeLink: 'https://buy.stripe.com/4gM00j5kO6Usfcg3Mrg7e04'
   },
-  {
-    id: 4,
-    name: 'Chapel Down Sparkling test',
-    price: '£55.00',
-    stripeLink: 'https://buy.stripe.com/test_bJe7sL28C1A84xC2Ing7e01'
-  },
+  // {
+  //   id: 4,
+  //   name: 'Chapel Down Sparkling test',
+  //   price: '£55.00',
+  //   stripeLink: 'https://buy.stripe.com/test_bJe7sL28C1A84xC2Ing7e01'
+  // },
   // {
   //   id: 4,
   //   name: 'CW-BOOKING Test Item',
