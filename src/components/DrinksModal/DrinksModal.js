@@ -23,6 +23,12 @@ const drinks = [
     price: '£55.00',
     stripeLink: 'https://buy.stripe.com/4gM00j5kO6Usfcg3Mrg7e04'
   },
+  {
+    id: 4,
+    name: 'Chapel Down Sparkling test',
+    price: '£55.00',
+    stripeLink: 'https://buy.stripe.com/test_bJe7sL28C1A84xC2Ing7e01'
+  },
   // {
   //   id: 4,
   //   name: 'CW-BOOKING Test Item',
@@ -35,7 +41,7 @@ const drinks = [
     id: 5,
     name: 'LOCAL TEST - Prosecco',
     price: '£36.00',
-    stripeLink: 'https://buy.stripe.com/test_1234567890?client_reference_id=test&success_url=http://127.0.0.1:5500/SquarespaceDemo/index.html?preorder_success=true&session_id=test_session&cancel_url=http://127.0.0.1:5500/SquarespaceDemo/index.html?payment_cancelled=true'
+    stripeLink: 'https://buy.stripe.com/test_bJe7sL28C1A84xC2Ing7e01'
   }
   */
 ];

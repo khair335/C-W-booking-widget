@@ -45,11 +45,11 @@ export default function LongHopBooked() {
 
         </div>
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
-          {/* <CustomButton
-            label="Add to calender"
+          <CustomButton
+            label="Home"
             to="/"
 
-          /> */}
+          />
         </div>
       </div>
       {showCancelModal && (

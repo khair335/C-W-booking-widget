@@ -45,6 +45,7 @@ export default function Confirm() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [apiStatus, setApiStatus] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -72,7 +73,8 @@ export default function Confirm() {
   const handleBooking = async () => {
     setIsLoading(true);
     setError('');
-    
+    setApiStatus(null);
+
     const token = localStorage.getItem('token');
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -121,7 +123,10 @@ export default function Confirm() {
       console.log('Detected restaurant:', getCurrentRestaurant(pubType, window.location.pathname));
       
       // Check response status and handle accordingly
-      switch (response.data.Status) {
+      const status = response.data.Status;
+      setApiStatus(status);
+
+      switch (status) {
         case 'CreditCardRequired':
           // Show payment modal with Stripe setup
           setBookingResponse(response.data);
@@ -134,6 +139,20 @@ export default function Confirm() {
           setPaymentStatus('PaymentRequired');
           setShowPaymentModal(true);
           break;
+        case 'PaymentFailed':
+          // Booking exists but payment failed - show payment modal to retry
+          if (response.data.Booking) {
+            setBookingResponse(response.data);
+            setPaymentStatus('PaymentRequired');
+            setShowPaymentModal(true);
+            setError(`Payment failed. Your booking reference is ${response.data.Booking.Reference}. Please complete payment below.`);
+          } else {
+            setError('Payment failed. Please try again.');
+          }
+          break;
+        case 'CustomerBlocked':
+          setError('We\'re sorry, but we\'re unable to process your booking at this time. Please contact us for assistance.');
+          break;
         case 'Success':
           // Direct success - navigate to booked page
           clearAllBookingData();
@@ -142,8 +161,8 @@ export default function Confirm() {
           navigate('/topBooked');
           break;
         default:
-          setError('Unexpected response status. Please try again.');
-          console.error('Unexpected status:', response.data.Status);
+          setError(`Status: ${status}. Please try again or contact us for assistance.`);
+          console.error('Unexpected status:', status);
       }
     } catch (error) {
       console.error('Booking Failed:', error);
@@ -219,9 +238,18 @@ export default function Confirm() {
           <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
 
-        {error && (
+        {(error || apiStatus) && (
           <div className={styles.errorMessage}>
-            {error}
+            {apiStatus && (
+              <div style={{ color: '#856404', marginBottom: '0.5rem', fontWeight: '600' }}>
+                Status: {apiStatus}
+              </div>
+            )}
+            {error && (
+              <div style={{ fontWeight: 'bold' }}>
+                {error}
+              </div>
+            )}
           </div>
         )}
 
