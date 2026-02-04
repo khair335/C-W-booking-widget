@@ -92,7 +92,8 @@ export default function PaymentModal({
   bookingResponse,
   paymentStatus,
   onSuccess,
-  onError
+  onError,
+  restaurant = 'TheTapRun'
 }) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -239,6 +240,7 @@ export default function PaymentModal({
                 paymentStatus={paymentStatus}
                 onSuccess={handlePaymentSuccess}
                 onError={handlePaymentError}
+                restaurant={restaurant}
               />
             </Elements>
           )}

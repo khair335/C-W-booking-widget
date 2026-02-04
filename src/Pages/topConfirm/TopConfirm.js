@@ -140,12 +140,16 @@ export default function Confirm() {
           setShowPaymentModal(true);
           break;
         case 'PaymentFailed':
-          // Booking exists but payment failed - show payment modal to retry
+          // Booking exists but card hold failed - show payment modal to retry
           if (response.data.Booking) {
             setBookingResponse(response.data);
-            setPaymentStatus('PaymentRequired');
+            setPaymentStatus(
+              response.data.Booking?.PaymentInformation?.IsCreditCardRequired
+                ? 'CreditCardRequired'
+                : 'PaymentRequired'
+            );
             setShowPaymentModal(true);
-            setError(`Payment failed. Your booking reference is ${response.data.Booking.Reference}. Please complete payment below.`);
+            setError(`Payment failed. Your booking reference is ${response.data.Booking.Reference}. Please complete card details below.`);
           } else {
             setError('Payment failed. Please try again.');
           }
@@ -351,6 +355,7 @@ export default function Confirm() {
       <PaymentModal
         isOpen={showPaymentModal}
         onClose={handleCloseModal}
+        restaurant={getCurrentRestaurant(pubType, window.location.pathname)}
         bookingData={{
           VisitDate: date,
           VisitTime: time,

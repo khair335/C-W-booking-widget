@@ -43,7 +43,7 @@ const styles = {
   },
 };
 
-export default function StripePaymentForm({ bookingData, bookingResponse, paymentStatus, onSuccess, onError }) {
+export default function StripePaymentForm({ bookingData, bookingResponse, paymentStatus, onSuccess, onError, restaurant = 'TheTapRun' }) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -96,28 +96,52 @@ export default function StripePaymentForm({ bookingData, bookingResponse, paymen
       }
 
       // 2. Second API call WITH whole booking data + PaymentMethodId + SetupIntentClientSecret + StripeAccountId
+      // For PaymentFailed retry: prefer Booking data from response to ensure format matches server
+      const existingBooking = bookingResponse?.Booking;
+      const isRetry = existingBooking && (paymentStatus === 'PaymentFailed' || paymentStatus === 'PaymentRequired' || paymentStatus === 'CreditCardRequired');
+      const baseData = isRetry
+        ? {
+            VisitDate: existingBooking.VisitDate?.split('T')[0] || bookingData.VisitDate,
+            VisitTime: existingBooking.VisitTime || bookingData.VisitTime,
+            PartySize: existingBooking.PartySize ?? bookingData.PartySize,
+            PromotionId: existingBooking.PromotionId ?? bookingData.PromotionId,
+            PromotionName: existingBooking.PromotionName ?? bookingData.PromotionName,
+            SpecialRequests: existingBooking.SpecialRequests ?? bookingData.SpecialRequests,
+            Customer: existingBooking.Customer || bookingData.Customer,
+            ChannelCode: existingBooking.ChannelCode || bookingData.ChannelCode,
+            IsLeaveTimeConfirmed: existingBooking.IsLeaveTimeConfirmed ?? bookingData.IsLeaveTimeConfirmed,
+          }
+        : { ...bookingData };
+
       const submissionData2 = {
-        ...bookingData,
+        ...baseData,
         PaymentMethodId: paymentMethod.id,
-        SetupIntentClientSecret: bookingResponse?.SetupIntentClientSecret,
-        StripeAccountId: bookingResponse?.StripeAccountId,
-        // Include Token/EditToken if present so backend can identify booking context
+        SetupIntentClientSecret: bookingResponse?.SetupIntentClientSecret || undefined,
+        StripeAccountId: bookingResponse?.StripeAccountId || undefined,
+        // Include Token/EditToken for retry (PaymentFailed) - required for backend to identify existing booking
         Token: bookingResponse?.Booking?.Token || bookingResponse?.Token,
         EditToken: bookingResponse?.Booking?.EditToken || bookingResponse?.EditToken,
-        // Backward compatibility: some backends expect this field name
         stripePaymentMethodId: paymentMethod.id,
       };
+
+      // Remove undefined/null values to avoid API issues
+      Object.keys(submissionData2).forEach(key => {
+        if (submissionData2[key] === undefined || submissionData2[key] === null) {
+          delete submissionData2[key];
+        }
+      });
+
       const encodedData2 = toUrlEncoded(submissionData2);
 
       const response2 = await postRequest(
-        '/api/ConsumerApi/v1/Restaurant/TheTapRun/BookingWithStripeToken',
+        `/api/ConsumerApi/v1/Restaurant/${restaurant}/BookingWithStripeToken`,
         headers,
         encodedData2
       );
 
       console.log('Payment Response:', response2.data);
 
-      if (response2.data.Booking) {
+      if (response2.data.Status === 'Success' && response2.data.Booking) {
         // Extract transaction ID from various possible locations in the response
         const transactionId = response2.data.Booking.Reference ||
                               response2.data.Booking.Id ||
@@ -134,7 +158,10 @@ export default function StripePaymentForm({ bookingData, bookingResponse, paymen
 
         onSuccess(enhancedResponse);
       } else {
-        setError('Payment failed. Please try again.');
+        const apiError = response2.data?.Errors?.[0] || response2.data?.message;
+        const errorMsg = apiError || `Payment failed (${response2.data?.Status || 'Unknown'}). Please try again.`;
+        setError(errorMsg);
+        // Don't call onError - keep modal open so user can retry with different card
       }
 
     } catch (error) {
