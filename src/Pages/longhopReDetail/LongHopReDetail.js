@@ -138,7 +138,7 @@ export default function LongHopReDetail() {
     if (!formData.Customer.Surname.trim()) newErrors.Surname = 'Last name is required';
     if (!formData.Customer.Mobile.trim()) newErrors.Mobile = 'Mobile number is required';
     if (!formData.Customer.Email.trim()) newErrors.Email = 'Email address is required';
-    if (!formData.Customer.Birthday) newErrors.Birthday = 'Date of birth is required';
+    // if (!formData.Customer.Birthday) newErrors.Birthday = 'Date of birth is required';
     if (!date) newErrors.VisitDate = 'Visit date is required';
     if (!time) newErrors.VisitTime = 'Visit time is required';
     if (!adults) newErrors.PartySize = 'At least one guest is required';
