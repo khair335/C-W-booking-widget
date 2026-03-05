@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../images/Griffin Black.png";
 import sectionimage from "../../images/79205c0e916b529d8d136ce69e32e592.png";
 import logo1 from "../../images/Logo (1).png";
@@ -19,6 +19,30 @@ export default function Booked() {
   const {
     successBookingData
   } = bookingState;
+
+  // Notify parent page of successful booking confirmation for tracking
+  useEffect(() => {
+    if (successBookingData?.Booking?.Reference && window.parent !== window) {
+      // Prevent duplicate messages by checking if we've already sent this booking ref
+      const sentBookings = sessionStorage.getItem('sentBookingConfirmations') || '';
+      const bookingRef = successBookingData.Booking.Reference;
+
+      if (!sentBookings.includes(bookingRef)) {
+        console.log('📡 Notifying parent page of booking confirmation:', bookingRef);
+
+        // Send message to parent page for conversion tracking
+        window.parent.postMessage({
+          type: "CWT_BOOKING_CONFIRMED",
+          brand: "TapAndRun",
+          bookingRef: bookingRef,
+          ts: Date.now()
+        }, "*");
+
+        // Mark this booking as sent to prevent duplicates
+        sessionStorage.setItem('sentBookingConfirmations', sentBookings + ',' + bookingRef);
+      }
+    }
+  }, [successBookingData?.Booking?.Reference]);
 
   return (
     <div className={styles.BookeddMain} id="choose">
