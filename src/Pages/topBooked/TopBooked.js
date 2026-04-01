@@ -11,6 +11,40 @@ import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { useSelector } from 'react-redux';
 import CancelModal from '../../components/CancelModal/CancelModal';
 
+// Google Tag Manager for Tap & Run booking tracking
+const initGTM = () => {
+  if (!window.dataLayer) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-W6HQGKZK';
+    document.head.appendChild(script);
+  }
+};
+
+// Fire conversion event for booking completion
+const trackBookingConversion = (bookingRef) => {
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      event: 'booking_conversion',
+      booking_reference: bookingRef,
+      brand: 'TapAndRun',
+      timestamp: Date.now()
+    });
+  }
+
+  // Also support gtag if available
+  if (window.gtag) {
+    window.gtag('event', 'conversion', {
+      send_to: 'GTM-W6HQGKZK/booking_conversion',
+      booking_reference: bookingRef,
+      brand: 'TapAndRun'
+    });
+  }
+};
+
 export default function Booked() {
   const [showCancelModal, setShowCancelModal] = useState(false);
 
