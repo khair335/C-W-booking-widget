@@ -47,7 +47,7 @@ export default function Select() {
           />
         </div>
         <div className={styles.select2}></div>
-        <div className={styles.select_typee}>
+        {/* <div className={styles.select_typee}>
           <img className={styles.logos2} src={logo} alt="Logo_Top&Run" />
           <p className={styles.texttoprun}>
             174 Main St, Swithland, Leicester LE12 8TJ, United <br /> Kingdom
@@ -58,7 +58,7 @@ export default function Select() {
             bgColor="#C39A7B"
             color="#FFFCF7"
           />
-        </div>
+        </div> */}
         <div className={styles.select_typee}>
           <img className={styles.logos} src={longhoplogo} alt="Logo_The Long Hop" />
           <p className={styles.texttoprun}>
