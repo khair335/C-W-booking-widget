@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../images/The Long Hop - text.png";
 import sectionimage from "../../images/TheLongHop_MainiMAGE.jpg";
 import styles from "./LongHopBooked.module.css";
@@ -8,6 +8,31 @@ import CustomButton from '../../components/ui/CustomButton/CustomButton';
 import { useSelector } from "react-redux";
 import CancelModal from '../../components/CancelModal/CancelModal';
 
+// Google Tag Manager for Long Hop booking tracking
+const initGTM = () => {
+  if (!window.dataLayer) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-TQHBVNVV';
+    document.head.appendChild(script);
+  }
+};
+
+// Fire conversion event for booking completion
+const trackBookingConversion = (bookingRef) => {
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      event: 'booking_conversion',
+      booking_reference: bookingRef,
+      brand: 'LongHop',
+      timestamp: Date.now()
+    });
+  }
+};
+
 export default function LongHopBooked() {
   const [showCancelModal, setShowCancelModal] = useState(false);
 
@@ -16,6 +41,22 @@ export default function LongHopBooked() {
   const {
     successBookingData
   } = bookingState;
+
+  useEffect(() => {
+    initGTM();
+  }, []);
+
+  useEffect(() => {
+    const bookingRef = successBookingData?.Booking?.Reference;
+    if (!bookingRef) return;
+
+    // prevent duplicate conversion events on refresh / re-render
+    const sentBookings = sessionStorage.getItem('sentBookingConfirmations') || '';
+    if (sentBookings.includes(bookingRef)) return;
+
+    trackBookingConversion(bookingRef);
+    sessionStorage.setItem('sentBookingConfirmations', `${sentBookings},${bookingRef}`);
+  }, [successBookingData?.Booking?.Reference]);
   
   return (
     <div className={styles.BookeddMain} id="choose">
