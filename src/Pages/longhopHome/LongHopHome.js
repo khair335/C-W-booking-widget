@@ -131,7 +131,7 @@ function LongHopHome() {
                     cashless — card or contactless payments only.</p>
                 </div>
                 <div className="modal-footer ">
-                  <Link to="/select" className="btn btn-primary confirmbtn w-100" onClick={handleModalClose}>
+                  <Link to="/longhop" className="btn btn-primary confirmbtn w-100" onClick={handleModalClose}>
                     CONFIRM
                   </Link>
                 </div>
