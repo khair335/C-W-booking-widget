@@ -128,7 +128,7 @@ export default function LongHopModify() {
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={1}
         stepLength={4}
-        pubLink="/select"
+        // pubLink="/select"
       />
       <div className={styles.ModifyMain}>
         <div className={styles.modify_container}>

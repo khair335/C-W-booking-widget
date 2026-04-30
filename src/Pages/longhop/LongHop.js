@@ -384,7 +384,7 @@ export default function LongHop() {
         sectionImg={sectionimage}
         pubLinkLabel="CHOOSE ANOTHER PUB"
         step={1}
-        pubLink="/select"
+        // pubLink="/select"
       />
       <div className={styles.Datamain}>
         <div className={`${styles.Data_type} ${styles.imgdata}`}>
@@ -508,7 +508,7 @@ export default function LongHop() {
               CHOOSE ANOTHER PUB
             </Link>
           </div> */}
-          <Link to="/Select" className="exist__link">
+          <Link to="/longhopHome" className="exist__link">
             Exit And Cancel Booking
           </Link>
         </div>
