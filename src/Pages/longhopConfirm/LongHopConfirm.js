@@ -193,7 +193,7 @@ export default function LongHopConfirm() {
       <PubImageHeaderLongHop
         // pubLogo={logo}
         sectionImg={sectionimage}
-        pubLinkLabel="CHOOSE ANOTHER PUB"
+        // pubLinkLabel="CHOOSE ANOTHER PUB"
         step={4}
         pubLink="/select"
       />
@@ -314,9 +314,9 @@ export default function LongHopConfirm() {
         </div>
         <div className={styles.Area_type_footer}>
           <div className={styles.chose_m_link}>
-            <Link to="/select" className='chose__another__link'>
+            {/* <Link to="/select" className='chose__another__link'>
               CHOOSE ANOTHER PUB
-            </Link>
+            </Link> */}
           </div>
           <Link to="/" className='exist__link'>
             Exit And Cancel Booking

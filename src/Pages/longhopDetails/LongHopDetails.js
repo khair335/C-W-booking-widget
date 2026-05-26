@@ -409,7 +409,7 @@ export default function LongHopDetails() {
       <PubImageHeaderLongHop
         pubLogo={logo}
         sectionImg={sectionimage}
-        pubLinkLabel="CHOOSE ANOTHER PUB"
+        // pubLinkLabel="CHOOSE ANOTHER PUB"
         step={3}
         pubLink="/select"
       />
@@ -562,9 +562,9 @@ export default function LongHopDetails() {
         </div>
         <div className={styles.Area_type_footer}>
           <div className={styles.chose_m_link}>
-            <Link to="/select" className="chose__another__link">
+            {/* <Link to="/select" className="chose__another__link">
               CHOOSE ANOTHER PUB
-            </Link>
+            </Link> */}
           </div>
           <Link to="/longhopHome" className="exist__link">
             Exit And Cancel Booking

@@ -88,7 +88,7 @@ export default function LongHopBooked() {
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
           <CustomButton
             label="Home"
-            to="/"
+            to="/longhopHome"
 
           />
         </div>
