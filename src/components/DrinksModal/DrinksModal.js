@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateSelectedDrink } from '../../store/bookingSlice';
 import { v4 as uuidv4 } from 'uuid';
 
-const drinks = [
+const tapAndRunDrinks = [
   {
     id: 1,
     name: 'Prosecco',
@@ -22,29 +22,32 @@ const drinks = [
     name: 'Chapel Down English Sparkling',
     price: '£55.00',
     stripeLink: 'https://buy.stripe.com/4gM00j5kO6Usfcg3Mrg7e04'
-  },
-  // {
-  //   id: 4,
-  //   name: 'Chapel Down Sparkling test',
-  //   price: '£55.00',
-  //   stripeLink: 'https://buy.stripe.com/test_bJe7sL28C1A84xC2Ing7e01'
-  // },
-  // {
-  //   id: 4,
-  //   name: 'CW-BOOKING Test Item',
-  //   price: 'Test',
-  //   stripeLink: 'https://buy.stripe.com/test_bJe3cu58Q5fz8iy5PBeQM00'
-  // },
-  // Local development test links (uncomment for testing)
-  /*
-  {
-    id: 5,
-    name: 'LOCAL TEST - Prosecco',
-    price: '£36.00',
-    stripeLink: 'https://buy.stripe.com/test_bJe7sL28C1A84xC2Ing7e01'
   }
-  */
 ];
+
+const longHopDrinks = [
+  {
+    id: 1,
+    name: 'Prosecco',
+    price: '£36.00',
+    stripeLink: 'https://book.stripe.com/eVq9AT5kO2Ecd480Afg7e0c'
+  },
+  {
+    id: 2,
+    name: 'Veuve Clicquot Champagne',
+    price: '£79.00',
+    stripeLink: 'https://book.stripe.com/aFa7sLcNg3Ig5BG96Lg7e0d'
+  },
+  {
+    id: 3,
+    name: 'Chapel Down English Sparkling',
+    price: '£55.00',
+    stripeLink: 'https://buy.stripe.com/5kQ3cvbJcemUggk6YDg7e0e'
+  }
+];
+
+const getDrinksForPub = (pubType) =>
+  pubType === 'longHop' ? longHopDrinks : tapAndRunDrinks;
 
 export default function DrinksModal({ isOpen, onClose, onContinue }) {
   const dispatch = useDispatch();
@@ -63,6 +66,7 @@ export default function DrinksModal({ isOpen, onClose, onContinue }) {
   } = bookingState;
 
   const [bookingReference, setBookingReference] = useState(null);
+  const drinks = getDrinksForPub(pubType);
 
   // Generate booking reference when modal opens
   useEffect(() => {
