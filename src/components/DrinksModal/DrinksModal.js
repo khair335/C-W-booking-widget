@@ -44,12 +44,12 @@ const longHopDrinks = [
     price: '£55.00',
     stripeLink: 'https://buy.stripe.com/5kQ3cvbJcemUggk6YDg7e0e'
   },
-  {
-    id: 3,
-    name: 'test-own',
-    price: '£36.00',
-    stripeLink: 'https://buy.stripe.com/test_bJe3cu58Q5fz8iy5PBeQM00'
-  }
+  // {
+  //   id: 3,
+  //   name: 'test-own',
+  //   price: '£36.00',
+  //   stripeLink: 'https://buy.stripe.com/test_bJe3cu58Q5fz8iy5PBeQM00'
+  // }
 ];
 
 const getDrinksForPub = (pubType) =>
