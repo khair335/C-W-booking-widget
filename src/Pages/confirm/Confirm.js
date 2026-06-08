@@ -20,7 +20,7 @@ import PaymentModal from '../../components/PaymentModal/PaymentModal';
 import Toast from '../../components/Toast/Toast';
 import PrivacyPolicyModal from '../../components/PrivacyPolicyModal';
 import { clearAllBookingData } from '../../utils/paymentRestoration';
-
+import { formatTimeTo12Hour } from '../../utils/dateUtils';
 export default function Confirm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -268,7 +268,7 @@ export default function Confirm() {
           </section>
 
           <div className={styles.tableReturnInfo}>
-            On busy days we respectfully require your table back by 8:45 PM but if you would like to stay longer and enjoy our beautiful pub then please let your server know and we will try to accommodate you somewhere for post meal drinks.
+            On busy days we respectfully require your table back by {formatTimeTo12Hour(bookingState.returnBy) || "XX:XX"} but if you would like to stay longer and enjoy our beautiful pub then please let your server know and we will try to accommodate you somewhere for post meal drinks.
           </div>
         </div>
 
