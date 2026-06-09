@@ -65,7 +65,9 @@ const bookingSlice = createSlice({
       if (time) state.time = time;
       if (adults !== undefined) state.adults = adults;
       if (children !== undefined) state.children = children;
-      if (returnBy) state.returnBy = returnBy;
+      if (Object.prototype.hasOwnProperty.call(action.payload, 'returnBy')) {
+        state.returnBy = returnBy;
+      }
 
       // Explicitly handle availablePromotionIds
       if (availablePromotionIds) {

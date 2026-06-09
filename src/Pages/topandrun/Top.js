@@ -81,7 +81,8 @@ export default function Top() {
           if (selectedSlot) {
             setSelectedTimeISO(selectedSlot.TimeSlot);
             setLeaveTime(selectedSlot.LeaveTime);
-            
+            dispatch(updateBasicInfo({ returnBy: selectedSlot.LeaveTime || null }));
+
             // Extract AvailablePromotions from the selected TimeSlot
             if (selectedSlot.AvailablePromotions) {
               const promotionIds = selectedSlot.AvailablePromotions.map(promo => promo.Id);
@@ -229,12 +230,11 @@ export default function Top() {
       hour12: false,
     });
 
-    dispatch(updateBasicInfo({ time: formatted24Hour }));
     const selectedSlot = timeSlots.find((slot) => slot.TimeSlot === value);
     if (selectedSlot) {
-      const leaveTime = selectedSlot.LeaveTime || "";
-      dispatch(updateBasicInfo({ returnBy: leaveTime }));
-      setLeaveTime(leaveTime);
+      const leaveTime = selectedSlot.LeaveTime || null;
+      dispatch(updateBasicInfo({ time: formatted24Hour, returnBy: leaveTime }));
+      setLeaveTime(leaveTime || "");
 
       // Find the selected TimeSlot and extract its AvailablePromotions
       if (selectedSlot.AvailablePromotions) {

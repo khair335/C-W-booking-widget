@@ -165,7 +165,7 @@ export default function LongHop() {
     dispatch(updateBasicInfo({ date: formattedDate }));
     
     // Clear time selection when date changes
-    dispatch(updateBasicInfo({ time: null }));
+    dispatch(updateBasicInfo({ time: null, returnBy: null }));
     setSelectedTimeISO("");
     setLeaveTime("");
     setTimeSlots([]);
@@ -174,7 +174,10 @@ export default function LongHop() {
 
   const handleTimeSelect = (timeData) => {
     console.log("Long Hop time selected:", timeData);
-    dispatch(updateBasicInfo({ time: timeData.formatted }));
+    dispatch(updateBasicInfo({
+      time: timeData.formatted,
+      returnBy: timeData.leaveTime || null,
+    }));
     setSelectedTimeISO(timeData.iso);
     setLeaveTime(timeData.leaveTime || "");
     
@@ -201,7 +204,7 @@ export default function LongHop() {
     dispatch(updateBasicInfo({ adults: value }));
     
     // Clear time-related state when party size changes
-    dispatch(updateBasicInfo({ time: null }));
+    dispatch(updateBasicInfo({ time: null, returnBy: null }));
     setSelectedTimeISO("");
     setLeaveTime("");
     setTimeSlots([]);
@@ -214,7 +217,7 @@ export default function LongHop() {
     dispatch(updateBasicInfo({ children: value }));
     
     // Clear time-related state when party size changes
-    dispatch(updateBasicInfo({ time: null }));
+    dispatch(updateBasicInfo({ time: null, returnBy: null }));
     setSelectedTimeISO("");
     setLeaveTime("");
     setTimeSlots([]);
