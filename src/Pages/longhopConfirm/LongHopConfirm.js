@@ -209,7 +209,7 @@ export default function LongHopConfirm() {
 
           <InfoChip icon={dateicon} label={date || "Select Date"} alt="date_icon" />
           <InfoChip icon={timeicon} label={time || "Select Time"} alt="time_icon" />
-          <InfoChip icon={membericon} label={(adults + children) || "Select Party Size"} alt="member_icon" />
+          <InfoChip icon={membericon} label={(Number(adults) + Number(children)) || "Select Party Size"} alt="member_icon" />
           <InfoChip icon={resturanticon} label={selectedPromotion?.Name || "Select Area"} alt="react_icon" />
         </div>
 
