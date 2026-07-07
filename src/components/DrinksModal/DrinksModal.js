@@ -52,8 +52,32 @@ const longHopDrinks = [
   // }
 ];
 
-const getDrinksForPub = (pubType) =>
-  pubType === 'longHop' ? longHopDrinks : tapAndRunDrinks;
+const griffinDrinks = [
+  {
+    id: 1,
+    name: 'Prosecco',
+    price: '£36.00',
+    stripeLink: 'https://book.stripe.com/4gM28rdRkgv25BG1Ejg7e0h'
+  },
+  {
+    id: 2,
+    name: 'Veuve Clicquot Champagne',
+    price: '£79.00',
+    stripeLink: 'https://book.stripe.com/14AbJ1cNgceM9RW6YDg7e0g'
+  },
+  {
+    id: 3,
+    name: 'Chapel Down English Sparkling',
+    price: '£55.00',
+    stripeLink: 'https://buy.stripe.com/dRm14n9B44Mk7JO3Mrg7e0i'
+  }
+];
+
+const getDrinksForPub = (pubType) => {
+  if (pubType === 'longHop') return longHopDrinks;
+  if (pubType === 'griffin') return griffinDrinks;
+  return tapAndRunDrinks;
+};
 
 export default function DrinksModal({ isOpen, onClose, onContinue }) {
   const dispatch = useDispatch();
