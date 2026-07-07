@@ -43,7 +43,7 @@ export default function Cancel() {
 
         </div>
         <div className="Cancel-type ">
-          <Link to="/" className="exist__link">
+          <Link to="/griffinHome" className="exist__link">
             Exit And Cancel Booking
           </Link>
         </div>

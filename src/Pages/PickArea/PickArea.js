@@ -257,7 +257,7 @@ export default function PickArea() {
           <Link to="/Select" className="chose__another__link">
             CHOOSE ANOTHER PUB
           </Link>
-          <Link to="/" className="exist__link">
+          <Link to="/griffinHome" className="exist__link">
             Exit And Cancel Booking
           </Link>
         </div>

@@ -40,13 +40,13 @@ export default function Updated() {
           /> */}
           <CustomButton
             label="Back To the table"
-            to="/TopHome"
+            to="/griffinHome"
             color="#FFFFFF"
             bgColor="#C39A7B"
           />
         </div>
                <div className={`${styles.Data_type} mt-5`}>
-          <Link to="/" className="exist__link">
+          <Link to="/griffinHome" className="exist__link">
             Exit And Cancel Booking
           </Link>
         </div>

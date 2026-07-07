@@ -46,7 +46,7 @@ export default function Booked() {
         <div className={`${styles.Data_type} ${styles.BookedbtonMain}`}>
           <CustomButton
             label="Home"
-            to="/"
+            to="/griffinHome"
 
           />
         </div>

@@ -31,7 +31,7 @@ export default function Cancel() {
           />
           <CustomButton
             label="Back to the site"
-            to="/"
+            to="/griffinHome"
             bgColor="#C39A7B"
             color="#FFFFFF"
           />

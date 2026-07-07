@@ -450,7 +450,7 @@ export default function Confirmed() {
               CHOOSE ANOTHER PUB
             </Link>
           </div>
-          <Link to="/TopHome" className='exist__link'>
+          <Link to="/griffinHome" className='exist__link'>
             Exit And Cancel Booking
           </Link>
         </div>

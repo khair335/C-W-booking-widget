@@ -190,7 +190,7 @@ export default function Modify() {
           </p>
           
           <div className={styles.Data_type}>
-            <Link to="/" className='exist__link'>
+            <Link to="/griffinHome" className='exist__link'>
               Cancel Editing and exit
             </Link>
           </div>

@@ -63,7 +63,7 @@ export default function Lost() {
           />
         </div>
         <div className={`${styles.existmail} ${styles.Nbooking_type}`}>
-          <Link to="/" className="exist__link">
+          <Link to="/griffinHome" className="exist__link">
             Exit Cancellation
           </Link>
         </div>

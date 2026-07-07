@@ -169,7 +169,7 @@ export default function BookingNumber() {
           />
         </div>
         <div className={`${styles.Nbooking_type} ${styles.existmail}`}>
-          <Link to="/" className="exist__link">
+          <Link to="/griffinHome" className="exist__link">
             Exit Cancellation
           </Link>
         </div>

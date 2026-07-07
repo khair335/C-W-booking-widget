@@ -4,7 +4,6 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import Home from '../../Pages/home/Home'
 import Griffin from '../../Pages/griffin/griffin'
 import LongHop from '../../Pages/longhop/LongHop'
 import LongHopArea from '../../Pages/longhopArea/LongHopArea'
@@ -23,6 +22,7 @@ import LongHopLost from '../../Pages/longhopLost/LongHopLost'
 import LongHopResent from '../../Pages/longhopResent/LongHopResent'
 import LongHopCancelled from '../../Pages/longhopCancelled/LongHopCancelled'
 import LongHopHome from '../../Pages/longhopHome/LongHopHome'
+import GriffinHome from '../../Pages/griffinHome/GriffinHome'
 import NotFound from '../../Pages/NotFound/NotFound'
 import Select from "../../Pages/select/Select";
 import TopandRun from '../../Pages/topandrun/Top'
@@ -66,6 +66,7 @@ let Router = () => {
             <Routes>
                 <Route path="/" element={<TopandRun />} />
                 <Route path="/griffin" element={<Griffin/>} />
+                <Route path="/griffinHome" element={<GriffinHome />} />
                 <Route path="/longhop" element={<LongHop />} />
                 <Route path="/longhoparea" element={<LongHopArea />} />
                 <Route path="/longhopdetails" element={<LongHopDetails />} />
