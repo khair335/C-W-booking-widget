@@ -459,6 +459,15 @@
 }
 
 @media only screen and (max-width: 1024px) {
+    .confirmLogo {
+        width: min(360px, 80vw);
+        max-width: 360px;
+        height: auto;
+        max-height: 72px;
+        object-fit: contain;
+        margin-bottom: 20px;
+    }
+
     .ConfirmMainContainer {
         width: 88%;
     }

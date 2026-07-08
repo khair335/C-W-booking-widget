@@ -463,6 +463,15 @@
     padding-bottom: 6px;
 }
 @media only screen and (max-width: 700px) {
+    .confirmLogo {
+        width: min(360px, 80vw);
+        max-width: 360px;
+        height: auto;
+        max-height: 72px;
+        object-fit: contain;
+        margin-bottom: 20px;
+    }
+
     .changeTopMainn{
         display: flex;
         margin-top: 14px;

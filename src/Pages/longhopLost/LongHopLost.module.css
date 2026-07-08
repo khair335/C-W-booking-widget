@@ -206,6 +206,14 @@
         margin-top: 0px;
         margin-bottom: 10px;
     }
+
+    .imgdata img {
+        width: min(360px, 80vw);
+        max-width: 360px;
+        height: auto;
+        max-height: 72px;
+        object-fit: contain;
+    }
     #Nbooking-type1{
         gap: 10px;
         width: 80%;
