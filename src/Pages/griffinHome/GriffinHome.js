@@ -87,9 +87,9 @@ function GriffinHome() {
               <img src={tabimg} alt="tab-img" />
             </Link>
           </div>
-          <Link to="/Select" className="anotherpub2">
+          {/* <Link to="/Select" className="anotherpub2">
             CHOOSE ANOTHER PUB
-          </Link>
+          </Link> */}
           <div>
             <Link href="#" className="Existlink">
               Exit and cancel Booking
