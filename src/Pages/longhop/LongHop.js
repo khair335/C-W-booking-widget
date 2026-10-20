@@ -408,7 +408,7 @@ export default function LongHop() {
           {guestError && <p className="text-danger">{guestError}</p>}
 
           <DropDown
-            options={[...Array(11).keys()].slice(1).map((num) => ({
+            options={[...Array(17).keys()].slice(1).map((num) => ({
               label: num.toString(),
               value: num.toString(),
               status: "default"
