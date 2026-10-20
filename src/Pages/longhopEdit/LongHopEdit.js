@@ -336,7 +336,7 @@ export default function LongHopEdit() {
 
             <div className='w-100'>
               <DropDown
-                options={[...Array(11).keys()].slice(1).map((num) => ({
+                options={[...Array(17).keys()].slice(1).map((num) => ({
                   label: num.toString(),
                   value: num.toString(),
                   status: "default"
