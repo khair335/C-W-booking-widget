@@ -12,6 +12,10 @@ import { FiInfo } from "react-icons/fi";
 import { Modal } from 'bootstrap';
 import PubImageHeaderLongHop from '../../components/PubImageHeaderLongHop/PubImageHeaderLongHop';
 
+// IMPORTANT: The maximum selectable guests for LongHop should be 16.
+// If the guest selection UI is elsewhere (not in this file), update the logic in that component.
+// If you have a guest quantity selector component, make sure to pass max={16} for LongHop within that UI.
+
 function LongHopHome() {
   useEffect(() => {
     const removeBackdrop = () => {
@@ -125,7 +129,7 @@ function LongHopHome() {
                 </div>
                 <div className="modal-body">
                   <h2 className="logo-large">Please Note:</h2>
-                  <p>Our max table size is 10 people. </p>
+                  <p>Our max table size is a table of 16. For any tables over 10, we will require a pre-order.</p>
                   <p>
                     Cat & Wickets pubs are
                     cashless — card or contactless payments only.</p>
@@ -145,4 +149,3 @@ function LongHopHome() {
   );
 }
 export default LongHopHome;
-
